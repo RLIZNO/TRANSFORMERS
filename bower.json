@@ -1,0 +1,45 @@
+{
+  "name": "transformers",
+  "authors": [
+    "Faber Herrera <faber.herrera@pragma.com.co> "
+  ],
+  "version": "0.0.0",
+  "description": "Aplicación para la creación de tarjetas de credito para el banco BHDleón",
+  "main": "",
+  "license": "",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.8",
+    "angular-animate": "~1.5.8",
+    "angular-ui-router": "~0.3.1",
+    "bootstrap": "^3.3.7",
+    "angular-sweetalert": "angular-h-sweetalert#^1.4.7",
+    "angular-bootstrap": "^2.2.0",
+    "angular-i18n": "^1.5.8",
+    "angular-xml2json": "^0.0.2",
+    "angular-sanitize": "^1.5.8",
+    "angular-cookies": "^1.5.9",
+    "angular-block-ui": "^0.2.2"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "angular-i18n": {
+      "main": [
+        "angular-locale_es-co.js"
+      ]
+    }
+  }
+}

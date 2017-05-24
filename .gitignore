@@ -1,0 +1,9 @@
+.sass-cache
+.vscode
+/node_modules
+/_dev/bower_components
+/_build
+/_dev/css/main.css
+*.DS_Store
+*.jazzignore
+*.orig
