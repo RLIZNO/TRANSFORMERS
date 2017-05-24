@@ -1,0 +1,79 @@
+li {
+ display: block;
+} 
+ .labelCheck {
+    position: relative;
+    left: 35px;
+    width: 70%;
+    bottom: 12px;
+ }
+
+.inputradio {
+    opacity: 0;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 0px;
+}
+
+.inputfalse {
+    border: 2px solid #dedede;
+    display: inline-block;
+    height:19px;
+    position: absolute;
+    left: 0px;
+    width: 19px;
+    z-index: -1;
+}
+
+.checkboxMark { 
+
+    left: 5px;
+    position: relative;
+    width: 79%;
+    height: 15px;
+
+        ul li {
+            list-style: none;
+            display: block;
+            padding-bottom: 2em;
+        }
+
+        input[type="checkbox"]:checked + span:after {
+            content: "X";
+            font-family: arial;
+            position: absolute;
+            text-indent: 2px;
+            font-weight: bold;
+            top: 2px;
+            left: 2px;
+            font-size: 18px;
+            color: red;
+        }
+}
+
+.unCheckbox {
+
+    left: 5px;
+    position: relative;
+    width: 79%;
+    height: 15px;
+
+        ul li {
+            list-style: none;
+            display: block;
+            padding-bottom: 2em;
+        }
+
+        input[type="checkbox"]:checked + span:after {
+            content: "\2714";
+            font-family: arial;
+            position: absolute;
+            text-indent: 2px;
+            font-weight: bold;
+            top: 2px;
+            left: 0px;
+            font-size: 18px;
+            color: green;
+        }
+}

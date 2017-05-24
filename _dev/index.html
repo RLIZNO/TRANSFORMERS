@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=10" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>::: Banco BHD León :::</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- build:css css/vendor.min.css -->
+	<!-- bower:css -->
+	<link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css">
+	<link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<!-- endinject -->
+	<!-- endbuild -->
+	<!-- build:css css/main.min.css -->
+	<!-- inject:css -->
+	<link rel="stylesheet" href="css/main.css">
+	<!-- endinject -->
+	<!-- endbuild -->
+</head>
+<body class="bodyGris">
+	<!--HEADER-->
+	<div class="Header Gradient-gris">
+		<!--HEADER IZQUIERDA-->
+		<div class="Left">
+			<div class="LogoBhd"></div>
+		</div>
+		<!--FIN HEADER IZQUIERDA-->
+		<!--HEADER DERECHA-->
+		<div class="Right" ng-controller="indexController as index">
+			<div class="Btn-Cerrarsesion Gradient-gris">
+				<div class="Icono"></div>
+				<a>Cerrar<br />Sesión</a></div>
+			<div class="Btn-Usuario">
+				<div class="Icono"></div>
+				<span ng-bind="index.name"></span><br />
+				<span ng-bind="index.fecha.getDate() + ' de ' + index.meses[index.fecha.getMonth()] + ' de ' + index.fecha.getFullYear()"></span>
+				<span ng-bind="index.theTime"></span>
+			</div>
+		</div>
+		<!--FIN HEADER DERECHA-->
+	</div>
+	<!--FIN HEADER-->
+	<div class="clear"></div>
+	<!--CONTENIDO-->
+	<div ui-view><div id="main-container"></div></div>
+	<!--FIN CONTENIDO-->
+	<!--FOOTER-->
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="divPpal">
+		<div class="divNoventaNueve floatCenter alignCenter border-light-top paddingVertical">
+			<p class="texto">Banco BHD León versión 1.0 © 2016</p>
+		</div>
+	</div>
+	<!--FIN FOOTER-->
+	<!-- build:js js/vendor.min.js -->
+	<!-- bower:js -->
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="bower_components/angular-i18n/angular-locale_es-co.js"></script>
+	<script src="bower_components/angular-xml2json/angular-xml2json.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+	<script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="bower_components/angular-sweetalert/dist/ngSweetAlert.js"></script>
+	<script src="bower_components/angular-sweetalert/dist/ngSweetAlert.min.js"></script>
+	<!-- endinject -->
+	<!-- endbuild -->
+	<!-- build:js js/app.min.js -->
+	<!-- inject:js -->
+
+	<script src="app/feature/validationDocument/validationDocumentModule.js"></script>
+
+	<script src="app/feature/validationDocument/validationDocumentController.js"></script>
+
+	<script src="app/feature/uploadOnbase/uploadOnbaseModule.js"></script>
+
+	<script src="app/feature/uploadOnbase/uploadOnbaseController.js"></script>
+
+	<script src="app/feature/index/index.Module.js"></script>
+
+	<script src="app/feature/index/indexController.js"></script>
+
+	<script src="app/feature/home/homeModule.js"></script>
+
+	<script src="app/feature/home/homeController.js"></script>
+
+	<script src="app/feature/customerJobsData/customerJobsDataModule.js"></script>
+
+	<script src="app/feature/customerJobsData/customerJobsDataController.js"></script>
+
+	<script src="app/feature/customerForeignCurrency/customerForeignCurrencyModule.js"></script>
+
+	<script src="app/feature/customerForeignCurrency/customerForeignCurrencyController.js"></script>
+
+	<script src="app/feature/customerConfirmation/customerConfirmationModule.js"></script>
+
+	<script src="app/feature/customerConfirmation/customerConfirmationController.js"></script>
+
+	<script src="app/feature/customerBasicData/customerBasicDataModule.js"></script>
+
+	<script src="app/feature/customerBasicData/customerBasicDataController.js"></script>
+
+	<script src="app/feature/creationAccount/creationAccountModule.js"></script>
+
+	<script src="app/feature/creationAccount/creationAccountController.js"></script>
+
+	<script src="app/feature/assignmentQualifiers/assignmentQualifiersModule.js"></script>
+
+	<script src="app/feature/assignmentQualifiers/assignmentQualifiersController.js"></script>
+
+	<script src="app/components/uploadOnBase/uploadOnBase.js"></script>
+
+	<script src="app/components/uploadOnBase/inputUploadFileDirective.js"></script>
+
+	<script src="app/appModule.js"></script>
+
+	<script src="app/value/messages.js"></script>
+
+	<script src="app/services/validationUserService.js"></script>
+
+	<script src="app/services/validationTypeMoney.js"></script>
+
+	<script src="app/services/validationClientService.js"></script>
+
+	<script src="app/services/validationCardKeyService.js"></script>
+
+	<script src="app/services/validQualifersService.js"></script>
+
+	<script src="app/services/uploadFileService.js"></script>
+
+	<script src="app/services/updateSiebelDataService.js"></script>
+
+	<script src="app/services/updatePepDataService.js"></script>
+
+	<script src="app/services/updateLaborDataService.js"></script>
+
+	<script src="app/services/updateBasicDataService.js"></script>
+
+	<script src="app/services/saveIdentificationService.js"></script>
+
+	<script src="app/services/personCodeService.js"></script>
+
+	<script src="app/services/passiveContractService.js"></script>
+
+	<script src="app/services/enableAchlbtrService.js"></script>
+
+	<script src="app/services/documentClientService.js"></script>
+
+	<script src="app/services/documentAccountTariffService.js"></script>
+
+	<script src="app/services/deleteCustomerService.js"></script>
+
+	<script src="app/services/creditBureauService.js"></script>
+
+	<script src="app/services/controlListService.js"></script>
+
+	<script src="app/services/completeClientService.js"></script>
+
+	<script src="app/services/ciiuOccupationService.js"></script>
+
+	<script src="app/services/cierreForzosoService.js"></script>
+
+	<script src="app/services/catalogService.js"></script>
+
+	<script src="app/services/catalogPreloadedService.js"></script>
+
+	<script src="app/services/catalogComplexService.js"></script>
+
+	<script src="app/services/assignmentCardService.js"></script>
+
+	<script src="app/services/assignDebitCardService.js"></script>
+
+	<script src="app/services/accountCreationService.js"></script>
+
+	<script src="app/factory/utilFactory.js"></script>
+
+	<script src="app/factory/modalFactory.js"></script>
+
+	<script src="app/constants/yesAndNoConstant.js"></script>
+
+	<script src="app/constants/urlConstant.js"></script>
+
+	<script src="app/constants/selectDefaultConstant.js"></script>
+
+	<script src="app/constants/prefixUrlConstant.js"></script>
+
+	<script src="app/constants/passiveContractConstant.js"></script>
+
+	<script src="app/constants/ocupationConstant.js"></script>
+
+	<script src="app/constants/fatcaConstant.js"></script>
+
+	<script src="app/constants/catalogConstant.js"></script>
+
+	<script src="app/constants/accountProductConstant.js"></script>
+
+	<script src="app/appRoutes.js"></script>
+
+	<script src="app/appConfig.js"></script>
+
+	<!-- endinject -->
+	<!-- endbuild -->
+</body>
+</html>

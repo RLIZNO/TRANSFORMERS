@@ -1,0 +1,97 @@
+<br>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12  campomantenimiento" >
+            <div class="divheader">
+              <h2>Expediente Onbase</h2>
+            </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="modalOnbase"> <span class="label">Adjuntar Documento<br />
+    a Expediente Onbase</span> 
+  
+    <span class="positioOnbase">
+      <select 
+        class="selectfield full" 
+        ng-model="$ctrl.selectedDocumentType"
+        ng-change="$ctrl.changeDocumentType();">
+                <option value="-1"></option>
+        <option 
+          ng-repeat="typeDocument in $ctrl.documentTypes"
+          value="{{$index}}">
+          {{typeDocument.value}}
+        </option>
+      </select>
+
+
+    </span>
+    <div class="content-button-input-file">
+        <input 
+          input-upload-file 
+          type="file"
+          ng-disabled="$ctrl.isDisableButton">
+      <button class="boton btnsmall btnblack"
+              ng-class="{'inactive' : $ctrl.isDisableButton}">
+              Adjuntar
+      </button> 
+    </div>
+    <div class="botonarea"> 
+  <button 
+      href="#modal2" 
+      class="boton" 
+      ng-bind="$ctrl.i18n.components.uploadOnBase.buttonUploadOnBase"
+        ng-click="$ctrl.createIndexFile()"
+        ng-class="{'inactive' : $ctrl.documents[0]===undefined || $ctrl.disableCargaOnbase}"
+        ng-disabled="$ctrl.documents[0]===undefined || $ctrl.disableCargaOnbase"
+        >
+  </button>
+</div>
+  </div>
+  </div>
+</br></br>
+
+
+<div class="campomantenimientofull">
+<table width="100%" border="0" class="tabla" cellspacing="0" cellpadding="0">
+  <tr class="grid_titleOnbase">
+  <td style="width:40%" class="tablecenter" ng-bind="$ctrl.i18n.components.uploadOnBase.labelTypeDocument"></td>
+  <td style="width:45%" ng-bind="$ctrl.i18n.components.uploadOnBase.labelDocumentName"></td>
+  <td style="width:15%" ng-bind="$ctrl.i18n.components.uploadOnBase.labelActions"></td>
+  </tr>
+  <tr class="grid_textOnbase" ng-repeat="model in $ctrl.documents">
+    <td  class="tablecenter">
+    	{{model.type}}
+    </td>
+    <td class="tablecenter">
+      <a ng-click="$ctrl.openDocument($index);">
+        {{model.name}}
+      </a>
+    </td>
+    <td class="tablecenter">
+      <button 
+        type="button" 
+        class="botonClean btnsmall" 
+        ng-click="$ctrl.deleteDocument($index)">
+          <img src="img/icono-eliminar.svg" width="28" height="22"/>
+      </button>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         

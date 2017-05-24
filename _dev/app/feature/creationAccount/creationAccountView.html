@@ -1,0 +1,592 @@
+<div class="divPpal padding">
+	<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.creationAccount.title"></h2>
+</div>
+
+<div class="clear"></div>
+<div ng-if="creationAccount.goAccount">
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.creationAccount.titleDataBasic"></h3>
+	</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<!-- FORMULARIO CREACION DE CUENTA -->
+<form name="creationAccount.formCreationAccount" novalidate role="form">
+	<div ng-if="creationAccount.goAccount">
+	<!-- DOCUMENT TYPE AND DOCUMENT NUMBER -->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelDocumentType"></h4>
+			<select 
+				class="selectfield full"
+				name="typeIdentification"
+				ng-disabled="creationAccount.accountActive"
+				ng-model="creationAccount.viewModelCreationAccount.typeIdentification" 				
+				ng-options="typeDocument.id as typeDocument.value for typeDocument in creationAccount.typeDocuments | filter: {id: default.TYPE_DOCUMENTS}"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.typeIdentification.$touched) && creationAccount.formCreationAccount.typeIdentification.$invalid, 'prepoblado':creationAccount.accountActive }"
+				required
+			>
+	        </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.typeIdentification.$touched) && creationAccount.formCreationAccount.typeIdentification.$error.required" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelDocumentNumber"></h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				name="numberIdentification" 
+				ng-disabled="creationAccount.accountActive"
+				ng-model="creationAccount.viewModelCreationAccount.numberIdentification" 
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.numberIdentification.$touched) && creationAccount.formCreationAccount.numberIdentification.$invalid, 'prepoblado':creationAccount.accountActive }"
+				ng-maxlength="20"
+				required />
+			<p 
+				class="texto messageError" 
+				ng-if="creationAccount.formCreationAccount.numberIdentification.$error.required &&  (creationAccount.submitted || creationAccount.formCreationAccount.numberIdentification.$touched)"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">&nbsp;</h4>
+			<button 
+				ng-bind="::i18n.actions.send"
+				class="boton floatLeft inactive" 
+				ng-class="{verde: creationAccount.viewModelCreationAccount.numberIdentification}" 
+				ng-disabled="!creationAccount.viewModelCreationAccount.numberIdentification && creationAccount.viewModelCreationAccount.typeIdentification || creationAccount.accountActive"
+				ng-click="creationAccount.validateClient();">
+			</button>
+		</div>
+	</div>
+	<!-- END DOCUMENT TYPE AND DOCUMENT NUMBER -->
+	
+	<!-- DATOS BASICOS -->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelFirstName"></h4>
+			<input 
+				type="text" 
+				class="inputfield full prepoblado"
+				ng-disabled="true" 
+				ng-model="creationAccount.viewModelCreationAccount.basicData.firstName"/>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelSecondName"></h4>
+			<input 
+				type="text" 
+				class="inputfield full prepoblado"
+				ng-disabled="true"
+				ng-model="creationAccount.viewModelCreationAccount.basicData.secondName"/>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelFirstLastName"></h4>
+			<input 
+				type="text" 
+				class="inputfield full prepoblado" 
+				ng-disabled="true"
+				ng-model="creationAccount.viewModelCreationAccount.basicData.firstLastName"/>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelSecondLastName"></h4>
+			<input 
+				type="text" 
+				class="inputfield full prepoblado" 
+				ng-disabled="true"
+				ng-model="creationAccount.viewModelCreationAccount.basicData.secondLastName"/>
+		</div>
+	</div>
+	<!-- END DATOS BASICOS -->
+
+	<!-- EMAIL -->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelEmail"></h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				ng-disabled="!creationAccount.clientCanContinue"
+				ng-class="{'prepoblado':!creationAccount.clientCanContinue}"
+				ng-model="creationAccount.viewModelCreationAccount.basicData.email"/>
+		</div>
+	</div>
+
+	<!-- END EMAIL -->
+
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<!-- LINEA -->
+	<div class="divPpal border-light-top paddingBottom"></div>
+	<!-- END LINEA -->
+	<div class="clear"></div>
+
+	<!-- EVALUACIÓN DEL CLIENTE -->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+			<h3 class="texto" ng-bind="::i18n.views.creationAccount.titleClientEvaluation"></h3>
+		</div>
+	</div>
+	<div class="clear"></div>
+
+	<div class="divPpal creation-account-client-evaluation-container">
+		<div class="divVeintecinco marginLeft floatLeft paddingVertical">
+			<h4 class="texto">
+				<div class="checkboxMark" ng-class="{'unCheckbox': creationAccount.findControlListReport}">
+					<li>
+						<input 
+							type="checkbox" 
+							class="inputradio" 
+							ng-disabled="true"
+							ng-checked="creationAccount.getControlList" 
+						/>
+						<span class="inputfalse"></span>
+						<span class="label-control-list">{{::i18n.views.creationAccount.labelControlList}}</span>
+					</li>
+				</div>
+				
+			</h4>		
+		</div>
+		<div class="divVeintecinco marginLeft floatLeft paddingVertical">
+			<h4 class="texto">
+				<div class="checkboxMark" ng-class="{'unCheckbox': creationAccount.findJudicialEvaluation}">
+					<li>
+						<input 
+							type="checkbox" 
+							class="inputradio" 
+							ng-disabled="true"
+							ng-checked="creationAccount.getBureau" 
+						/>
+						<span class="inputfalse"></span>
+						<span class="label-control-list">{{::i18n.views.creationAccount.labelJudicialEvaluation}}</span>
+					</li>
+				</div>
+			</h4>
+		</div>
+	</div>
+	<!-- END EVALUACIÓN DEL CLIENTE -->
+
+	<div class="clear"></div>
+</div>
+	<div class="divPpal border-light-top paddingBottom"></div>
+	<div class="clear"></div>
+
+	<!-- SELECCION DE PRODUCTO Y HABILITANTES -->
+	<div class="divPpal">
+		<div class="divTreinta floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+			<h3 class="texto" ng-bind="::i18n.views.creationAccount.titleSelectProduct"></h3>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelVinculationType"></h4>
+			<select 
+			     class="selectfield full"
+				 name="typeVinculation"
+				 ng-disabled="creationAccount.accountActive"
+				 ng-class="{'prepoblado':creationAccount.accountActive}"
+				 ng-model="creationAccount.viewModelCreationAccount.typeVinculation" 
+				 ng-options="typeVinculations.id as typeVinculations.value for typeVinculations in creationAccount.typeVinculation | filter: {id: default.TYPE_VINCULATION}" >
+            </select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelProductType"></h4>
+			<select 
+			     class="selectfield full"
+				 name="typeProduct"
+				 ng-disabled="creationAccount.accountActive"
+				 ng-model="creationAccount.viewModelCreationAccount.typeProduct" 
+				 ng-options="typeProducts.id as typeProducts.value for typeProducts in creationAccount.typeProduct | filter: {id: 26724}"
+				 ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.typeProduct.$touched) && creationAccount.formCreationAccount.typeProduct.$invalid, 'prepoblado':creationAccount.accountActive} "
+				 ng-change="creationAccount.getProducts(creationAccount.viewModelCreationAccount.typeProduct); creationAccount.getPurposeAccount(creationAccount.viewModelCreationAccount.typeProduct);">
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.typeProduct.$touched) && creationAccount.formCreationAccount.typeProduct.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelProduct"></h4>
+			<select class="selectfield full"
+				 name="product"
+				 ng-model="creationAccount.viewModelCreationAccount.product"
+				 ng-options="productAccounts.id as productAccounts.value for productAccounts in creationAccount.products"
+				 ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.product.$touched) && creationAccount.formCreationAccount.product.$invalid, 'prepoblado':creationAccount.accountActive}"
+				 ng-change="creationAccount.validProductID(creationAccount.viewModelCreationAccount.product); creationAccount.validAccountProdyct();" required >
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.product.$touched) && creationAccount.formCreationAccount.product.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelAboutAccount"></h4>
+			<select class="selectfield full"
+				 name="purposeAcc"
+				 ng-model="creationAccount.viewModelCreationAccount.purposeAcc"
+				 ng-options="purposeAccounts.id as purposeAccounts.value for purposeAccounts in creationAccount.purposeAccount"
+				 ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.purposeAcc.$touched) && creationAccount.formCreationAccount.purposeAcc.$invalid, 'prepoblado':creationAccount.accountActive}"
+				 
+				 required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.purposeAcc.$touched) && creationAccount.formCreationAccount.purposeAcc.$error.required">Este campo es obligatorio</p>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="divPpal">	
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelWantDebitCard"></h4>
+			<select class="selectfield full" 
+				name="interviewDebit"
+				ng-model="creationAccount.viewModelCreationAccount.interviewDebit"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.interviewDebit.$touched) && creationAccount.formCreationAccount.interviewDebit.$invalid, 'prepoblado':creationAccount.accountActive}"
+				
+				ng-options="optionYn.id as optionYn.value for optionYn in creationAccount.optionsYesNo"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.interviewDebit.$touched) && creationAccount.formCreationAccount.interviewDebit.$error.required">Este campo es obligatorio</p>
+		</div>
+	</div>
+	<!-- END SELECCION DE PRODUCTO Y HABILITANTES -->
+
+	<div class="clear"></div>
+	<div class="divPpal border-light-top paddingBottom"></div>
+	<div class="clear"></div>
+
+	<div class="divPpal">
+		<div class="divTreinta floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+			<h3 class="texto" ng-bind="::i18n.views.creationAccount.labelOperationsData"></h3>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+
+	<!--FILA 7-->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelQuantityMonth"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelWaitAmountMonth"></h4>
+		</div>
+		<div class="clear"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto paddingTop" ng-bind="::i18n.views.creationAccount.labelCashDeposits"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="cashDepositCant"
+				ng-change="creationAccount.validcashDepositCant();" 
+				ng-model="creationAccount.viewModelCreationAccount.cashDepositCant"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.cashDepositCant.$touched) && creationAccount.formCreationAccount.cashDepositCant.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue"
+				ng-options="cashDepositsCant.id as cashDepositsCant.value for cashDepositsCant in creationAccount.quantityExpected"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.cashDepositCant.$touched) && creationAccount.formCreationAccount.cashDepositCant.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="cashDepositRode"
+				ng-model="creationAccount.viewModelCreationAccount.cashDepositRode"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.cashDepositRode.$touched) && creationAccount.formCreationAccount.cashDepositRode.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue || creationAccount.textInvalidcashDepositRode"
+				ng-options="cashDepositsRode.id as cashDepositsRode.value for cashDepositsRode in creationAccount.validcashDepositMoney"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.cashDepositRode.$touched) && creationAccount.formCreationAccount.cashDepositRode.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="clear"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto paddingTop" ng-bind="::i18n.views.creationAccount.labelCashWithdrawals"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="cashWithdrawalCant"
+				ng-change="creationAccount.validcashWithdrawalCant();" 
+				ng-model="creationAccount.viewModelCreationAccount.cashWithdrawalCant"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.cashWithdrawalCant.$touched) && creationAccount.formCreationAccount.cashWithdrawalCant.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue"
+				ng-options="cashWithdrawalsCant.id as cashWithdrawalsCant.value for cashWithdrawalsCant in creationAccount.quantityExpected"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.cashWithdrawalCant.$touched) && creationAccount.formCreationAccount.cashWithdrawalCant.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="cashWithdrawalRode"
+				ng-model="creationAccount.viewModelCreationAccount.cashWithdrawalRode"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.cashWithdrawalRode.$touched) && creationAccount.formCreationAccount.cashWithdrawalRode.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue || creationAccount.textInvalidcashWithdrawalCant"
+				ng-options="cashWithdrawalsRode.id as cashWithdrawalsRode.value for cashWithdrawalsRode in creationAccount.validcashWithdrawalCantData"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.cashWithdrawalRode.$touched) && creationAccount.formCreationAccount.cashWithdrawalRode.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="clear"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto paddingTop" ng-bind="::i18n.views.creationAccount.labelInterTransfersSended"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="internacionaleTransferSentCant"
+				ng-change="creationAccount.validinternacionaleTransferSentCant();" 
+				ng-model="creationAccount.viewModelCreationAccount.internacionaleTransferSentCant"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferSentCant.$touched) && creationAccount.formCreationAccount.internacionaleTransferSentCant.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue"
+				ng-options="internacionalTransfersSentCant.id as internacionalTransfersSentCant.value for internacionalTransfersSentCant in creationAccount.quantityExpected"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferSentCant.$touched) && creationAccount.formCreationAccount.internacionaleTransferSentCant.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="internacionaleTransferSentRode"
+				ng-model="creationAccount.viewModelCreationAccount.internacionaleTransferSentRode"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferSentRode.$touched) && creationAccount.formCreationAccount.internacionaleTransferSentRode.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue || creationAccount.textInvalidSentRode"
+				ng-options="internacionalTransfersSentRode.id as internacionalTransfersSentRode.value for internacionalTransfersSentRode in creationAccount.internacionaleTransferSentCantData"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferSentRode.$touched) && creationAccount.formCreationAccount.internacionaleTransferSentRode.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="clear"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto paddingTop" ng-bind="::i18n.views.creationAccount.labelInterTransfersRecived"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="internacionaleTransferReceivedCant"
+				ng-change="creationAccount.validinternacionaleTransferReceivedCant();" 
+				ng-model="creationAccount.viewModelCreationAccount.internacionaleTransferReceivedCant"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferReceivedCant.$touched) && creationAccount.formCreationAccount.internacionaleTransferReceivedCant.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue"
+				ng-options="internacionalTransfersReceivedsCant.id as internacionalTransfersReceivedsCant.value for internacionalTransfersReceivedsCant in creationAccount.quantityExpected"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferReceivedCant.$touched) && creationAccount.formCreationAccount.internacionaleTransferReceivedCant.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="internacionaleTransferReceivedRode"
+				ng-model="creationAccount.viewModelCreationAccount.internacionaleTransferReceivedRode"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferReceivedRode.$touched) && creationAccount.formCreationAccount.internacionaleTransferReceivedRode.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue || creationAccount.textInvalidReceivedRode"
+				ng-options="internacionalTransfersReceivedsRode.id as internacionalTransfersReceivedsRode.value for internacionalTransfersReceivedsRode in creationAccount.internacionaleTransferReceivedData"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.internacionaleTransferReceivedRode.$touched) && creationAccount.formCreationAccount.internacionaleTransferReceivedRode.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="clear"></div>
+		<div  ng-if="creationAccount.viewModelCreationAccount.product === creationAccount.idmoneyRD" >
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto paddingTop" ng-bind="::i18n.views.creationAccount.labelBuyGerencialCheck"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="purchaseCheckCant"
+				ng-change="creationAccount.validpurchaseCheckRode();"
+				ng-model="creationAccount.viewModelCreationAccount.purchaseCheckCant"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.purchaseCheckCant.$touched) && creationAccount.formCreationAccount.purchaseCheckCant.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue"
+				ng-options="purchaseChecks.id as purchaseChecks.value for purchaseChecks in creationAccount.quantityExpected"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.purchaseCheckCant.$touched) && creationAccount.formCreationAccount.purchaseCheckCant.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="purchaseCheckRode"
+				ng-model="creationAccount.viewModelCreationAccount.purchaseCheckRode"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.purchaseCheckRode.$touched) && creationAccount.formCreationAccount.purchaseCheckRode.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue || creationAccount.textInvalidCheckRode"
+				ng-options="purchaseChecksRode.id as purchaseChecksRode.value for purchaseChecksRode in creationAccount.purchaseCheckRodeData"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.purchaseCheckRode.$touched) && creationAccount.formCreationAccount.purchaseCheckRode.$error.required">Este campo es obligatorio</p>
+		</div>
+		</div>
+		<div class="clear"></div>
+		<div  ng-if="creationAccount.viewModelCreationAccount.product === creationAccount.idmoneyExt" >
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto paddingTop" ng-bind="::i18n.views.creationAccount.labelDepositGerencialCheck"></h4>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical" >
+			<select class="selectfield full"
+			    name="depositCheckCant"
+				ng-change="creationAccount.validdepositCheckCant();"
+				ng-model="creationAccount.viewModelCreationAccount.depositCheckCant"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.depositCheckCant.$touched) && creationAccount.formCreationAccount.depositCheckCant.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue"
+				ng-options="depositChecksCant.id as depositChecksCant.value for depositChecksCant in creationAccount.quantityExpected"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.depositCheckCant.$touched) && creationAccount.formCreationAccount.depositCheckCant.$error.required">Este campo es obligatorio</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<select class="selectfield full"
+			    name="depositCheckRode"
+				ng-model="creationAccount.viewModelCreationAccount.depositCheckRode"
+				ng-class="{ 'hasError': (creationAccount.submitted || creationAccount.formCreationAccount.depositCheckRode.$touched) && creationAccount.formCreationAccount.depositCheckRode.$invalid, 'prepoblado':creationAccount.accountActive}"
+			    ng-disabled="!creationAccount.clientCanContinue || creationAccount.textInvaliddepositCheckCant"
+				ng-options="purchaseChecksRode.id as purchaseChecksRode.value for purchaseChecksRode in creationAccount.purchaseCheckRodeExtData"
+				required>
+                <option></option>
+            </select>
+			<p class="texto messageError" ng-if="(creationAccount.submitted || creationAccount.formCreationAccount.depositCheckRode.$touched) && creationAccount.formCreationAccount.depositCheckRode.$error.required">Este campo es obligatorio</p>
+		</div>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+	<div class="divPpal border-light-top paddingBottom"></div>
+	<div class="clear"></div>
+
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+			<h3 class="texto" ng-bind="::i18n.views.creationAccount.labelElectronicSignature"></h3>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+
+
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelKeyCardNumber"></h4>
+			<input 
+				type="text" 
+				class="inputfield full prepoblado" 
+				name="keyCardNumber"
+				ng-model="creationAccount.viewModelCreationAccount.keyCardNumber"
+				ng-disabled="true"
+				/>
+		</div>
+		<div class="clear"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelNumberCode"></h4>
+			<div class="divCode">
+			<span><img src="img/code.png"/></span>
+			<input 
+				type="text" 
+				class="prepobladoBlue"
+				name="positionCard" 
+				ng-disabled="true"
+				ng-model="creationAccount.viewModelCreationAccount.positionCard"
+				/>
+			<input 
+				type="password" 
+				class="prepobladoCode" 
+				name="positionValue"
+				maxlength="4"
+				ng-disabled="!creationAccount.clientCanContinue"
+				ng-model="creationAccount.viewModelCreationAccount.positionValue"
+				placeholder="XXXX"
+				ng-class="{'prepoblado':!creationAccount.clientCanContinue}"/>
+			</div>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">&nbsp;</h4>
+			<div class="divCodeBoton">
+			<button class="boton floatLeft" ng-class="{'inactive': !creationAccount.clientCanContinue || creationAccount.viewModelCreationAccount.positionValue === ''}"  
+			 ng-disabled="!creationAccount.clientCanContinue || creationAccount.viewModelCreationAccount.positionValue === ''"
+			 ng-bind="::i18n.views.creationAccount.buttonValidate" 
+			 ng-click="creationAccount.validationCardKey()"></button>
+		</div>
+		</div>
+	</div>
+
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelAccountNumber"></h4>
+			<input 
+				type="text" 
+				name="numberAccount"
+				class="inputfield full prepoblado"
+				ng-model="creationAccount.viewModelCreationAccount.numberAccount" 
+				ng-disabled="true"/>
+		</div>
+		<div ng-if="creationAccount.viewModelCreationAccount.interviewDebit !== creationAccount.validDebitNo">
+			<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+				<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelNumberDebitCard"></h4>
+				<input 
+					type="text" 
+					name="cardDebitNumber"
+					class="inputfield full prepoblado"
+					ng-model="creationAccount.viewModelCreationAccount.cardDebitNumber"
+					ng-disabled="true"/>
+			</div>
+			<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+				<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelCardDebitType"></h4>
+				<input 
+					type="text" 
+					name="cardDebitType"
+					class="inputfield full prepoblado" 
+					ng-model="creationAccount.viewModelCreationAccount.cardDebitType"
+					ng-disabled="true"/>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="divPpal border-light-top paddingBottom"></div>
+	<div class="clear"></div>
+
+ 
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<a 
+				class="boton pdf botonLink"
+				ng-class="{'disabled' : !creationAccount.passiveValid}" 
+				href="{{creationAccount.urlAccountPassive}}"
+				target="_blank"
+				ng-bind="::i18n.views.creationAccount.buttonContractAccount"></a>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<a 
+				class="boton pdf botonLink"
+				ng-class="{'disabled' : !creationAccount.tariffValid}"
+				href="{{creationAccount.urlAccountTariff}}"
+				target="_blank" 
+				ng-bind="::i18n.views.creationAccount.buttonTarrif"></a>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="clear"></div>
+</form>
+<!-- END FORMULARIO CREACION DE CUENTA -->
+
+
+
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button ng-click="creationAccount.modalCancel()" class="boton floatCenter" ng-bind="::i18n.actions.cancel" >
+		</button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"><button 
+		class="boton floatCenter" 
+		ng-class="{'inactive': !creationAccount.accountActive}" 
+		ng-disabled="!creationAccount.accountActive" 
+		ng-bind="::i18n.actions.finish"
+		ui-sref="home"></button></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+</div>
+

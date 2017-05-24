@@ -1,0 +1,103 @@
+<div class="divPpal padding">
+    <h2 class="texto border-blue-bottom">Asignación de Habilitantes</h2>
+</div>
+        
+<div class="clear"></div>
+                
+<!--FILA 1-->
+<form name="assignmentQualifiers.formAssignmentQualifiers" novalidate role="form">
+    <div class="divPpal">
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical">
+            <h4 class="texto">Cédula</h4>
+            <input 
+                type="text"
+                class="inputfield full"
+                name="numberIdentification"
+                ng-model="assignmentQualifiers.viewModelAssignmentQualifiers.numberIdentification"
+                ng-keypress="assignmentQualifiers.validDate($event);"
+                ng-class="{ 'hasError': (assignmentQualifiers.submitted || assignmentQualifiers.formAssignmentQualifiers.numberIdentification.$touched) 
+                          && assignmentQualifiers.formAssignmentQualifiers.numberIdentification.$invalid, 'prepoblado':assignmentQualifiers.accountActive }"
+				ng-maxlength="20"
+				required/>
+            <p 
+				class="texto messageError" 
+				ng-if="assignmentQualifiers.formAssignmentQualifiers.numberIdentification.$error.required &&  (assignmentQualifiers.submitted || assignmentQualifiers.formAssignmentQualifiers.numberIdentification.$touched)"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+        </div>
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical">
+            <h4 class="texto">Nombre</h4>
+			<input 
+				type="text" 
+				class="inputfield full"
+				ng-disabled="true" 
+				ng-model="assignmentQualifiers.firstName"/>
+        </div>
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical">
+            <h4 class="texto">Número del Producto</h4>
+            <select 
+			     class="selectfield full"
+				 name="numberProduct"
+				 ng-model="assignmentQualifiers.viewModelAssignmentQualifiers.numberProduct" 
+				 ng-options="numberProducts for numberProducts in assignmentQualifiers.accountProduct"
+                 ng-change="assignmentQualifiers.validProduct();" >
+            </select>
+        </div>
+    </div>
+    <!--FIN FILA 1-->
+    
+    <div class="clear"></div>
+    
+    <!--FILA 2-->
+    <div class="divPpal">
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical">
+            <h4 class="texto">Asignar Tarjeta de Claves</h4>
+            <input type="text"
+                    class=" inputfield full prepoblado"
+                    ng-disabled="true" 
+                    ng-model="assignmentQualifiers.assigClave"/>
+        </div>
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical paddingTop">
+            <h4>&nbsp;</h4>
+            <button 
+				class="boton floatLeft inactive" 
+				ng-class="{btnActive: !assignmentQualifiers.accountActiveTDC}" 
+				ng-disabled="assignmentQualifiers.accountActiveTDC"
+				ng-click="assignmentQualifiers.validAssignClave();">
+                Asignar
+			</button>
+        </div>
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical">
+            <h4 class="texto">Asignar Tarjeta Débito</h4>
+            <input type="text"
+                    class=" inputfield full prepoblado"
+                    ng-disabled="true" 
+                    ng-model="assignmentQualifiers.assigDebit"/>
+        </div>
+        <div class="divVeintecinco floatLeft marginLeft paddingVertical paddingTop">
+            <h4>&nbsp;</h4>
+            <button 
+				class="boton floatLeft inactive" 
+				ng-class="{btnActive: !assignmentQualifiers.accountActiveDebit}" 
+				ng-disabled="assignmentQualifiers.accountActiveDebit"
+				ng-click="assignmentQualifiers.validAssignDebit();">
+                Asignar
+			</button>
+        </div>
+    </div>
+    <!--FIN FILA 2-->
+    
+    <div class="clear"></div>
+    <div class="clear"></div>
+</form>
+    <!--FILA 3-->
+    <div class="divPpal">
+        <button 
+            class="boton floatCenter long inactive" 
+            ng-class="{btnActive: !assignmentQualifiers.accountActiveFormalizationTC || !assignmentQualifiers.accountActiveFormalizationTD}" 
+            ng-disabled="assignmentQualifiers.accountActiveFormalizationTC && assignmentQualifiers.accountActiveFormalizationTD"
+            ng-click="assignmentQualifiers.validAssignFormalization();">
+            Completar Actividad Formalización
+        </button>
+    </div>
+

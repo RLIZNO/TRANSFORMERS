@@ -1,0 +1,140 @@
+<div class="divPpal padding">
+	<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.customerConfirmation.title"></h2>
+</div>
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerConfirmation.titleConfirmation"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 1-->
+<form name="customerConfirmation.formCustomerConfirmation" novalidate role="form">
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerConfirmation.codePerson"></h4>
+		<input type="text" class="inputfield full prepoblado" name="personNumber" ng-model="customerConfirmation.viewModelConfirmation.personNumber" ng-disabled="true" />
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerConfirmation.customerNumber"></h4>
+		<input type="text" class="inputfield full prepoblado" name="customerNumber" ng-model="customerConfirmation.viewModelConfirmation.customerNumber" ng-disabled="true" />
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerConfirmation.cardKey"></h4>
+		<input type="text" class="inputfield full prepoblado" name="cardKey" ng-model="customerConfirmation.viewModelConfirmation.cardKey" ng-disabled="true"  />
+	</div>
+</div>
+<!--FIN FILA 1-->
+
+<div class="clear"></div>
+
+<div class="divPpal border-light-top paddingBottom"></div>
+
+<div class="clear"></div>
+
+<!--FILA 2-->
+<div class="divPpal">
+	<div class="divVeintecinco border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerConfirmation.enabling"></h3>
+	</div>
+	<div class="clear"></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ><input type="checkbox" class="inputfield check" name="achlbtr" ng-model="customerConfirmation.viewModelConfirmation.achlbtr" ng-checked="true"/>{{::i18n.views.customerConfirmation.achlbtr}}</h4>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--FIN FILA 2-->
+
+<div class="clear"></div>
+
+<div class="divPpal border-light-top paddingBottom"></div>
+
+<div class="clear"></div>
+
+<!--FILA 3-->
+<div class="divPpal">
+	<div class="divVeintecinco border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerConfirmation.acceptance"></h3>
+	</div>
+	<div class="clear"></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerConfirmation.codeNumber"></h4>
+		<div class="divCode">
+		<span><img src="img/code.png"/></span>
+		<input 
+		     type="text"
+			 class="prepobladoBlue" 
+			 name="positionCard" 
+			 ng-model="customerConfirmation.viewModelConfirmation.positionCard" 
+			 ng-disabled="true" />
+		<input 
+			 type="password" 
+			 class="prepobladoCode" 
+			 name="positionValue" 
+			 maxlength="4" 
+			 placeholder="XXXX"
+			 ng-model="customerConfirmation.viewModelConfirmation.positionValue" 
+			 ng-disabled="customerConfirmation.cardKeyValid" 
+			 ng-class="{'prepoblado' : customerConfirmation.cardKeyValid}" 
+		 />
+		</div>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto">&nbsp;</h4>
+		<div class="divCodeBoton">
+		<button class="boton" ng-click="customerConfirmation.validationCardKey()" ng-class="{'transparente' : customerConfirmation.cardKeyValid || customerConfirmation.viewModelConfirmation.positionValue === ''}" ng-disabled="customerConfirmation.cardKeyValid || customerConfirmation.viewModelConfirmation.positionValue === ''" ng-bind="::i18n.views.customerConfirmation.validationNumber"></button>
+		</div>
+	</div>
+</div>
+<!--FIN FILA 3-->
+
+<div class="clear"></div>
+
+<!--FILA 4--> 
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<a class="boton pdf botonLink" ng-class="{'disabled' : !customerConfirmation.cardKeyValid}" href="{{customerConfirmation.urlKnowYourClient}}" target="_blank" ng-bind="::i18n.views.customerConfirmation.knowCustomer">  </a>
+	</div>
+</div>
+<!--FIN FILA 4-->
+
+<div class="clear"></div>
+
+<div class="divPpal border-light-top paddingBottom"></div>
+
+<div class="clear"></div>
+
+<!--FILA 5-->
+<div class="divPpal">
+	<div class="divCuarenta border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerConfirmation.cargaOnbseExp"></h3>
+	</div>
+	<div class="clear"></div>
+	
+	<upload-on-base 
+		table-orientation="'left'",
+		i18n="i18n">
+	</upload-on-base>
+
+	<div class="clear"></div>
+	<div class="clear"></div>
+
+	<div class="divPpal" ng-if="customerConfirmation.validButtons">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical"><button  class="boton floatCenter" ng-class="{'disabled' : !customerConfirmation.cardKeyValid}" ng-click="customerConfirmation.finish()" ng-bind="::i18n.views.customerConfirmation.finalize"></button></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<button ng-click="customerConfirmation.creationAccount()"
+			class="boton floatCenter" ng-bind="::i18n.views.customerConfirmation.createSavings"></button></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+	</div>
+	<div class="divPpal" ng-if="!customerConfirmation.validButtons">
+		<div class="divVeintecinco paddingVertical divCenterConfirmation">
+			<button class="boton floatCenter" ng-click="customerConfirmation.creationAccount()" ng-class="{inactive:customerBasicData.customerInvalid || customerBasicData.invalidCountryPassport}" ng-disabled="customerBasicData.customerInvalid || customerBasicData.invalidCountryPassport">
+			{{::i18n.actions.next}}  <span class="glyphicon glyphicon-arrow-right"></span>
+			</button>
+		</div>
+	</div>

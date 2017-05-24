@@ -1,0 +1,84 @@
+<div class="upload-on-base-view">
+	<div class="divPpal padding">
+		<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.uploadOnBase.title"></h2>
+	</div>
+
+	<div class="clear"></div>
+
+	<!--FILA 1-->
+<form name="uploadOnbase.formuploadOnbase" novalidate role="form">
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.uploadOnBase.typeDocument">
+			</h4>
+			<select 
+				class="selectfield full"
+				name="typeIdentification"
+				ng-model="uploadOnbase.viewModeluploadOnbase.typeIdentification"
+				ng-options="typeDocument.id as typeDocument.value for typeDocument in uploadOnbase.typeDocuments | filter: {id: default.TYPE_DOCUMENTS}">				
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.uploadOnBase.numberIdentification"></h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				name="numberIdentification" 
+				ng-model="uploadOnbase.viewModeluploadOnbase.numberIdentification" 
+				ng-class="{ 'hasError': (uploadOnbase.submitted || uploadOnbase.formuploadOnbase.numberIdentification.$touched) && uploadOnbase.formuploadOnbase.numberIdentification.$invalid }"
+				ng-maxlength="20" 
+				ng-required="true" />
+			<p 
+				class="texto messageError" 
+				ng-if="uploadOnbase.formuploadOnbase.numberIdentification.$error.required &&  (uploadOnbase.submitted || uploadOnbase.formuploadOnbase.numberIdentification.$touched)"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">&nbsp;</h4>
+			<button  
+				class="boton floatLeft inactive" 
+				ng-class="{verde: uploadOnbase.viewModeluploadOnbase.numberIdentification}" 
+				ng-disabled="!uploadOnbase.viewModeluploadOnbase.numberIdentification && uploadOnbase.viewModeluploadOnbase.typeIdentification"
+				ng-click="uploadOnbase.validateClient();" ng-bind="::i18n.views.uploadOnBase.botonSearch"></button>
+		</div>
+	</div>
+	<!--FIN FILA 1-->
+
+	<div class="clear"></div>
+
+	<!--FILA 1-->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.uploadOnBase.clientNumber"></h4>
+			<input 
+				type="text" 
+				class="inputfield full prepoblado" 
+				name="clientNumber"
+				ng-model="uploadOnbase.viewModeluploadOnbase.clientNumber"
+				ng-disabled="true"
+				/>
+		</div>
+	</div>
+</form>
+	<!--FIN FILA 1-->
+
+	<div class="clear"></div>
+
+		<upload-on-base 
+			table-orientation="'left'",
+			i18n="i18n">
+		</upload-on-base>
+
+	<div class="clear"></div>
+
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical divCenterOnbase">
+			<button class="boton floatCenter"
+				ng-click="uploadOnbase.modalCancel()" ng-bind="::i18n.actions.cancel">
+			</button>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+	</div>
+</div>

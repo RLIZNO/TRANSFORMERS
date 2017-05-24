@@ -1,0 +1,329 @@
+<!--PASOS-->
+<div class="divPpal padding">
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorGris">
+			<span ng-bind="::i18n.steps.one"></span>
+		</h1>
+	</div>
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorGris">
+			<span ng-bind="::i18n.steps.two"></span>
+		</h1>
+	</div>
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorRojo" ng-bind="::i18n.steps.three">
+		</h1>
+	</div>
+</div>
+<!--FIN PASOS-->
+
+<!--CONTENIDO-->
+<div class="divPpal padding">
+	<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.customerForeignCurrency.title">
+	</h2>
+</div>
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerForeignCurrency.titlePEP"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 1-->
+<form name="customerForeignCurrency.formCustomerForeignCurrency" novalidate role="form">
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.firstQuestion">
+		</h4>
+		<select 
+			class="selectfield full" 
+			name="interviewPEP" 
+			ng-model="customerForeignCurrency.viewModelForeignCurrency.interviewPEP"
+			ng-class="{ 'hasError': (customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.interviewPEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.interviewPEP.$invalid }"
+			ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo" 
+			required>
+		</select>
+		<p 
+			class="texto messageError" 
+			ng-if="(customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.interviewPEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.interviewPEP.$error.required"
+			ng-bind="::i18n.general.requiredField">
+		</p>
+	</div>
+</div>
+<!--FIN FILA 1-->
+
+<div class="clear"></div>
+
+<!--FILA 3-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind-html="i18n.views.customerForeignCurrency.secondQuestion">
+		</h4>
+		<select 
+			class="selectfield full" 
+			name="relationshipPEP" 
+			ng-model="customerForeignCurrency.viewModelForeignCurrency.relationshipPEP"
+			ng-class="{ 'hasError': (customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.relationshipPEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.relationshipPEP.$invalid }"
+			ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo" 
+			required>
+		</select>
+		<p class="texto messageError" ng-if="(customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.relationshipPEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.relationshipPEP.$error.required"
+		ng-bind="::i18n.general.requiredField">
+		</p>
+	</div>
+	<div ng-if="customerForeignCurrency.viewModelForeignCurrency.relationshipPEP == customerForeignCurrency.optionsYesNo[1].id">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">
+				{{::i18n.views.customerForeignCurrency.relationshipType}}
+				<br /><br /><br />
+			</h4>
+			<select 
+				class="selectfield full" 
+				name="typeRelationship" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.typeRelationship" 
+				ng-class="{ 'hasError': (customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.typeRelationship.$touched) && customerForeignCurrency.formCustomerForeignCurrency.typeRelationship.$invalid }"
+				ng-options="relationship.id as relationship.value for relationship in customerForeignCurrency.kinships" 
+				required>
+				<option></option>
+			</select>
+			<p 
+				class="texto messageError" 
+				ng-if="(customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.typeRelationship.$touched) && customerForeignCurrency.formCustomerForeignCurrency.typeRelationship.$error.required"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">
+				{{::i18n.views.customerForeignCurrency.completeName}}
+				<br /><br /><br />
+			</h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				name="namePEP" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.namePEP" 
+				ng-class="{ 'hasError': (customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.namePEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.namePEP.$invalid }" 
+				required />
+			<p 
+				class="texto messageError" 
+				ng-if="(customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.namePEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.namePEP.$error.required"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+			<p 
+				class="texto messageError" 
+				ng-if="customerForeignCurrency.formCustomerForeignCurrency.namePEP.$error.maxlength"
+				ng-bind="::i18n.general.maxLength">
+			</p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">
+				{{::i18n.views.customerForeignCurrency.positionPEP}}
+				<br /><br /><br />
+			</h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				name="cargaPEP" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.cargaPEP" 
+				ng-class="{ 'hasError': (customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.cargaPEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.cargaPEP.$invalid }" 
+				required />
+			<p 
+				class="texto messageError" 
+				ng-if="(customerForeignCurrency.submitted || customerForeignCurrency.formCustomerForeignCurrency.cargaPEP.$touched) && customerForeignCurrency.formCustomerForeignCurrency.cargaPEP.$error.required"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+			<p 
+				class="texto messageError" 
+				ng-if="customerForeignCurrency.formCustomerForeignCurrency.cargaPEP.$error.maxlength"
+				ng-bind="::i18n.general.maxLength">
+			</p>
+		</div>
+	</div>
+</div>
+<!--FIN FILA 3-->
+
+<div class="clear"></div>
+<div class="divPpal border-light-top paddingBottom"></div>
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divCuarenta floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerForeignCurrency.titleForeignCurrency">
+		</h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 5-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.thirdQuestion">
+		</h4>
+		<select 
+			class="selectfield full" 
+			ng-model="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency"
+			ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+		</select>
+	</div>
+</div>
+<!--FIN FILA 5-->
+
+<div class="clear"></div>
+
+<!--FILA 6-->
+<div ng-if="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency == customerForeignCurrency.optionsYesNo[1].id">
+  <div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.imports">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.import"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.exports">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.export"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.investments">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.investments"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.remittances">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.remittances"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+	</div>
+	<!--FIN FILA 6-->
+
+	<div class="clear"></div>
+
+	<!--FILA 7-->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.payServices">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.services"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.payLoan">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.loans"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.foreignExchange">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.foreignExchange"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+	</div>
+	<!--FIN FILA 7-->
+
+	<div class="clear"></div>
+
+	<!--FILA 8-->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.others">
+			</h4>
+			<select 
+				class="selectfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.others"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="true"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-options="optionYn.id as optionYn.value for optionYn in customerForeignCurrency.optionsYesNo">
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerForeignCurrency.what">
+			</h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				ng-model="customerForeignCurrency.viewModelForeignCurrency.optionForeignCurrency.othersDetail"
+				ng-disabled="customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id"
+				ng-required="false"
+				ng-class="{'block' : customerForeignCurrency.viewModelForeignCurrency.tranInForeignCurrency !== customerForeignCurrency.optionsYesNo[1].id}"
+				ng-maxlength="30"
+				maxlength="30"/>
+		</div>
+	</div>
+</div>
+</form>
+<!--FIN FILA 8-->
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divQuince floatLeft marginLeft paddingVertical"></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button class="boton floatCenter" ng-click="customerForeignCurrency.modalPrevious()">
+			<span class="glyphicon glyphicon-arrow-left"></span> {{::i18n.actions.previous}}
+		</button>
+	</div>
+	<div class="divVeinte floatLeft marginLeft paddingVertical">
+		<button class="boton floatCenter" ng-click="customerForeignCurrency.modalCancel()" ng-bind="::i18n.actions.cancel">
+		</button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button class="boton floatCenter" ng-click="customerForeignCurrency.validationData();">
+			{{::i18n.actions.next}}  <span class="glyphicon glyphicon-arrow-right"></span>
+		</button>
+	</div>
+	<div class="divQuince floatLeft marginLeft paddingVertical"></div>
+</div>
+<!--FIN CONTENIDO-->

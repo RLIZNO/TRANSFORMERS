@@ -1,0 +1,23 @@
+// bower:scss
+// endbower
+
+// include general sass
+@import "general/_variables.scss";
+@import "general/_fonts.scss";
+@import "general/_normalize.scss";
+@import "general/_generales.scss";
+
+// include features sass
+
+/* inject:imports */
+
+@import "components/loading/_loading.scss";
+
+@import "features/feature_example/_feature_example.scss";
+
+@import "features/feature_example/_feature_validationDocumentView.scss";
+
+/* endinject */
+
+// include mediaquerys
+@import "general/_mediaquerys.scss"; 

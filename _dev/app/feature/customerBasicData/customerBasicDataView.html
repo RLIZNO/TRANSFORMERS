@@ -1,0 +1,360 @@
+<!--PASOS-->
+<div class="divPpal padding">
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorRojo" ng-bind="::i18n.steps.one"></h1>
+	</div>
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorGris"><span ng-bind="::i18n.steps.two"></span></h1>
+	</div>
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorGris"><span ng-bind="::i18n.steps.three"></span></h1>
+	</div>
+</div>
+<!--FIN PASOS-->
+
+<!--CONTENIDO-->
+<div class="divPpal padding">
+	<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.customerBasic.title"></h2>
+</div>
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerBasic.titleDataBasic"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 1-->
+<form name="customerBasicData.formCustomerBasicData" novalidate role="form">
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelFirtsName"></h4>
+			<input type="text" class="inputfield full prepoblado" name="firtsName" ng-model="customerBasicData.viewModelBasicData.firtsName" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.firtsName.$touched) && customerBasicData.formCustomerBasicData.firtsName.$invalid }" 
+			ng-maxlength="50" ng-disabled="true" required/>
+			<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.firtsName.$touched) && customerBasicData.formCustomerBasicData.firtsName.$error.required" ng-bind="::i18n.general.requiredField"></p>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.firtsName.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelSecundName"></h4>
+			<input type="text" class="inputfield full prepoblado" name="secondName" ng-model="customerBasicData.viewModelBasicData.secondName" ng-maxlength="50" ng-disabled="true" />
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.secondName.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelSurName"> </h4>
+			<input type="text" class="inputfield full prepoblado" name="surname" ng-model="customerBasicData.viewModelBasicData.surname" ng-class=" { 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.surname.$touched) && customerBasicData.formCustomerBasicData.surname.$invalid} " 
+			ng-maxlength="50" ng-disabled="true" required/>
+			<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.surname.$touched) && customerBasicData.formCustomerBasicData.surname.$error.required" ng-bind="::i18n.general.requiredField"></p>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.surname.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelSecundSurName"></h4>
+			<input type="text" class="inputfield full prepoblado" name="secondSurname" ng-model="customerBasicData.viewModelBasicData.secondSurname" ng-maxlength="50" ng-disabled="true" />
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.secondSurname.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		</div>
+	</div>
+
+<!--FIN FILA 1-->
+
+<div class="clear"></div>
+
+<!--FILA 2-->
+
+	<div class="divPpal">
+		<!--
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">Sexo</h4>
+			<select class="selectfield full prepoblado" name="sex" ng-model="customerBasicData.viewModelBasicData.sex" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.sex.$touched) && customerBasicData.formCustomerBasicData.sex.$invalid }" ng-options="gender.id as gender.value for gender in customerBasicData.genders" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.sex.$touched) && customerBasicData.formCustomerBasicData.sex.$error.required">Este campo es obligatorio</p>
+		</div>
+		-->
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelSex"></h4>
+			<input type="text" class="selectfield full prepoblado" name="sex" ng-model="customerBasicData.viewModelBasicData.sex" ng-disabled="true" />
+		</div>		
+
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelBirthDate"></h4>
+			<input type="text" class="inputfield full prepoblado-calendar" name="birthDate" ng-model="customerBasicData.viewModelBasicData.birthDate" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.birthDate.$touched) && customerBasicData.formCustomerBasicData.birthDate.$invalid }" 
+			required ng-disabled="true"/>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.birthDate.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.birthDate.$touched)" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelCountryBirth"></h4>
+			<select class="selectfield full prepoblado" name="countryBirth" ng-model="customerBasicData.viewModelBasicData.countryBirth" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.countryBirth.$touched) && customerBasicData.formCustomerBasicData.countryBirth.$invalid }" ng-options="country.id as country.value for country in customerBasicData.countries" ng-change="customerBasicData.validFatca();customerBasicData.getCitiesBirth(customerBasicData.viewModelBasicData.countryBirth)" ng-disabled="true" required >
+				<option></option></select>
+				<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.countryBirth.$touched) && customerBasicData.formCustomerBasicData.countryBirth.$error.required" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelBirthCity"></h4>
+			<select class="selectfield full" name="cityBirth" ng-model="customerBasicData.viewModelBasicData.cityBirth" ng-options="cityBirth.id as cityBirth.value for cityBirth in customerBasicData.citiesBirth" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.cityBirth.$touched) && customerBasicData.formCustomerBasicData.cityBirth.$invalid, 'prepoblado': !customerBasicData.cityBirthUndefined }" ng-disabled="!customerBasicData.cityBirthUndefined" required>
+				<option></option></select>
+				<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.cityBirth.$touched) && customerBasicData.formCustomerBasicData.cityBirth.$error.required" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+	</div>
+
+<!--FIN FILA 2-->
+
+<div class="clear"></div>
+
+<!--FILA 3-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelCountryOfResidence"></h4>
+		<select class="selectfield full" name="countryResidence" ng-model="customerBasicData.viewModelBasicData.countryResidence" ng-options="countryResidence.id as countryResidence.value for countryResidence in customerBasicData.countries" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.countryResidence.$touched) && customerBasicData.formCustomerBasicData.countryResidence.$invalid}" ng-change="customerBasicData.validFatca()" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.countryResidence.$touched) && customerBasicData.formCustomerBasicData.countryResidence.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelNationality"></h4>
+		<select class="selectfield full prepoblado" name="nationality" ng-model="customerBasicData.viewModelBasicData.nationality"
+			ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.nationality.$touched) && customerBasicData.formCustomerBasicData.nationality.$invalid }"
+			ng-options="nationality.id as nationality.value for nationality in customerBasicData.nationalities"
+			ng-change="customerBasicData.validFatca()" ng-disabled="true" required>
+			<option></option></select>
+		<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.nationality.$touched) && customerBasicData.formCustomerBasicData.nationality.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelNationalitySecund"></h4>
+		<select class="selectfield full" name="secondNationality" ng-model="customerBasicData.viewModelBasicData.secondNationality"
+			ng-options="nationality.id as nationality.value for nationality in customerBasicData.nationalities | filter : { id: '!' + customerBasicData.viewModelBasicData.nationality }" ng-change="customerBasicData.validFatca();customerBasicData.matchCountryPassport()"><option></option></select>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical" ng-if="customerBasicData.viewModelBasicData.secondNationality">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelThirNationality"></h4>
+		<select class="selectfield full" name="thirdNationality" ng-model="customerBasicData.viewModelBasicData.thirdNationality"
+			ng-options="nationality.id as nationality.value for nationality in customerBasicData.nationalities | filter : { id: '!' + customerBasicData.viewModelBasicData.nationality } | filter : { id: '!' + customerBasicData.viewModelBasicData.secondNationality }" ng-change="customerBasicData.validFatca();customerBasicData.matchCountryPassport()"><option></option></select>
+	</div>
+</div>
+<!--FIN FILA 3-->
+
+<div class="clear"></div>
+
+<!--FILA 4-->
+<div class="divPpal" ng-if="customerBasicData.viewModelBasicData.secondNationality">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelCountryOfPassport"></h4>
+		<select class="selectfield full" name="countryPassport" ng-model="customerBasicData.viewModelBasicData.countryPassport" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.countryPassport.$touched) && customerBasicData.formCustomerBasicData.countryPassport.$invalid }" ng-options="country.id as country.value for country in customerBasicData.countries" ng-change="customerBasicData.validFatca();customerBasicData.matchCountryPassport()" required><option></option></select>
+		<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.countryPassport.$touched) && customerBasicData.formCustomerBasicData.countryPassport.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelNumeroPassport"></h4>
+		<input type="text" class="inputfield full" name="passport" ng-model="customerBasicData.viewModelBasicData.passport" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.passport.$touched) && customerBasicData.formCustomerBasicData.passport.$invalid }" ng-maxlength="20" required />
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.passport.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.passport.$touched) && customerBasicData.formCustomerBasicData.passport.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelExpirationDatePassport"></h4>
+		<input type="text" class="inputfield full calendar" name="datePassport" uib-datepicker-popup="{{customerBasicData.format}}" ng-model="customerBasicData.viewModelBasicData.datePassport"
+			is-open="customerBasicData.popupDatePassport.opened" datepicker-options="customerBasicData.dateOptions" readonly="readonly"
+			current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-click="customerBasicData.openDatePassport()" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.datePassport.$touched) && customerBasicData.formCustomerBasicData.datePassport.$invalid }" required />
+		<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.datePassport.$touched) && customerBasicData.formCustomerBasicData.datePassport.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+<!--FIN FILA 4-->
+
+<div class="clear"></div>
+
+<!--FILA 5-->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelProfetion"></h4>
+			<select class="selectfield full" name="profession" ng-model="customerBasicData.viewModelBasicData.profession" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.profession.$touched) && customerBasicData.formCustomerBasicData.profession.$invalid }" ng-options="profession.id as profession.value for profession in customerBasicData.professions" ng-change="customerBasicData.completeAcademicLevel()" required>
+				<option></option></select>
+				<p class="texto messageError" ng-if="(customerBasicData.submitted || customerBasicData.formCustomerBasicData.profession.$touched) && customerBasicData.formCustomerBasicData.profession.$error.required" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelAcademicLevel"></h4>
+			<input type="text" class="inputfield full prepoblado" name="academicLevel" ng-model="customerBasicData.viewModelBasicData.academicLevel" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.academicLevel.$touched) && customerBasicData.formCustomerBasicData.academicLevel.$invalid }"
+			 ng-maxlength="30" ng-disabled="true" required />
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.academicLevel.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.academicLevel.$touched)" ng-bind="::i18n.general.requiredField"></p>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.academicLevel.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelCivilStatus"></h4>
+			<select class="selectfield full"  name="civilStatus" ng-model="customerBasicData.viewModelBasicData.civilStatus" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.civilStatus.$touched) && customerBasicData.formCustomerBasicData.civilStatus.$invalid }" ng-options="matiralStatu.id as matiralStatu.value for matiralStatu in customerBasicData.maritalStatus" required>
+				<option></option></select>
+				<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.civilStatus.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.civilStatus.$touched)" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+	</div>
+<!--FIN FILA 5-->
+
+<div class="clear"></div>
+
+<div class="divPpal border-light-top paddingBottom"></div>
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerBasic.titleContac"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 6-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelTelHouse"></h4>
+		
+		<input 
+			type="number" 
+			class="inputfield full" 
+			name="landLine" 
+			ng-model="customerBasicData.viewModelBasicData.landLine" 
+			ng-class="{'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.landLine.$touched) && customerBasicData.formCustomerBasicData.landLine.$invalid}"
+			ng-maxlength="10"
+			ng-minlength="10"
+			required />
+
+		 <p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.landLine.$error.number" ng-bind="::i18n.general.errorValidNumeros"></p>
+		 <p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.landLine.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.landLine.$touched)" ng-bind="::i18n.general.requiredField"></p>
+		 <p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.landLine.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		 <p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.landLine.$error.minlength" ng-bind="::i18n.general.errorValid10Digi"></p>
+		 
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelTelMovil"></h4>
+		
+		<input 
+			type="number" 
+			class="inputfield full" 
+			name="mobilePhone" 
+			ng-model="customerBasicData.viewModelBasicData.mobilePhone" 
+			ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.mobilePhone.$touched) && customerBasicData.formCustomerBasicData.mobilePhone.$invalid }"
+			ng-maxlength="10"/>
+
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.mobilePhone.$error.number" ng-bind="::i18n.general.errorValidNumeros"></p>
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.mobilePhone.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelEmail"></h4>
+		<input type="email" class="inputfield full" name="email" ng-model="customerBasicData.viewModelBasicData.email" ng-class="{ 'hasError': customerBasicData.formCustomerBasicData.email.$touched && customerBasicData.formCustomerBasicData.email.$invalid }" 
+		ng-maxlength="50"/>
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.email.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.email.$error.email" ng-bind="::i18n.general.errorEmail"></p>
+	</div>
+	<br />
+	<div class="divVeintecinco marginLeft floatLeft paddingVertical">
+	<h4 class="texto">
+		<li>
+			<input 
+				type="checkbox" 
+				name="noEmail"
+				ng-model="customerBasicData.viewModelBasicData.noEmail"
+				ng-class="{ 'hasError': customerBasicData.formCustomerBasicData.noEmail.$touched && customerBasicData.formCustomerBasicData.noEmail.$invalid }"
+				ng-required="customerBasicData.viewModelBasicData.email==='' || customerBasicData.viewModelBasicData.email===undefined"
+			/>
+			<span class="inputfalse"></span>
+			<span class="label-control-list" ng-bind="::i18n.views.customerBasic.labelNoEmail"></span>
+		</li>
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.noEmail.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.noEmail.$touched)" ng-bind="::i18n.general.requiredField"></p>	
+	</h4>		
+</div>
+</div>
+<!--FIN FILA 6-->
+
+<div class="clear"></div>
+
+<!--FILA 7-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelStreet"></h4>
+		<input type="text" class="inputfield full" name="street" ng-model="customerBasicData.viewModelBasicData.street" ng-class="{ 'hasError':  (customerBasicData.submitted || customerBasicData.formCustomerBasicData.street.$touched) && customerBasicData.formCustomerBasicData.street.$invalid }"
+		ng-maxlength="30" required />
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.street.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.street.$error.required &&  (customerBasicData.submitted || customerBasicData.formCustomerBasicData.street.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelresidenceNumber"></h4>
+		<input type="number" class="inputfield full" name="residenceNumber" ng-model="customerBasicData.viewModelBasicData.residenceNumber" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceNumber.$touched) && customerBasicData.formCustomerBasicData.residenceNumber.$invalid }"
+		 ng-maxlength="6" required />
+		 <p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.residenceNumber.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		 <p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.residenceNumber.$error.number" ng-bind="::i18n.general.errorValidNumeros"></p>
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.residenceNumber.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceNumber.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelCountry"></h4>
+		<select class="selectfield full prepoblado"  name="residenceCountry" ng-model="customerBasicData.viewModelBasicData.residenceCountry" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceCountry.$touched) && customerBasicData.formCustomerBasicData.residenceCountry.$invalid }" ng-options="residenceCountry.id as residenceCountry.value for residenceCountry in customerBasicData.countries | filter: {id: customerBasicData.countryRd}" ng-disabled="true" ng-change="customerBasicData.validFatca();customerBasicData.getCitiesResidences(customerBasicData.viewModelBasicData.residenceCountry)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.residenceCountry.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceCountry.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelProvincia"></h4>
+		<select class="selectfield full" name="residenceProvince" ng-model="customerBasicData.viewModelBasicData.residenceProvince" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceProvince.$touched) && customerBasicData.formCustomerBasicData.residenceProvince.$invalid }" ng-options="cityResidence.id as cityResidence.value for cityResidence in customerBasicData.citiesResidences" ng-change="customerBasicData.getMunicipalities(customerBasicData.viewModelBasicData.residenceProvince)"  required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.residenceProvince.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceProvince.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+<!--FIN FILA 7-->
+
+<div class="clear"></div>
+
+<!--FILA 8-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelMunicipality"></h4>
+		<select class="selectfield full" name="residenceMunicipality" ng-model="customerBasicData.viewModelBasicData.residenceMunicipality" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceMunicipality.$touched) && customerBasicData.formCustomerBasicData.residenceMunicipality.$invalid }" ng-options="municipality.id as municipality.value for municipality in customerBasicData.municipalities" ng-change="customerBasicData.getSectors(customerBasicData.viewModelBasicData.residenceMunicipality)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.residenceMunicipality.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.residenceMunicipality.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelSection"></h4>
+		<select class="selectfield full" name="section" ng-model="customerBasicData.viewModelBasicData.section" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.section.$touched) && customerBasicData.formCustomerBasicData.section.$invalid }" ng-options="sector.id as sector.value for sector in customerBasicData.sectors" ng-change="customerBasicData.getPlaces(customerBasicData.viewModelBasicData.section)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.section.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.section.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelSpot"></h4>
+		<select class="selectfield full" name="place" ng-model="customerBasicData.viewModelBasicData.place" ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.place.$touched) && customerBasicData.formCustomerBasicData.place.$invalid }" ng-options="place.id as place.value for place in customerBasicData.places" required >
+			<option></option></select>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.place.$error.required && (customerBasicData.submitted || customerBasicData.formCustomerBasicData.place.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelBuilding"></h4>
+		<input type="text" class="inputfield full" name="building" ng-model="customerBasicData.viewModelBasicData.building" ng-class="{ 'hasError': customerBasicData.formCustomerBasicData.building.$touched && customerBasicData.formCustomerBasicData.building.$invalid }"
+		ng-maxlength="100" />
+		<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.building.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+	</div>
+</div>
+<!--FIN FILA 8-->
+
+<div class="clear"></div>
+
+<!--FILA 9-->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerBasic.labelApartament"></h4>
+			<input 
+			type="text" 
+			class="inputfield full" 
+			name="apartament" 
+			ng-model="customerBasicData.viewModelBasicData.apartament" 
+			ng-class="{ 'hasError': (customerBasicData.submitted || customerBasicData.formCustomerBasicData.apartament.$touched) && customerBasicData.formCustomerBasicData.apartament.$invalid }"
+			ng-maxlength="6" />
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.apartament.$error.number" ng-bind="::i18n.general.errorValidNumeros"></p>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.apartament.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+			<p class="texto messageError" ng-if="customerBasicData.formCustomerBasicData.apartament.$error.apartament" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+	</div>
+</form>
+<!--FIN FILA 9-->
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button ng-click="customerBasicData.modalCancel()" class="boton floatCenter"  ng-bind="::i18n.actions.cancel"></button></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button class="boton floatCenter" ng-click="customerBasicData.saveBasicData()" ng-class="{inactive:customerBasicData.customerInvalid || customerBasicData.invalidCountryPassport}" ng-disabled="customerBasicData.customerInvalid || customerBasicData.invalidCountryPassport">
+		{{::i18n.actions.next}}  <span class="glyphicon glyphicon-arrow-right"></span>
+		</button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+</div>
+<!--FIN CONTENIDO-->

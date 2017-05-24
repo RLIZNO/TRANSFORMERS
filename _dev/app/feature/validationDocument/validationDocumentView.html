@@ -1,0 +1,142 @@
+<div class="divPpal padding">
+	<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.validationDocument.title"></h2>
+</div>
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.validationDocument.titleValidClient"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 1-->
+<form name="validationDocument.formValidationDocument" novalidate role="form">
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.validationDocument.labelTypeDocument"></h4>
+			<select 
+				class="selectfield full" 
+				name="typeIdentification"
+				ng-model="validationDocument.viewModelvalidationDocument.typeIdentification" 
+				ng-options="typeDocument.id as typeDocument.value for typeDocument in validationDocument.typeDocuments | filter: {id: default.TYPE_DOCUMENTS}">
+        </select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.validationDocument.labelNumberIdentification"></h4>
+			<input 
+				type="text" 
+				class="inputfield full" 
+				name="numberIdentification" 
+				ng-model="validationDocument.viewModelvalidationDocument.numberIdentification" 
+				ng-class="{ 'hasError': (validationDocument.submitted || validationDocument.formValidationDocument.numberIdentification.$touched) && validationDocument.formValidationDocument.numberIdentification.$invalid }"
+				ng-maxlength="20" 
+				ng-required="true" 
+			/>
+			<p 
+				class="texto messageError" 
+				ng-if="validationDocument.formValidationDocument.numberIdentification.$error.required &&  (validationDocument.submitted || validationDocument.formValidationDocument.numberIdentification.$touched)"
+				ng-bind="::i18n.general.requiredField">
+			</p>
+			<p 
+				class="texto messageError"
+				ng-if="validationDocument.formValidationDocument.numberIdentification.$error.maxlength"
+				ng-bind="::i18n.general.maxLength">
+			</p>
+		</div>
+
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">&nbsp;</h4>
+			<button
+				type="submit" 
+				class="boton floatLeft inactive" 
+				ng-class="{verde: validationDocument.viewModelvalidationDocument.numberIdentification }" 
+				ng-disabled="!validationDocument.viewModelvalidationDocument.numberIdentification && validationDocument.viewModelvalidationDocument.typeIdentification"
+				ng-click="validationDocument.getValidation();"
+				ng-bind="::i18n.actions.send">
+			</button>
+		</div>
+	</div>
+</form>
+
+<!--FIN FILA 1-->
+<div class="clear"></div>
+<div class="divPpal border-light-top paddingBottom"></div>
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divCuarenta floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.validationDocument.titleDebugChecklists"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 3-->
+<div class="divPpal">
+	<div class="divVeintecinco marginLeft paddingVertical">
+		<h4 class="texto">
+			<a href="{{validationDocument.urlXml}}" target="_blank" ng-if="validationDocument.urlXml !== null" ng-bind="::i18n.views.validationDocument.labelViewBureau">
+			</a>
+			<a ng-if="validationDocument.urlXml === null" ng-bind="::i18n.views.validationDocument.labelViewBureau">
+			</a>
+		</h4>
+	</div>
+	<ul class="contenCheckbox">
+		<div class="divVeintecinco marginLeft paddingVertical">
+			<h4 class="texto">
+				<div class="checkboxMark" ng-class="{'unCheckbox': validationDocument.findControlListReport}">
+					<li>
+						<input 
+							type="checkbox" 
+							class="inputradio" 
+							ng-disabled="true"
+							ng-checked="validationDocument.getControlList" 
+						/>
+						<span class="inputfalse"></span>
+					</li>
+				</div>
+				<label class="labelCheck" ng-bind="::i18n.views.validationDocument.labelEvaluationControl"></label>
+			</h4>
+		</div>
+		<div class="divVeintecinco marginLeft paddingVertical">
+			<h4 class="texto">
+				<div class="checkboxMark" ng-class="{'unCheckbox': validationDocument.findJudicialEvaluation}">
+					<li>
+						<input 
+							type="checkbox" 
+							class="inputradio" 
+							ng-disabled="true" 
+							ng-checked="validationDocument.getBureau" 
+						/>
+						<span class="inputfalse"></span>
+					</li>
+				</div>
+				<label class="labelCheck" ng-bind="::i18n.views.validationDocument.labelEvaluationJudicial"></label>
+			</h4>
+		</div>
+	</ul>
+</div> 
+<!--FIN FILA 3-->
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button ng-click="validationDocument.modalCancel()" class="boton floatCenter" ng-bind="::i18n.actions.cancel">
+		</button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button 
+			class="boton floatCenter inactive"
+			ng-class="{'active': validationDocument.clientCanContinue}" 
+			ng-click="validationDocument.validationData()"
+			ng-disabled="!validationDocument.clientCanContinue">
+			{{::i18n.actions.next}}  <span class="glyphicon glyphicon-arrow-right"></span>
+		</button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical"></div>
+</div>

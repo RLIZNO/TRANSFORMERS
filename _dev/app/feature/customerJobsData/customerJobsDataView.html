@@ -1,0 +1,337 @@
+<!--PASOS-->
+<div class="divPpal padding">
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorGris"><span ng-bind="::i18n.steps.one"></span></h1>
+	</div>
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorRojo" ng-bind="::i18n.steps.two"></h1>
+	</div>
+	<div class="divTreintaTres floatLeft border-rojo-middle">
+		<h1 class="texto divDoce floatCenter alignCenter ColorGris"><span ng-bind="::i18n.steps.three"></span></h1>
+	</div>
+</div>
+<!--FIN PASOS-->
+
+<!--CONTENIDO-->
+<div class="divPpal padding">
+	<h2 class="texto border-blue-bottom" ng-bind="::i18n.views.customerJobsData.title"></h2>
+</div>
+
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft border-bigradius-side ColorGrisLight marginLeft padding">
+		<h3 class="texto" ng-bind="::i18n.views.customerJobsData.dataJobs"></h3>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--FILA 1-->
+<form name="customerJobsData.formCustomerJobsData" novalidate role="form">
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelOcupation"></h4>
+		<select class="selectfield full" 
+				name="ocupation" ng-model="customerJobsData.viewModelJobsData.ocupation"
+				ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.ocupation.$touched) && customerJobsData.formCustomerJobsData.ocupation.$invalid }" 
+				ng-options="activities.id as activities.value for activities in customerJobsData.activitiesValue"
+				ng-change="customerJobsData.validations()" 
+				required>
+			<option></option>
+		</select>
+		<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.ocupation.$touched) && customerJobsData.formCustomerJobsData.ocupation.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelCompanyName"></h4>
+		<input type="text" class="inputfield full" name="companyName" ng-model="customerJobsData.viewModelJobsData.companyName" ng-class="{ 'hasError':  (customerJobsData.submitted || customerJobsData.formCustomerJobsData.companyName.$touched) && customerJobsData.formCustomerJobsData.companyName.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidCompanyName }" 
+		ng-maxlength="100" ng-disabled="customerJobsData.validJobsData.textInvalidCompanyName" required />
+		<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.companyName.$error.required &&  (customerJobsData.submitted || customerJobsData.formCustomerJobsData.companyName.$touched)" ng-bind="::i18n.general.requiredField"></p>
+		<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.companyName.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelCarga"></h4>
+		<select class="selectfield full" name="carga" ng-model="customerJobsData.viewModelJobsData.carga" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.carga.$touched) && customerJobsData.formCustomerJobsData.carga.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidCarga }"
+		 ng-options="jobs.id as jobs.value for jobs in customerJobsData.jobValue" ng-disabled="customerJobsData.validJobsData.textInvalidCarga" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.carga.$touched) && customerJobsData.formCustomerJobsData.carga.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelCalenderWork"></h4>
+		<input type="text" class="inputfield full calendar" name="calenderWork" uib-datepicker-popup="{{customerJobsData.format}}" ng-model="customerJobsData.viewModelJobsData.calenderWork"
+			is-open="customerJobsData.popupDateHired.opened" datepicker-options="customerJobsData.dateOptions" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.calenderWork.$touched) && customerJobsData.formCustomerJobsData.calenderWork.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidcalenderWork }" readonly="readonly"
+			current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" ng-click="customerJobsData.openDateHired()" ng-disabled="customerJobsData.validJobsData.textInvalidcalenderWork" required/>
+			<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.calenderWork.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.calenderWork.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+<!--FIN FILA 1-->
+
+<div class="clear"></div>
+
+<!--FILA 2-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelstreet"></h4>
+		<input type="text" class="inputfield full" name="street" ng-model="customerJobsData.viewModelJobsData.street" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.street.$touched) && customerJobsData.formCustomerJobsData.street.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidstreet }"
+		ng-maxlength="30" ng-disabled="customerJobsData.validJobsData.textInvalidstreet" required />
+		<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.street.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.street.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.street.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelNumberjob"></h4>
+		<input type="number" class="inputfield full" name="numberJob" ng-model="customerJobsData.viewModelJobsData.numberJob" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.numberJob.$touched) && customerJobsData.formCustomerJobsData.numberJob.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidnumber }"
+		 ng-maxlength="6" ng-disabled="customerJobsData.validJobsData.textInvalidnumber" required />
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.numberJob.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.numberJob.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.numberJob.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelCountry"></h4>
+		<select class="selectfield full" name="country" ng-model="customerJobsData.viewModelJobsData.country" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.country.$touched) && customerJobsData.formCustomerJobsData.country.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidcountry }"
+		ng-options="country.id as country.value for country in customerJobsData.countries" ng-disabled="customerJobsData.validJobsData.textInvalidcountry" ng-change="customerJobsData.getCitiesJob(customerJobsData.viewModelJobsData.country)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.country.$touched) && customerJobsData.formCustomerJobsData.country.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelprovince"></h4>
+		<select class="selectfield full" name="province" ng-model="customerJobsData.viewModelJobsData.province" ng-disabled="customerJobsData.validJobsData.textInvalidprovince" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.province.$touched) && customerJobsData.formCustomerJobsData.province.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidprovince }" ng-options="cityJob.id as cityJob.value for cityJob in customerJobsData.citiesJob" ng-change="customerJobsData.getMunicipalitiesJob(customerJobsData.viewModelJobsData.province)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.province.$touched) && customerJobsData.formCustomerJobsData.province.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+<!--FIN FILA 2-->
+
+<div class="clear"></div>
+
+<!--FILA 3-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelMunicipality"></h4>
+		<select class="selectfield full" name="municipality" ng-model="customerJobsData.viewModelJobsData.municipality" ng-disabled="customerJobsData.validJobsData.textInvalidmunicipality" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.municipality.$touched) && customerJobsData.formCustomerJobsData.municipality.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidmunicipality }" ng-options="municipalityJob.id as municipalityJob.value for municipalityJob in customerJobsData.municipalitiesJob" ng-change="customerJobsData.getSectorsJob(customerJobsData.viewModelJobsData.municipality)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.municipality.$touched) && customerJobsData.formCustomerJobsData.municipality.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto"  ng-bind="::i18n.views.customerJobsData.labelSection"></h4>
+		<select class="selectfield full" name="section" ng-model="customerJobsData.viewModelJobsData.section"  ng-disabled="customerJobsData.validJobsData.textInvalidsection" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.section.$touched) && customerJobsData.formCustomerJobsData.section.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidsection }" ng-options="sectorJob.id as sectorJob.value for sectorJob in customerJobsData.sectorsJob" ng-change="customerJobsData.getPlacesJob(customerJobsData.viewModelJobsData.section)" required><option></option></select>
+		<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.section.$touched) && customerJobsData.formCustomerJobsData.section.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelPlace"></h4>
+		<select class="selectfield full" name="place" ng-model="customerJobsData.viewModelJobsData.place" ng-disabled="customerJobsData.validJobsData.textInvalidplace" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.place.$touched) && customerJobsData.formCustomerJobsData.place.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidplace }"
+		 ng-options="placeJob.id as placeJob.value for placeJob in customerJobsData.placesJob" required ><option></option></select>
+		 <p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.place.$touched) && customerJobsData.formCustomerJobsData.place.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelbusinessPhone"></h4>
+		<input type="number" class="inputfield full"  name="businessPhone" ng-model="customerJobsData.viewModelJobsData.businessPhone" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.businessPhone.$touched) && customerJobsData.formCustomerJobsData.businessPhone.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidlandline }"
+		 ng-maxlength="10" ng-minlength="10" ng-disabled="customerJobsData.validJobsData.textInvalidlandline" required />
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.businessPhone.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.businessPhone.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.businessPhone.$touched)" ng-bind="::i18n.general.requiredField"></p>
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.businessPhone.$error.number" ng-bind="::i18n.general.errorValidNumeros"></p>
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.businessPhone.$error.minlength" ng-bind="::i18n.general.errorValid10Digi"></p>
+	</div>
+</div>
+<!--FIN FILA 3-->
+
+<div class="clear"></div>
+
+<!--FILA 5-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelIncomeType"></h4>
+		<select class="selectfield full" name="incomeType" ng-model="customerJobsData.viewModelJobsData.incomeType" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.incomeType.$touched) && customerJobsData.formCustomerJobsData.incomeType.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidIncome }"
+		ng-options="typeIncome.id as typeIncome.value for typeIncome in customerJobsData.income"  ng-disabled="customerJobsData.validJobsData.textInvalidIncome" ng-change="customerJobsData.nameIncomeType(customerJobsData.viewModelJobsData.incomeType)" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.incomeType.$touched) && customerJobsData.formCustomerJobsData.incomeType.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+	<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelIncomRD"></h4>
+	<input type="number" class="inputfield full" name="incomeRD" ng-model="customerJobsData.viewModelJobsData.incomeRD" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.incomeRD.$touched) && customerJobsData.formCustomerJobsData.incomeRD.$invalid || customerJobsData.viewModelJobsData.incomeRD<1500, 'prepoblado': customerJobsData.validJobsData.textInvalidincomeRD }"
+	 ng-maxlength="11" ng-disabled="customerJobsData.validJobsData.textInvalidincomeRD" required />
+	<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.incomeRD.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.incomeRD.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	<p class="texto messageError" ng-if="customerJobsData.viewModelJobsData.incomeRD<1500" ng-bind="::i18n.general.ingresoMAyor"></p>
+	<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.incomeRD.$error.number" ng-bind="::i18n.general.errorValidNumeros"></p>
+	<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.incomeRD.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelTypeSIb"></h4>
+		<input type="text" class="inputfield full prepoblado" name="clientSib" ng-model="customerJobsData.viewModelJobsData.clientSib" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.clientSib.$touched) && customerJobsData.formCustomerJobsData.clientSib.$invalid, 'prepoblado': customerJobsData.validJobsData.textInvalidClientSib }" ng-disabled="customerJobsData.validJobsData.textInvalidClientSib"
+		 ng-maxlength="100" required />
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.clientSib.$error.maxlength" ng-bind="::i18n.general.maxLength"></p>
+		<p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.clientSib.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.clientSib.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+	<!--FIN FILA 5-->
+
+	<div class="clear"></div>
+ 
+<!--FILA 6-->
+<div class="divPpal" ng-if="customerJobsData.viewModelJobsData.ocupation===default.OCUPATION_INDEPENDENT || customerJobsData.viewModelJobsData.ocupation===default.COMPANY_BUSINESSMAN" >
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelTypeCompany"></h4>
+			<select class="selectfield full" name="typeCompany" ng-model="customerJobsData.viewModelJobsData.typeCompany" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.typeCompany.$touched) && customerJobsData.formCustomerJobsData.typeCompany.$invalid }"
+			ng-options="busines.id as busines.value for busines in customerJobsData.companyValue"
+			ng-change="customerJobsData.validCompanyTypeSib()" ng-disabled="customerJobsData.validJobsData.textInvalidCompany" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.typeCompany.$touched) && customerJobsData.formCustomerJobsData.typeCompany.$error.required" ng-bind="::i18n.general.requiredField"></p>
+		</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical" ng-if="customerJobsData.viewModelJobsData.typeCompany===default.COMPANY_MICRCOMPANY || customerJobsData.viewModelJobsData.ocupation===default.COMPANY_BUSINESSMAN">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labeltotalEmployes"></h4>
+		<input type="number" class="inputfield full" name="totalEmployees" ng-model="customerJobsData.viewModelJobsData.totalEmployees" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.totalEmployees.$touched) && customerJobsData.formCustomerJobsData.totalEmployees.$invalid }"
+		 required/>
+		  <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.totalEmployees.$error.totalEmployees" ng-bind="::i18n.general.errorValidNumeros"></p>
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.totalEmployees.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.totalEmployees.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical" ng-if="customerJobsData.viewModelJobsData.typeCompany===default.COMPANY_MICRCOMPANY || customerJobsData.viewModelJobsData.ocupation===default.COMPANY_BUSINESSMAN">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelTotalAssets"></h4>
+		<input type="number" class="inputfield full" name="totalAssets" ng-model="customerJobsData.viewModelJobsData.totalAssets" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.totalAssets.$touched) && customerJobsData.formCustomerJobsData.totalAssets.$invalid }"
+		 required/>
+		  <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.totalAssets.$error.totalAssets" ng-bind="::i18n.general.errorValidNumeros"></p>
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.totalAssets.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.totalAssets.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical" ng-if="customerJobsData.viewModelJobsData.typeCompany===default.COMPANY_MICRCOMPANY || customerJobsData.viewModelJobsData.ocupation===default.COMPANY_BUSINESSMAN">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labeltotalIncome"></h4>
+		<input type="number" class="inputfield full" name="totalIncome" ng-model="customerJobsData.viewModelJobsData.totalIncome" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.totalIncome.$touched) && customerJobsData.formCustomerJobsData.totalIncome.$invalid }"
+		 required/>
+		  <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.totalIncome.$error.totalIncome" ng-bind="::i18n.general.errorValidNumeros"></p>
+		 <p class="texto messageError" ng-if="customerJobsData.formCustomerJobsData.totalIncome.$error.required && (customerJobsData.submitted || customerJobsData.formCustomerJobsData.totalIncome.$touched)" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+<!--FIN FILA 6-->
+
+<div class="clear"></div>
+
+<!--FILA 7-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelmainActivityCIIU"></h4>
+		<select class="selectfield full" name="mainActivityCIIU"
+		ng-model="customerJobsData.viewModelJobsData.mainActivityCIIU" 
+		ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.mainActivityCIIU.$touched) && customerJobsData.formCustomerJobsData.mainActivityCIIU.$invalid , 'prepoblado': customerJobsData.validJobsData.ciuuAutocomplete}"
+		ng-options="codeCiiu.id as codeCiiu.extrafield2 for codeCiiu in customerJobsData.listCodeCiiu" ng-disabled="customerJobsData.validJobsData.ciuuAutocomplete" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.mainActivityCIIU.$touched) && customerJobsData.formCustomerJobsData.mainActivityCIIU.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+<!--FIN FILA 7-->
+
+<div class="clear"></div>
+
+<!--FILA 8-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelsectorEconomic"></h4>
+		<select class="selectfield full prepoblado" name="economicSector" ng-model="customerJobsData.viewModelJobsData.economicSector" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.economicSector.$touched) && customerJobsData.formCustomerJobsData.economicSector.$invalid, 'prepoblado': customerJobsData.validJobsData.ciuuAutocomplete }"
+		ng-options="sectore.id as sectore.value for sectore in customerJobsData.sectors"
+		ng-change="customerJobsData.getIndustry(customerJobsData.viewModelJobsData.economicSector)" ng-disabled="customerJobsData.validJobsData.ciuuAutocomplete" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.economicSector.$touched) && customerJobsData.formCustomerJobsData.economicSector.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelindustry"></h4>
+		<select class="selectfield full prepoblado" name="industry" ng-model="customerJobsData.viewModelJobsData.industry" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.industry.$touched) && customerJobsData.formCustomerJobsData.industry.$invalid, 'prepoblado': customerJobsData.validJobsData.ciuuAutocomplete }"
+		ng-options="typeIndustry.id as typeIndustry.value for typeIndustry in customerJobsData.industries"
+		ng-change="customerJobsData.getActivityNiv1(customerJobsData.viewModelJobsData.industry)" ng-disabled="customerJobsData.validJobsData.ciuuAutocomplete" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.industry.$touched) && customerJobsData.formCustomerJobsData.industry.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelactivityLevel1"></h4>
+		<select class="selectfield full prepoblado" name="activityLevel1" ng-model="customerJobsData.viewModelJobsData.activityLevel1" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.activityLevel1.$touched) && customerJobsData.formCustomerJobsData.activityLevel1.$invalid, 'prepoblado': customerJobsData.validJobsData.ciuuAutocomplete }"
+		ng-options="activiteNiv1.id as activiteNiv1.extrafield1 for activiteNiv1 in customerJobsData.activitiesNiv1"
+		ng-change="customerJobsData.getActivityNiv2(customerJobsData.viewModelJobsData.activityLevel1)" ng-disabled="customerJobsData.validJobsData.ciuuAutocomplete" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.activityLevel1.$touched) && customerJobsData.formCustomerJobsData.activityLevel1.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<h4 class="texto" ng-bind="::i18n.views.customerJobsData.labelactivityLevel2"></h4>
+		<select class="selectfield full prepoblado" name="activityLevel2" ng-model="customerJobsData.viewModelJobsData.activityLevel2" ng-class="{ 'hasError': (customerJobsData.submitted || customerJobsData.formCustomerJobsData.activityLevel2.$touched) && customerJobsData.formCustomerJobsData.activityLevel2.$invalid, 'prepoblado': customerJobsData.validJobsData.ciuuAutocomplete }"
+		ng-options="activiteNiv2.id as activiteNiv2.extrafield1 for activiteNiv2 in customerJobsData.activitiesNiv2" ng-change="customerJobsData.getCodeCiiu(customerJobsData.viewModelJobsData.activityLevel2)" ng-disabled="customerJobsData.validJobsData.ciuuAutocomplete" required>
+			<option></option></select>
+			<p class="texto messageError" ng-if="(customerJobsData.submitted || customerJobsData.formCustomerJobsData.activityLevel2.$touched) && customerJobsData.formCustomerJobsData.activityLevel2.$error.required" ng-bind="::i18n.general.requiredField"></p>
+	</div>
+</div>
+
+<!--FIN FILA 8-->
+
+<!--FILA 9-->
+<div class="divPpal">
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical" ng-show="!customerJobsData.buttonEdit">
+		<button class="boton floatLeft"  ng-click="customerJobsData.addJobsData()" ng-bind="::i18n.views.customerJobsData.botonAggIngresos"></button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical" ng-show="customerJobsData.buttonEdit">
+		<button class="boton floatLeft"  ng-click="customerJobsData.editJobsData(customerJobsData.idSourceIncome)" ng-bind="::i18n.views.customerJobsData.botonmodifiIngresos"></button>
+	</div>
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button class="boton floatLeft" ng-click="customerJobsData.modalCleanForm()" ng-bind="::i18n.views.customerJobsData.botonClean"></button>
+	</div>
+</div>
+</form>
+<!--FIN FILA 9-->
+
+<div class="clear"></div>
+<div class="clear"></div>
+
+<div class="divSesenta floatCenter border-mediumradius" ng-if="customerJobsData.tableSourceIncome[0] !== undefined">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="tabla">
+		<tbody>
+			<thead>
+				<th ng-bind="::i18n.views.customerJobsData.theadNameCompany"></th>
+				<th class="borderBoth" ng-bind="::i18n.views.customerJobsData.theadIncomeType"></th>
+				<th class="borderRight" ng-bind="::i18n.views.customerJobsData.theadIncomeRD"></th>
+				<th ng-bind="::i18n.views.customerJobsData.theadAction"></th>
+			</thead>
+			<tr class="even" ng-repeat="table in customerJobsData.tableSourceIncome">
+				<td ng-bind="table.companyName"></td>
+				<td class="alignCenter borderBoth" ng-bind="table.nameIncomeType"></td>
+				<td class="alignCenter borderRight" ng-bind="table.incomeRD | currency"></td>
+				<td>
+					<div class="floatRight paddingHorizontal">
+						<div class="floatLeft paddingHorizontal">
+							<a href="" ng-click="customerJobsData.viewJobsData($index)"><img src="img/icono-editar.svg" alt="Editar Información" width="24" height="24" /></a>
+						</div>
+						<div class="floatLeft paddingHorizontal">
+							<a href="" ng-click="customerJobsData.deleteJobsData($index)"><img src="img/icono-eliminar.svg" alt="Eliminar Información" width="26" height="24" /></a>
+						</div>
+					</div>
+				</td>
+			</tr>
+			
+			<tfoot>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tfoot>
+		</tbody>
+	</table>
+</div>
+
+<div class="clear"></div>
+<div class="clear"></div>
+
+<div class="divPpal">
+	<div class="divQuince floatLeft marginLeft paddingVertical"></div>
+
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+		<button 
+			ng-click="customerJobsData.modalPrevious()"
+			class="boton floatCenter">
+			<span class="glyphicon glyphicon-arrow-left"></span> {{::i18n.actions.previous}}
+		</button>
+	</div>
+
+	<div class="divVeinte floatLeft marginLeft paddingVertical"><button ng-click="customerJobsData.modalCancel()" class="boton floatCenter" ng-bind="::i18n.actions.cancel"></button></div>
+	
+	
+	<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+        <button class="boton floatCenter"
+         ng-click="customerJobsData.saveJobsData()"
+         ng-class="{inactive:customerJobsData.customerInvalid}"
+         ng-disabled="customerJobsData.customerInvalid">
+		 {{::i18n.actions.next}}  <span class="glyphicon glyphicon-arrow-right"></span>
+		 </button>
+	</div>
+	<div class="divQuince floatLeft marginLeft paddingVertical"></div>
+</div>
+<!--FIN CONTENIDO-->

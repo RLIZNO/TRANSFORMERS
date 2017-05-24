@@ -1,0 +1,126 @@
+      <div id="titulo">
+        <div id="contenedortitulo">
+          <div id="topepanel">
+             <h2>Consulta Clientes Grupo Ramos</h2>
+          </div>
+          <!--fin area tope panel-->
+          <div class="breadcrumbs">
+            <ul>
+              <li><a href="#">Inicio / </a></li>
+              <li>Test Request Generation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div id="bodymantenimientos">
+        <div id="cuerpomantenimientos"> 
+          <!--Inicio Area mantenimientos-->
+
+          <form name="consultClient.formProductMantenimentClient" novalidate role="form">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
+            <div class="divheader">
+              <h2>Rango de Fecha de Busqueda</h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento ultimo"> 
+              <span class="label">Fecha inicial</span> 
+              <span class="input2">
+                  <input id="datepicker" type="text" style="width:125px"
+                        name="datePassportInt" 
+                        uib-datepicker-popup="{{consultClient.format}}" 
+                        date-set-hidden="true"
+                        date-typer="true"
+                        ng-model="consultClient.viewModelClient.datePassportInt"
+                        is-open="consultClient.popupDatePassportInt.opened"
+                        datepicker-options="consultClient.dateOptions" 
+                        readonly="readonly"
+                        current-text="Hoy" 
+                        clear-text="Limpiar"
+                        close-text="Cerrar" 
+                        ng-click="consultClient.openDatePassportInt()" 
+                        ng-class="{ 'hasError': (consultClient.submittedPre || consultClient.formProductMantenimentClient.datePassportInt.$touched) 
+                        && consultClient.formProductMantenimentClient.datePassportInt.$invalid }" 
+                        required />
+                  <span class="alerttext" 
+                    ng-if="(consultClient.submittedPre || consultClient.formProductMantenimentClient.datePassportInt.$touched) 
+                            && consultClient.formProductMantenimentClient.datePassportInt.$error.required">Este campo es obligatorio</span> 
+                  </span> 
+                </span><span class="label">Fecha final</span> 
+                <span class="input2">
+                  <input id="datepicker" type="text" style="width:95px"
+                        name="datePassportFin" 
+                        uib-datepicker-popup="{{consultClient.format}}" 
+                        date-set-hidden="true"
+                        date-typer="true"
+                        ng-model="consultClient.viewModelClient.datePassportFin"
+                        is-open="consultClient.popupDatePassportFin.opened"
+                        datepicker-options="consultClient.dateOptions" 
+                        readonly="readonly"
+                        current-text="Hoy" 
+                        clear-text="Limpiar"
+                        close-text="Cerrar" 
+                        ng-click="consultClient.openDatePassportFin()" 
+                        ng-class="{ 'hasError': (consultClient.submittedPre || consultClient.formProductMantenimentClient.datePassportFin.$touched) 
+                        && consultClient.formProductMantenimentClient.datePassportFin.$invalid }" 
+                        required />
+                  <span class="alerttext" 
+                    ng-if="(consultClient.submittedPre || consultClient.formProductMantenimentClient.datePassportFin.$touched) 
+                            && consultClient.formProductMantenimentClient.datePassportFin.$error.required">Este campo es obligatorio</span> 
+                  </span> 
+                </span> 
+                  </div>
+            </div>
+           
+
+              <div class="botonarearight"> 
+                    <button
+                        class="boton btnlager btnblack"                        
+                        ng-click="consultAff.seachJobsData()">Filtrar
+                    </button>
+              </div>
+          </div>
+          </form>
+          
+          <span class="separador">
+          <hr />
+          </span>
+          <div class="campomantenimientofull" >
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                <td class="gridsub" colspan="12">Reporte de Clientes</td>
+              </tr>
+                <tr class="grid_title">
+                  <td style="width:5%"></td>
+                  <td style="width:10%" class="tablecenter">ID</td>
+                  <td style="width:10%">Código de Barra</td>
+                  <td style="width:30%" class="tablecenter">Nombre del cliente</td>
+                  <td style="width:10%" class="tablecenter">ID Siebel</td>
+                  <td style="width:15%">Número de TC</td>
+                  <td style="width:10%" class="tablecenter">Estado TC</td>
+                  <td style="width:10%" class="ultimo tablecenter">Descripción Estado</td>
+                </tr>
+                <tr class="grid_text"
+                   ng-repeat="table in consultAff.tableSourceProdcut">
+                   <td class="tablecenter" ></td>
+                    <td class="tablecenter" ng-bind="table.id"></td>
+                    <td ng-bind="table.affiliateGroup"></td>
+                    <td ng-bind="table.statusGroup" class="tablecenter"></td>
+                    <td ng-bind="table.affiliateNumber" class="tablecenter"></td>
+                    <td ng-bind="table.commerceName"></td>
+                    <td  ng-bind="table.acquirer" class="tablecenter"></td>
+                    <td  ng-bind="table.statusCommerce" class="tablecenter"></td>
+                </tr>
+            </table>
+            
+          </div>
+          <div class="botonareacenter">
+            <button ng-click="consultClient.modalCancel()" 
+                  class="boton3 btnlager2 btnred" >
+                  Volver a Dashboard
+            </button>
+         </div>
+          <!--Inicio Area footer-->
+          <!--Fin Area mantenimientos--> 
+        </div>
+      </div>

@@ -1,0 +1,25 @@
+@media screen and (min-width: 1200px ) {
+    //here the import for exaple
+    @import "features/feature_example/media_1200";
+}
+
+@media screen and (min-width: 992px ) {
+    //here the import for exaple
+    @import "features/feature_example/media_992";
+}
+
+@media screen and (min-width: 768px ) {
+    //here the import for exaple
+    @import "features/feature_example/media_768";
+}
+
+@media screen and (min-width: 540px ) {
+    //here the import for exaple
+     @import "features/feature_example/media_540";
+}
+
+@media screen and (min-width: 320px ) {
+    //here the import for exaple
+     @import "features/feature_example/media_320";
+}
+

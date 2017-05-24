@@ -1,0 +1,104 @@
+
+<div class="component-on-base">
+	<!-- FORMULARIO DOCUMENTOS -->
+	<div class="divPpal">
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto" ng-bind="$ctrl.i18n.components.uploadOnBase.labelTypeDocument"></h4>
+			<select 
+				class="selectfield full" 
+				ng-model="$ctrl.selectedDocumentType"
+				ng-change="$ctrl.changeDocumentType();">
+				<option value="-1"></option>
+				<option 
+					ng-repeat="typeDocument in $ctrl.documentTypes"
+					value="{{$index}}">
+					{{typeDocument.value}}
+				</option>
+			</select>
+		</div>
+		<div class="divVeintecinco floatLeft marginLeft paddingVertical">
+			<h4 class="texto">&nbsp;</h4>
+			<div class="content-button-input-file">		
+				<input 
+					input-upload-file 
+					type="file"
+					ng-disabled="$ctrl.isDisableButton">
+				<button 
+					class="boton floatLeft inactive" 
+					ng-bind="::$ctrl.i18n.actions.append"
+					ng-class="{'inactive' : $ctrl.isDisableButton}">
+				</button>
+			</div>
+		</div>
+	</div>
+	<!-- END FORMULARIO DOCUMENTOS -->
+
+	<div class="clear"></div>
+	<div class="clear"></div>
+	<div class="clear"></div>
+
+	<!-- TITULO DE LA TABLA -->
+	<div class="divVeintecinco marginLeft paddingVertical">
+		<h3 class="texto">
+			<span ng-bind="$ctrl.i18n.components.uploadOnBase.labelProductResume"></span>
+		</h3>
+	</div>
+	<!-- END TITULO DE LA TABLA -->
+
+	<!-- TABLA DE DOCUMENTOS -->
+	<div class="table-documents-container">
+		<div 
+			class="table-documents-content divSesenta border-mediumradius" 
+			ng-class="{
+				floatLeft: $ctrl.tableOrientation == 'left', 
+				marginLeft: $ctrl.tableOrientation == 'left',
+				floatCenter: $ctrl.tableOrientation == 'center'}">
+			<table 
+				width="100%" 
+				border="0" 
+				cellspacing="0" 
+				cellpadding="0" 
+				align="center" 
+				class="tabla documents-table">
+				<tbody>
+
+					<thead>
+						<th ng-bind="$ctrl.i18n.components.uploadOnBase.labelTypeDocument"></th>
+						<th class="borderBoth" ng-bind="$ctrl.i18n.components.uploadOnBase.labelDocumentName"></th>
+						<th ng-bind="$ctrl.i18n.components.uploadOnBase.labelActions"></th>
+					</thead>
+
+					<tr ng-repeat="model in $ctrl.documents"> 
+						<td class="alignLeft">
+							{{model.type}}
+						</td>
+						<td class="alignLeft borderBoth">
+							<a ng-click="$ctrl.openDocument($index);">
+								{{model.name}}
+							</a>
+						</td>
+						<td class="alignCenter">
+							<button 
+								type="button" 
+								class="button-delete-document-on-base" 
+								ng-click="$ctrl.deleteDocument($index)">
+									<img src="img/icono-eliminar.svg" width="26" height="24"/>
+							</button>
+						</td>
+					</tr>
+					<tfoot>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tfoot>
+				</tbody>
+			</table>
+		</div>
+		<div class="divTreinta marginLeft floatLeft">
+			<button class="boton" ng-bind="$ctrl.i18n.components.uploadOnBase.buttonUploadOnBase" 
+					ng-click="$ctrl.createIndexFile()" ng-class="{'inactive' : $ctrl.documents[0]===undefined || $ctrl.disableCargaOnbase}"
+					ng-disabled="$ctrl.documents[0]===undefined || $ctrl.disableCargaOnbase"></button>
+		</div>
+	</div>
+	<!-- END TABLA DE DOCUMENTOS -->
+</div>

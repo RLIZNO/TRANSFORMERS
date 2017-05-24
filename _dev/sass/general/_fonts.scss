@@ -1,0 +1,22 @@
+@mixin newFont($content, $fontFamily, $fileName){
+    $path: '../fonts/' + $content+ '/'+ $fileName;
+
+    @font-face {
+        font-family: $fontFamily;
+        src: url($path + '.eot');
+        src: url($path +'.eot?#iefix') format('embedded-opentype'),
+             url($path +'.woff') format('woff'),
+             url($path +'.woff2') format('woff2'),
+             url($path +'.ttf') format('truetype'),
+             url($path +'.svg#'+$fontFamily) format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
+
+@include newFont('roboto','roboto_condensedbold','robotocondensed-bold-webfont');
+@include newFont('roboto','roboto_condensedbold_italic','robotocondensed-bolditalic-webfont');
+@include newFont('roboto','roboto_condenseditalic','robotocondensed-italic-webfont');
+@include newFont('roboto','roboto_condensedlight','robotocondensed-light-webfont');
+@include newFont('roboto','roboto_condensedlight_italic','robotocondensed-lightitalic-webfont');
+@include newFont('roboto','roboto_condensedregular','robotocondensed-regular-webfont');

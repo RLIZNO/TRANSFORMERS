@@ -1,0 +1,96 @@
+      <div id="titulo">
+        <div id="contenedortitulo">
+          <div id="topepanel">
+             <h2>Consulta Afiliados Grupo Ramos</h2>
+          </div>
+          <!--fin area tope panel-->
+          <div class="breadcrumbs">
+            <ul>
+              <li><a href="#">Inicio / </a></li>
+              <li>Test Request Generation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div id="bodymantenimientos">
+        <div id="cuerpomantenimientos"> 
+          <!--Inicio Area mantenimientos-->
+
+          <form name="consultAff.formProductMantenimentAffiliate" novalidate role="form">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
+            <div class="divheader">
+              <h2>Rango de Fecha de Busqueda</h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento ultimo"> <span class="label">No. Afiliado</span> <span class="input">
+                        <input  type="text" 
+                          name="description" 
+                          ng-model="consultAff.viewModelTransitionAffiliate.description"
+                          ng-maxlength="20"
+                          ng-class="{ 'hasError': (consultAff.submitted || 
+                                    consultAff.formProductMantenimentAffiliate.mcc.$touched) && 
+                                    consultAff.formProductMantenimentAffiliate.mcc.$invalid}"
+                          ng-required="true" />
+                        <span 
+                            class="alerttext" 
+                            ng-if="consultAff.formProductMantenimentAffiliate.mcc.$error.required &&  
+                                  (consultAff.submitted || consultAff.formProductMantenimentAffiliate.mcc.$touched)"
+                            >Este campo es obligatorio
+                        </span>
+                </span>
+                </div>
+            </div>
+           
+
+              <div class="botonarearight"> 
+                    <button
+                        class="boton btnlager btnblack"                        
+                        ng-click="consultAff.seachJobsData()">Filtrar
+                    </button>
+              </div>
+          </div>
+          </form>
+          
+          <span class="separador">
+          <hr />
+          </span>
+          <div class="campomantenimientofull" >
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                <td class="gridsub" colspan="12">Listado de Afiliados</td>
+              </tr>
+                <tr class="grid_title">
+                  <td style="width:5%"></td>
+                  <td style="width:10%" class="tablecenter">ID</td>
+                  <td style="width:20%">Grupo de afiliados</td>
+                  <td style="width:10%" class="tablecenter">Estado Grupo</td>
+                  <td style="width:10%" class="tablecenter">No. afiliado</td>
+                  <td style="width:25%">Nombre comercio</td>
+                  <td style="width:10%" class="tablecenter">Adquiriente</td>
+                  <td style="width:10%" class="ultimo tablecenter">Estado comercio</td>
+                </tr>
+                <tr class="grid_text"
+                   ng-repeat="table in consultAff.tableSourceProdcut">
+                   <td class="tablecenter" ></td>
+                    <td class="tablecenter" ng-bind="table.id"></td>
+                    <td ng-bind="table.affiliateGroup"></td>
+                    <td ng-bind="table.statusGroup" class="tablecenter"></td>
+                    <td ng-bind="table.affiliateNumber" class="tablecenter"></td>
+                    <td ng-bind="table.commerceName"></td>
+                    <td  ng-bind="table.acquirer" class="tablecenter"></td>
+                    <td  ng-bind="table.statusCommerce" class="tablecenter"></td>
+                </tr>
+            </table>
+            
+          </div>
+          <div class="botonareacenter">
+            <button ng-click="consultAff.modalCancel()" 
+                  class="boton3 btnlager2 btnred" >
+                  Volver a Dashboard
+            </button>
+         </div>
+          <!--Inicio Area footer-->
+          <!--Fin Area mantenimientos--> 
+        </div>
+      </div>
