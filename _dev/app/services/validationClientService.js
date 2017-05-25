@@ -29,14 +29,14 @@
         };
 
         /**
-         *	@ngdoc method
-         *	@description
-         *	Consulta si el usuario existe o no dentro de los clientes del banco.
+         *  @ngdoc method
+         *  @description
+         *  Consulta si el usuario existe o no dentro de los clientes del banco.
          * 
-         *	@param {String} idValue número de indentificacion del cliente.
-         *	@param {String} typeDocumentValue Tipo de documento del cliente.
+         *  @param {String} idValue número de indentificacion del cliente.
+         *  @param {String} typeDocumentValue Tipo de documento del cliente.
          *
-         *	@return {Object} La respuesta del servicio.
+         *  @return {Object} La respuesta del servicio.
          */
         function getvalidateClientCreditCard(idValue, userName, typeDocumentValue, typeProducto) {
 
@@ -45,11 +45,11 @@
             $http.get(PREFIX_URL.SERVICES + URL.VALIDATE_CREDIT_CARD + '?documentNumber=' + idValue + '&userName=' + userName + '&documentType=' + typeDocumentValue + '&bin=' + typeProducto)
                 .then(
                     function (response) {
-                    	if(response.data.success) {
-                        	deferred.resolve(response.data.data);
-                    	} else {
-                    		deferred.reject(response.data.error);
-                    	}
+                        if(response.data.success) {
+                            deferred.resolve(response.data.data);
+                        } else {
+                            deferred.reject(response.data.error);
+                        }
                     },
                     function (error) {
                         deferred.reject(error);
@@ -62,14 +62,14 @@
         
 
         /**
-         *	@ngdoc method
-         *	@description
-         *	Consulta si el usuario existe o no dentro de los clientes del banco.
+         *  @ngdoc method
+         *  @description
+         *  Consulta si el usuario existe o no dentro de los clientes del banco.
          * 
-         *	@param {String} idValue número de indentificacion del cliente.
-         *	@param {String} typeDocumentValue Tipo de documento del cliente.
+         *  @param {String} idValue número de indentificacion del cliente.
+         *  @param {String} typeDocumentValue Tipo de documento del cliente.
          *
-         *	@return {Object} La respuesta del servicio.
+         *  @return {Object} La respuesta del servicio.
          */
         function getValidationClient(idValue, typeDocumentValue, userName) {
 
@@ -78,11 +78,11 @@
             $http.get(PREFIX_URL.SERVICES + URL.VALIDATE_CLIENT + '?documentType=' + typeDocumentValue + '&documentNumber=' + idValue + '&userName=' + userName)
                 .then(
                     function (response) {
-                    	if(response.data.success) {
-                        	deferred.resolve(response.data.data);
-                    	} else {
-                    		deferred.reject(response.data.error);
-                    	}
+                        if(response.data.success) {
+                            deferred.resolve(response.data.data);
+                        } else {
+                            deferred.reject(response.data.error);
+                        }
                     },
                     function (error) {
                         deferred.reject(error);
@@ -93,11 +93,11 @@
         }
 
         /**
-         *	@ngdoc method
-         *	@description
-         *	Consulta los datos desde sebeal.
+         *  @ngdoc method
+         *  @description
+         *  Consulta los datos desde sebeal.
          *
-         *	@return {Object} La respuesta del servicio.
+         *  @return {Object} La respuesta del servicio.
          */
         function getSiebelCustomer(typeDocumentValue, idValue, userName) {
 

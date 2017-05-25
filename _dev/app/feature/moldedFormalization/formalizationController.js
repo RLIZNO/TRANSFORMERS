@@ -109,7 +109,6 @@
         vm.cellphone="";
         vm.nacionalidad= document.getElementById("nacionalidad");
         vm.genderSelect = document.getElementById("gender");
-        //vm.bornDay = document.getElementById("fechaNacimiento");
         vm.validAditional = validAditional;
         vm.aggAditional = false;
         vm.validImpre = validImpre;
@@ -117,8 +116,6 @@
         $rootScope.globalUserJSon;
 
         jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
-
-
 
         addTableService.getcierreForzosoTC(jsonData.numberDocument).then(
             function(response){
@@ -543,7 +540,7 @@
                         jsonData.nationality = jsonData.nationality;
                     }
 
-                    //vm.bornDay = document.getElementById("fechaNacimiento");
+                    vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.getBureau = true;
                     vm.datePassport = jsonData.birthDate;
                     vm.email = jsonData.email;
@@ -622,7 +619,6 @@
             vm.validationClient = false;
             vm.viewModelmoldedFormalization.typeIdentification = 2;
             vm.bornDay = '';
-            //vm.bornDay.value = '';
             vm.datePassport = '';
             vm.limiteMaximoRd = '';
             vm.limiteMaximoUs = '';
@@ -733,6 +729,7 @@
                             
                     vm.namePlastic2 = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.firstLastname;
                     vm.nameUser = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.secondName + ' ' + vm.dataClientExit.firstLastname + ' ' + vm.dataClientExit.secondLastname;
+
                     vm.landLine = parseInt(vm.dataClientExit.cellPhone);
 
                     /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
@@ -755,20 +752,11 @@
                             vm.viewModelmoldedFormalization.status = value.id;
                         }
                     });
-
                     vm.bornDay = document.getElementById("fechaNacimiento");
-                    //vm.datePassport = vm.dataClientExit.birthDate;
-                    //vm.datePassport = vm.datePassport.replace("/","-").replace("/","-");
-                    //vm.datePassport.split("").reverse("").join("");
-                    //vm.datePassport = "1989-08-05";
-                    //30/12/1986
-                    /*NUEVO*/
-                    vm.datePassport = jsonData.birthDate;
+                    vm.datePassport = vm.dataClientExit.birthDate;
                     vm.email = vm.dataClientExit.email;
-                    vm.myDate = jsonData.birthDate;
-                    vm.cellphone = jsonData.cellPhone;
+                    vm.myDate = vm.dataClientExit.birthDate;
                     vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
-                    //vm.viewModelmoldedFormalization.keyCardNumber = 
 
                     /*var year = vm.datePassport.substring(6,10);
                     var month = vm.datePassport.substring(3,5);
@@ -790,6 +778,9 @@
                     //vm.bornDay.setRangeText(dataTest.substring(0, 10));    
                     }, modalError);
                 }
+
+                
+
             }, modalError);
         }
 

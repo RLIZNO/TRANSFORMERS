@@ -139,7 +139,7 @@ vm.modalCancel = modalCancel;
                          para validar que el usuario no halla interactuado con el formulario*/
                         vm.formProductManteniment.$setPristine();
                         /*Volvemos el boolean que valida si la fuente de ingreso se encuentra disponible para editar */
-                        vm.buttonEdit = false; 
+                        vm.buttonEdit = false;  
                     }
                     
                 }, 0);

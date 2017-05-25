@@ -29,6 +29,16 @@
     ) {
 
         var vm = this;
+        var userNamelocal = '';
+
+        /*Variables*/
+        /*Si el usuario entra por primera vez entonces creamos la cookie */
+        if(angular.isUndefined($cookies.get('userName'))){
+            /*Guardamos el nombre de usuario del en una cookie para mantener la session */
+            $cookies.put('userName', $location.search().USRLOGIN);
+            userNamelocal = $cookies.get('userName');
+            localStorage.setItem("userName", userNamelocal)
+        }
 
         /*Capturamos la cookie que tiene el nombre del usuario*/
         vm.userName = localStorage.getItem("userName");
@@ -55,11 +65,6 @@
         
         
 
-
-        /*Funciones*/
-
-
-
          /**
          *  @ngdoc function
          *  @name $timeout
@@ -68,12 +73,13 @@
          *  @description
          *  Valida si el usuario tiene permisos para crear cliente y cuenta.
          */
-
-       /* $timeout(function () {
+        //$rootScope.dataUser.userValid = true;
+        $timeout(function () {
             
             validationUserService.getValidationUser(vm.userName)
                 .then(
                 function (response) {
+                    $rootScope.globalUserJSonPrinter = response.data.printer ;
                     $rootScope.dataUser.userValid = response.success;
                     $rootScope.dataUser.userNameDescription = response.data.userName;
                     $rootScope.dataUser.sucursalId = response.data.sucursalCode;
@@ -85,14 +91,14 @@
                     
                 }
                 );
-        }, 0); */
+        }, 0);
 
-            var validclientTc = localStorage.getItem("validclientTc");
-            if (validclientTc === 'validclientTc'){
-                $state.go('moldedFormalization');
-            } else {
-                $state.go('validationAccount');
-            }
+        var validclientTc = localStorage.getItem("validclientTc");
+        if (validclientTc === 'validclientTc'){
+            $state.go('moldedFormalization');
+        } else {
+            $state.go('validationAccount');
+        }
 
    
 

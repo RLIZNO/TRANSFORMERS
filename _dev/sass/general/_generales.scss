@@ -132,8 +132,9 @@ body, html {
 .top_links > ul > li:last-child {
 	margin-left: 0;
 }
-.top_links > ul > li:hover {
-	background-color: rgba(255, 255, 255, 0.6);
+.top_links > ul > li:hover {	
+	background-color: #5C656E;
+	-webkit-animation: opac 0.7s;
 }
 .top_links > ul > li > a {
 	display: block;
@@ -205,7 +206,7 @@ span.label3 {
 	background-image: url(../images/logout.png);
 }
 .usuario {
-	background-image: url(../images/user_avatar.png);
+	background-image: url(../img/user_avatar.png);
 }
 .logoclient {
 	float: left;
@@ -236,13 +237,13 @@ span.label3 {
 #topepanel {
 	border-bottom: dotted 1px #255688;
 	float: left;
-	padding: 20px 0px 10px 0px;
+	padding: 2px 0px 10px 0px;
 	width: 100%;
 }
 #topepanel h2 {
 	color: #333;
-	font-size: 26px;
-	font-weight: normal;
+	font-size: 27px;
+	    font-weight: bold;
 }
 .breadcrumbs {
 	float: left;
@@ -342,6 +343,7 @@ span.label3 {
 	line-height: 18px;
 	text-align: left;
 	text-indent: 15px;
+	    font-weight: bold;
 }
 
 .campomantenimientomodal .mantenimiento, .mantenimiento.end {
@@ -380,6 +382,7 @@ tr.grid_titleOnbase td {
 	line-height: 28px;
 	text-align: left;
 	text-indent: 15px;
+	font-weight: bold;
 }
 .columna75_25_2 {
     float: right;
@@ -467,6 +470,7 @@ div.error {
 	line-height: 28px;
 	text-align: left;
 	text-indent: 15px;
+	font-weight: bold;
 }
 .campomantenimientomodal h2 {
 	border-bottom: solid 1px #c5c5c5;
@@ -493,7 +497,7 @@ span.separadortop {
 div.mantenimiento {
 	border-bottom: solid 1px #dadada;
 	float: left;
-	padding: 9px 0px;
+	padding: 4px 0px;
 	width: 100%;
 }
 .campomantenimientomodal .mantenimiento {
@@ -914,6 +918,12 @@ button.btnInactive {
   cursor: not-allowed;
 }
 
+
+button.btnInactive {
+  background: #A4A4A4;
+  border: solid 1px #A4A4A4;
+  cursor: not-allowed;
+}
 .btnblack {
     background: #235384 !important;
     border: 1px solid #235384 !important;
@@ -1549,3 +1559,82 @@ button.positionBtn {
 	padding-bottom: 30px;
 	width: 100%;
 }	
+
+.margen {
+	position: relative;
+	right: 16px;
+}
+
+
+.margen2 {
+	position: relative;
+	right: 30px;
+}
+
+.selectMedio {
+    position: absolute;
+    margin-left: 38%;
+}
+
+.inputMedio {
+    position: absolute;
+    margin-left: 32px;
+	width: 100%;
+}
+
+span.inputDefi {
+ box-sizing: border-box;
+ color: #255688;
+ font-size: 9pt;
+ font-weight: normal;
+ line-height: 20pt;
+ padding: 10px 0px;
+ position: relative;
+ width: 75%;
+}
+
+span.inputDef select{
+    border: solid 1px #dadada;
+    float: left;
+    margin: 10px 10px;
+    padding: 5px;
+    width: 29% !important;
+}
+
+.labelAditionalDef {
+ box-sizing: border-box;
+ color: #333;
+ float: left;
+ font-size: 10pt;
+ font-weight: normal;
+ line-height: 12pt;
+ height: 45px;
+ padding: 17px 5px 10px 5px;
+ position: relative;
+ text-align: right;
+ -webkit-hyphens: auto;
+     -ms-hyphens: auto;
+         hyphens: auto;
+ vertical-align: middle;
+}
+
+.positionSelect {
+	position: absolute;
+	width: 60%;
+	left: 48%;
+	font-weight: bold;
+}
+
+button.boton4 {
+    border-radius: 5px;
+    color: #fff;
+    float: left;
+    font-size: 10pt;
+    margin: 0px;
+    /* margin-bottom: 7px; */
+    /* bottom: 16px; */
+    margin-right: 5px;
+    border-radius: 2px;
+    padding: 6px 9px;
+    text-align: center;
+}

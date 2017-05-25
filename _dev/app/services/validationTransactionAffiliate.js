@@ -66,7 +66,7 @@
             return $http.get(PREFIX_URL.SERVICES + URL.SEARC_CONSULT + '?code=' + codeOrigin)
                 .then(
                     function (response) {
-                    	return response.data;
+                        return response.data;
                     },
                       function (errResponse) {
                         return $q.reject(errResponse);

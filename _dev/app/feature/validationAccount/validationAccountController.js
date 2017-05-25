@@ -68,7 +68,6 @@
         vm.productTyoe = [];
         vm.validDebitNo = '';
         vm.alert = false;
-        vm.username = 'AM029969';
         vm.findJudicialEvaluation = false;
         vm.accountActive = false;
         vm.customerInvalid = false;
@@ -763,7 +762,7 @@
                  }
 
 
-            validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.username, income, typeProducto).then(function (response) {
+            validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, $rootScope.dataUser.userName, income, typeProducto).then(function (response) {
                         
                 console.log(response);
                 function limitUSD( text, busca, reemplaza ){
@@ -884,7 +883,7 @@
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
 
             resetData();
-            validationClientService.getValidationClient(documentNumber, vm.viewModelvalidationAccount.typeIdentification, vm.username).then(function (responseValue) {
+            validationClientService.getValidationClient(documentNumber, vm.viewModelvalidationAccount.typeIdentification, $rootScope.dataUser.userName).then(function (responseValue) {
                
                 vm.validationClient = responseValue.validationClient;
                 validateClientCanContinue();
@@ -902,6 +901,9 @@
 
             }, modalError);
 
+            /*var getJsonCierreForz = localStorage.getItem('JSON');
+            var docNumUserCierreForz = JSON.parse(getJsonCierreForz);
+            var t = docNumUserCierreForz.documentNumber;*/
 
             addTableService.getcierreForzosoTC(documentNumber).then(
                 function (response) {   
@@ -938,7 +940,7 @@
                 clientCountry = '',
                 clientAge;
 
-            creditBureauService.getValidCreditBureau(documentNumber, vm.username).then(function (responseValue) {
+            creditBureauService.getValidCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseValue) {
                
                 vm.findJudicialEvaluation = responseValue.validationBuroResult;
                 if (!vm.findJudicialEvaluation) {
@@ -948,14 +950,13 @@
                     vm.decisionMoti = 'Cliente presenta Ficha Judicial';
                     modalFactory.error(messages.modals.error.badJudicialEvaluation);
                 }else {
-                        creditBureauService.getXmlCreditBureau(documentNumber, vm.username).then(function (responseXml) {
+                        creditBureauService.getXmlCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseXml) {
                             stringXml = responseXml;
                             
                             /* URL que almacena el llamado al archivo XML en el servidor */
-                            vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  vm.username;
+                            vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
 
-
-                         validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, vm.username).then(function(response){
+                         validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, $rootScope.dataUser.userName).then(function(response){
                                 
                                 oJson = response;
                                 if (response.codError === 'Error Inesperado Index: 1, Size: 1'){
@@ -1115,12 +1116,12 @@
                 clientCountry = '',
                 clientAge;
 
-            creditBureauService.getValidCreditBureau(documentNumber, vm.username).then(function (responseValue) {
+            creditBureauService.getValidCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseValue) {
 
                 vm.findJudicialEvaluation = responseValue.validationBuroResult;
 
 
-                creditBureauService.getXmlCreditBureau(documentNumber, vm.username).then(function (responseXml) {
+                creditBureauService.getXmlCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseXml) {
                     
                     stringXml = responseXml;
                     
@@ -1128,7 +1129,7 @@
                     console.log(oJson);
                     clientCountry = oJson.reportecu.reporte.informacionadicional.nacionalidad;
                     /* URL que almacena el llamado al archivo XML en el servidor */
-                    vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  vm.username;
+                    vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
                     /*Si el segundo nombre viene indefinido colocarlo como vacio  */
                     
                     jsonData.typeDocument = vm.viewModelvalidationAccount.typeIdentification;
@@ -1254,7 +1255,7 @@
 
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
 
-            creditListService.getCreditListService(documentNumber, vm.viewModelvalidationAccount.typeIdentification, vm.username).then(function(responseValue) {
+            creditListService.getCreditListService(documentNumber, vm.viewModelvalidationAccount.typeIdentification, $rootScope.dataUser.userName).then(function(responseValue) {
                 console.log(responseValue);
                 $timeout(function(){
                     vm.finObs = responseValue.observed;
@@ -1300,7 +1301,7 @@
                 }
             });
                 
-            validationClientService.getvalidateClientCreditCard(documentNumber, vm.username, typeIdentification, typeProducto).then(
+            validationClientService.getvalidateClientCreditCard(documentNumber, $rootScope.dataUser.userName, typeIdentification, typeProducto).then(
                     function (responseValue) {
                     console.log(responseValue);
                     if(vm.fichaBand){
@@ -1456,7 +1457,7 @@
                     jsonIdentification.isJudiciary = '1';       
                     jsonIdentification.isControlList = '1';
 
-                    validationClientService.getValidaClientPortal(jsonIdentification.documentType, jsonIdentification.documentNumber, vm.username).then
+                    validationClientService.getValidaClientPortal(jsonIdentification.documentType, jsonIdentification.documentNumber, $rootScope.dataUser.userName).then
                         (function (response) {
                             vm.validationClientPortal = response.data.existsClientPortal;
                                 if (vm.validationClientPortal){
@@ -1469,7 +1470,7 @@
                             }
                         });
 
-                    creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, vm.username).
+                    creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
                         then(function   
                             (response) {
                             console.log(response);
