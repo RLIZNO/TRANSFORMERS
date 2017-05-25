@@ -1,0 +1,327 @@
+       <div id="titulo">
+        <div id="contenedortitulo">
+          <div id="topepanel">
+            <h2>Mantenimiento de Reglas Grupo Ramos</h2>
+          </div>
+          <!--fin area tope panel-->
+          <div class="breadcrumbs">
+            <ul>
+              <li><a href="#">Dashboard / </a></li>
+              <li>Mantenimiento de Reglas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div id="bodymantenimientos">
+        <div id="cuerpomantenimientos"> 
+          <!--Inicio Area mantenimientos-->
+
+          <form name="transactionRole.formProductRole" novalidate role="form">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
+            <div class="divheader">
+              <h2>Mantenimiento</h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="transactionRole.editButton" >
+              <div class="mantenimiento"> <span class="label">Descripción</span> 
+                <span class="input">
+                        <input  type="text" 
+                          name="description" 
+                          ng-model="transactionRole.viewModelTransitionRole.description"
+                          ng-maxlength="20" />
+                </span>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento">
+                <span class="label">Tipo de Regla</span>
+                  <span class="input2">
+                     <select name="ruleType"
+                        ng-model="transactionRole.viewModelTransitionRole.ruleType" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductRole.ruleType.$touched) && transactionRole.formProductRole.ruleType.$invalid}" 
+                        ng-options="optypeRole.valValue as optypeRole.valDescription for optypeRole in transactionRole.optionsTypeRole "
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductRole.typeRole.$touched) 
+                        && transactionRole.formProductRole.typeRole.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+                  </span>
+                
+                <span class="label">Tipo de Producto</span> 
+                  <span class="input2">
+                     <select name="productType"
+                        ng-model="transactionRole.viewModelTransitionRole.productType" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductRole.productType.$touched) && transactionRole.formProductRole.productType.$invalid}" 
+                        ng-options="optProdType.valValue as optProdType.valDescription for optProdType in transactionRole.optProductType "
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductRole.productType.$touched) 
+                        && transactionRole.formProductRole.productType.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+                  </span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento">
+                
+                <span class="label">Status</span> 
+                  <span class="input2">
+                     <select name="status" style="width:115px"
+                        ng-model="transactionRole.viewModelTransitionRole.status" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductRole.status.$touched) && 
+                        transactionRole.formProductRole.status.$invalid}" 
+                        ng-options="optStatus.valValue as optStatus.valDescription for optStatus in transactionRole.optStatus"
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductRole.status.$touched) 
+                        && transactionRole.formProductRole.status.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+                     </span>
+                  <div ng-if="transactionRole.editButton">
+                  <span class="label">Factor de Puntos</span> 
+	                <span class="input2">
+                        <input  type="text" 
+                          name="factor" 
+                          ng-model="transactionRole.viewModelTransitionRole.factor"
+                          ng-maxlength="20" />
+	                </span>
+	               </div>
+                  </span>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="transactionRole.editButton">
+              <div class="mantenimiento">
+                
+
+                <span class="label">Cantidad de Puntos</span> 
+	                <span class="input2">
+                        <input  type="text" 
+                          name="points" 
+                          ng-model="transactionRole.viewModelTransitionRole.points"
+                          ng-maxlength="20" />
+	                </span>
+                <span class="label">Moneda</span> 
+                  <span class="input2">
+                     <select name="currencyCode" style="width:115px"
+                        ng-model="transactionRole.viewModelTransitionRole.currencyCode" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductRole.currencyCode.$touched) && 
+                        transactionRole.formProductRole.currencyCode.$invalid}" 
+                        ng-options="optStatus.valValue as optStatus.valDescription for optStatus in transactionRole.optCurrencyCode"
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductRole.status.$touched) 
+                        && transactionRole.formProductRole.status.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+
+
+                  </span>
+                </div>
+            </div>
+           
+
+              <div class="botonarearight" ng-show="!transactionRole.editButton"> 
+                    <button
+                        class="boton btnlager btnblack"                        
+                        ng-click="transactionRole.seachJobsData()">Filtrar
+                    </button>
+              </div>
+
+              <div class="botonarearight" ng-show="transactionRole.editButton"> 
+                    <button
+                        class="boton btnlager btnblack"                        
+                        ng-click="transactionRole.editJobsData(transactionRole.idSourceIncome)">Modificar Producto
+                    </button>
+              </div>
+          </div>
+          </form>
+          
+          <span class="separador">
+          <hr />
+          </span>
+          <div class="campomantenimientofull">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+               <td class="gridsub" colspan="12">Listados de Productos 
+                  <button  ng-click="transactionRole.addNewBin()" id="myBtn" class="boton2 btn btnblu">Nuevo</button></td>
+              </tr>
+                <tr class="grid_title" ng-if="transactionRole.tableSourceProdcut[0] !== undefined">
+	              <td style="width:5%"></td>
+	              <td style="width:20%">Descripción</td>
+	              <td style="width:10%" class="tablecenter">Tipo de Regla</td>
+	              <td style="width:5%"  class="tablecenter">Factor de Puntos </td>
+	              <td style="width:5%" class="tablecenter">Cantidad de Puntos </td>
+	              <td style="width:5%" class="tablecenter" >Moneda</td>
+	              <td style="width:5%" class="tablecenter" >ID MCC o afiliado</td>
+	              <td style="width:10%" class="tablecenter">Tipo de Producto </td>
+	              <td style="width:10%" class="tablecenter">Comisión intercambio</td>
+	              <td style="width:5%" class="tablecenter">Orden</td>
+	              <td style="width:5%" class="tablecenter">Estatus</td>
+	              <td style="width:15%" class="ultimo"></td>
+                </tr>
+                <tr class="grid_text"
+                   ng-if="transactionRole.tableSourceProdcut[0] !== undefined"
+                   ng-repeat="table in transactionRole.tableSourceProdcut">
+	              <td style="width:5%"></td>
+	              <td style="width:20%" ng-bind="table.description"></td>
+	              <td style="width:10%" ng-bind="table.ruleType" class="tablecenter"></td>
+	              <td style="width:5%"  ng-bind="table.factor" class="tablecenter"></td>
+	              <td style="width:5%"  ng-bind="table.points" class="tablecenter"></td>
+	              <td style="width:5%"  ng-bind="table.currencyCode" class="tablecenter" ></td>
+	              <td style="width:5%"  ng-bind="table.idCommerce" class="tablecenter" ></td>
+	              <td style="width:10%" ng-bind="table.productType" class="tablecenter"></td>
+	              <td style="width:10%" ng-bind="table.interchangeRate" class="tablecenter"></td>
+	              <td style="width:5%"  ng-bind="table.applyOrder" class="tablecenter"></td>
+	              <td style="width:5%"  ng-bind="table.status" class="tablecenter"></td>
+                <td style="width:15%" class="ultimo">
+                  <button class="boton" 
+                          ng-click="transactionRole.viewJobsData($index)">
+                          Editar
+                  </button> 
+                  <button class="boton"
+                          ng-click="transactionRole.deleteJobsData($index)">
+                          Cancelar
+                  </button>
+                </td>
+                </tr>
+            </table>
+            
+          </div>
+        <div id="myModal" class="modal w3-animate-opacity">
+
+        <!-- Modal content -->
+          <span class="close w3-animate-opacity"></span>
+          <div class="w3-modal-content w3-card-4">
+          <form name="transactionRole.formProductMantenimentNew" id="myForm" novalidate role="form">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  >
+                <div class="divheader">
+                </div>
+              <div class="mantenimiento"> <span class="label">Descripción</span> 
+                <span class="input">
+                        <input  type="text" 
+                          name="description2" 
+                          ng-model="transactionRole.viewModelTransitionNew.description2"
+                          ng-maxlength="20" />
+                </span>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento">
+                <span class="label">Tipo de Regla</span>
+                  <span class="input2">
+                     <select name="ruleType2"
+                        ng-model="transactionRole.viewModelTransitionNew.ruleType2" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductMantenimentNew.ruleType2.$touched) && transactionRole.formProductMantenimentNew.ruleType2.$invalid}" 
+                        ng-options="optypeRole.valValue as optypeRole.valDescription for optypeRole in transactionRole.optionsTypeRole "
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductMantenimentNew.typeRole2.$touched) 
+                        && transactionRole.formProductMantenimentNew.typeRole2.$error.required" >
+                     </span>
+                  </span>
+                
+                <span class="label">Tipo de Producto</span> 
+                  <span class="input2">
+                     <select name="productType2"
+                        ng-model="transactionRole.viewModelTransitionNew.productType2" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductMantenimentNew.productType2.$touched) && transactionRole.formProductMantenimentNew.productType2.$invalid}" 
+                        ng-options="optProdType.valValue as optProdType.valDescription for optProdType in transactionRole.optProductType "
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductMantenimentNew.productType2.$touched) 
+                        && transactionRole.formProductMantenimentNew.productType2.$error.required" >
+                     </span>
+                  </span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento">
+                
+                <span class="label">Status</span> 
+                  <span class="input2">
+                     <select name="status2" style="width:115px"
+                        ng-model="transactionRole.viewModelTransitionNew.status2" 
+                        ng-class="{ 'hasError': (formProductMantenimentNew.submitted || transactionRole.formProductMantenimentNew.status2.$touched) && 
+                        transactionRole.formProductMantenimentNew.status2.$invalid}" 
+                        ng-options="optStatus.valValue as optStatus.valDescription for optStatus in transactionRole.optStatus"
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductMantenimentNew.status2.$touched) 
+                        && transactionRole.formProductMantenimentNew.status2.$error.required" >
+                     </span>
+                     </span>
+                  <span class="label">Factor de Puntos</span> 
+	                <span class="input2">
+                        <input  type="text" 
+                          name="factor2" 
+                          ng-model="transactionRole.viewModelTransitionNew.factor2"
+                          ng-maxlength="20" />
+	                </span>
+                  </span>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="mantenimiento">
+                
+
+                <span class="label">Cantidad de Puntos</span> 
+	                <span class="input2">
+                        <input  type="text" 
+                          name="points2" 
+                          ng-model="transactionRole.viewModelTransitionNew.points2"
+                          ng-maxlength="20" />
+	                </span>
+                <span class="label">Moneda</span> 
+                  <span class="input2">
+                     <select name="currencyCode2" style="width:115px"
+                        ng-model="transactionRole.viewModelTransitionNew.currencyCode2" 
+                        ng-class="{ 'hasError': (transactionRole.submitted || transactionRole.formProductMantenimentNew.currencyCode2.$touched) && 
+                        transactionRole.formProductMantenimentNew.currencyCode2.$invalid}" 
+                        ng-options="optStatus.valValue as optStatus.valDescription for optStatus in transactionRole.optCurrencyCode"
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionRole.submitted || transactionRole.formProductMantenimentNew.status2.$touched) 
+                        && transactionRole.formProductMantenimentNew.status2.$error.required" >
+                     </span>
+
+
+                  </span>
+                </div>
+            </div>
+
+
+                <div ng-if="transactionRole.formNewInvalid" class="formNewInvalid">Debes completar todos los campos</div>
+                  <div class="botonareacenterNew" > 
+                        <button
+                            class="boton btnlager btnblue positionBtn"                        
+                            ng-click="transactionRole.addJobsData()">Guardar Producto
+                        </button>
+                  </div>
+              </div>
+          </form>
+          </div>
+      </div>
+                    <div class="botonareacenter">
+            <button ng-click="transactionRole.modalCancel()" 
+                  class="boton3 btnlager2 btnred" >
+                  Volver a Dashboard
+            </button>
+         </div>
+          <!--Inicio Area footer-->
+          <!--Fin Area mantenimientos--> 
+        </div>
+      </div>

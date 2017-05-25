@@ -1,0 +1,210 @@
+<div id="titulo">
+   <div id="contenedortitulo">
+      <div id="topepanel">
+         <h2>Mantenimiento de Transacciones</h2>
+      </div>
+      <!--fin area tope panel-->
+      <div class="breadcrumbs">
+         <ul>
+            <li><a href="#">Dashboard / </a></li>
+            <li>Mantenimiento de Transacciones</li>
+         </ul>
+      </div>
+   </div>
+</div>
+<!--Inicio Area bodymantenimientos-->
+<div id="bodymantenimientos">
+   <div id="cuerpomantenimientos">
+      <!--Inicio Area mantenimientos-->
+      <form name="transactionCode.formTransactionCode" novalidate role="form">
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
+            <div class="divheader">
+               <h2>Mantenimiento</h2>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+               <div class="mantenimiento"> 
+                  <span class="label">Código Origen</span> 
+                  <span class="input2">
+                  <input name="originCode" type="text"
+                     ng-model="transactionCode.viewModelTransaction.originCode" 
+                     ng-class="{ 'hasError': (transactionCode.submitted || 
+                     transactionCode.formTransactionCode.originCode.$touched) && 
+                     transactionCode.formTransactionCode.originCode.$invalid}"
+                     ng-maxlength="20"
+                     ng-required="true"/>
+                  <span 
+                     class="alerttext" 
+                     ng-if="transactionCode.formTransactionCode.originCode.$error.required && 
+                     (transactionCode.submitted || transactionCode.formTransactionCode.originCode.$touched)"
+                     >Este campo es obligatorio
+                  </span>
+                  </span>
+                  <span class="label">Código Transacción</span> 
+                  <span class="input2">
+                  <input name="transactionCode" type="text" 
+                     ng-model="transactionCode.viewModelTransaction.transactionCode" 
+                     ng-class="{ 'hasError': (transactionCode.submitted || 
+                     transactionCode.formTransactionCode.transactionCode.$touched) && 
+                     transactionCode.formTransactionCode.transactionCode.$invalid}"
+                     ng-required="true"/>
+                  <span 
+                     class="alerttext" 
+                     ng-if="transactionCode.formTransactionCode.transactionCode.$error.required && 
+                     (transactionCode.submitted || transactionCode.formTransactionCode.transactionCode.$touched)"
+                     >Este campo es obligatorio
+                  </span>
+                  </span>   
+               </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+               <div class="mantenimiento"> 
+                  <span class="label">Descripción</span> 
+                  <span class="input">
+                  <input name="description" type="text" 
+                     ng-model="transactionCode.viewModelTransaction.description"
+                     ng-class="{ 'hasError': ( transactionCode.submitted || transactionCode.formTransactionCode.description.$touched) && transactionCode.formTransactionCode.description.$invalid }"
+                     ng-required="true"/>
+                  <span class="alerttext" 
+                     ng-if="transactionCode.formTransactionCode.description.$error.required && (transactionCode.submitted || transactionCode.formTransactionCode.description.$touched)" >
+                  Este campo es obligatorio
+                  </span>
+                  </span>  
+               </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+               <div class="mantenimiento">
+                  <span class="label">Tipo de Transacción</span> 
+                  <span class="input2">
+                     <select name="transactionType" 
+                        ng-model="transactionCode.viewModelTransaction.transactionType"
+                        ng-class="{ 'hasError': (transactionCode.submitted || transactionCode.formTransactionCode.transactionType.$touched) && transactionCode.formTransactionCode.transactionType.$invalid}" 
+                        ng-options="optTransType.valValue as optTransType.valDescription for optTransType in transactionCode.optionsTransType"
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionCode.submitted || transactionCode.formTransactionCode.transactionType.$touched) && transCode.formTransactionCode.transactionType.$error.required" >Este campo es obligatorio
+                     </span>
+                  </span>
+                  <span class="label">Moneda</span> 
+                  <span class="input2">
+                     <select name="currencyCode" style="width:75px"
+                        ng-model="transactionCode.viewModelTransaction.currencyCode" 
+                        ng-class="{ 'hasError': (transactionCode.submitted || transactionCode.formTransactionCode.currencyCode.$touched) && transactionCode.formTransactionCode.currencyCode.$invalid}"                       
+                        ng-options="optCurrencyCode.valValue as optCurrencyCode.valDescription for optCurrencyCode in transactionCode.optCurrencyCode"
+                        required >
+                     </select>         
+                     <span class="alerttext" 
+                        ng-if="(transactionCode.submitted || transactionCode.formTransactionCode.currencyCode.$touched) 
+                        && transactionCode.formTransactionCode.currencyCode.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+                  </span>
+               </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+               <div class="mantenimiento">
+                  <span class="label">Tipo de Producto</span> 
+                  <span class="input2">
+                     <select name="productType"
+                        ng-model="transactionCode.viewModelTransaction.productType" 
+                        ng-class="{ 'hasError': (transactionCode.submitted || transactionCode.formTransactionCode.productType.$touched) && transactionCode.formTransactionCode.productType.$invalid}" 
+                        ng-options="optProdType.valValue as optProdType.valDescription for optProdType in transactionCode.optProductType "
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionCode.submitted || transactionCode.formTransactionCode.productType.$touched) 
+                        && transactionCode.formTransactionCode.productType.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+                  </span>
+                  <span class="label">Estatus</span> 
+                  <span class="input2">
+                     <select name="status" style="width:75px"
+                        ng-model="transactionCode.viewModelTransaction.status" 
+                        ng-class="{ 'hasError': (transactionCode.submitted || transactionCode.formTransactionCode.status.$touched) && transactionCode.formTransactionCode.status.$invalid}" 
+                        ng-options="optStatus.valValue as optStatus.valDescription for optStatus in transactionCode.optStatus"
+                        required >
+                     </select>
+                     <span class="alerttext" 
+                        ng-if="(transactionCode.submitted || transactionCode.formTransactionCode.status.$touched) 
+                        && transactionCode.formTransactionCode.status.$error.required" >
+                     Este campo es obligatorio
+                     </span>
+                  </span>
+               </div>
+            </div>
+            <div class="botonarearight" ng-show="!transactionCode.editButton">
+               <!--<a href="#" class="boton btnlager btnblack">Filtrar</a>-->
+               <button
+                  class="boton btnlager btnInactive" 
+                  ng-class="{btnblack: transactionCode.viewModelTransaction.originCode 
+                  && transactionCode.viewModelTransaction.transactionCode && transactionCode.viewModelTransaction.description}"
+                  ng-disabled="!transactionCode.viewModelTransaction.originCode || !transactionCode.viewModelTransaction.transactionCode || !transactionCode.viewModelTransaction.description"
+                  ng-click="transactionCode.addProduct();">
+               AGREGAR
+               </button>
+            </div>
+            <div class="botonarearight" ng-show="transactionCode.editButton"> 
+               <button
+                  class="boton btnlager btnblack"                        
+                  ng-click="transactionCode.editJobsData(transactionCode.idSourceIncome)">MODIFICAR
+               </button>
+            </div>
+         </div>
+      </form>
+      <span class="separador">
+         <hr />
+      </span>
+      <div class="campomantenimientofull" ng-if="transactionCode.tableSourceProdcut[0] !== undefined" >
+         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+               <td class="gridsub" colspan="10">Listados de Productos <a href="#modal" class="boton2 btn btnblue">Nuevo</a></td>
+            </tr>
+            <tr class="grid_title">
+               <!--<td style="width:5%"></td>-->
+               <td style="width:10%" class="tablecenter" >Código origen</td>
+               <td style="width:10%" class="tablecenter">Código transacción </td>
+               <td style="width:15%">Tipo de transacción </td>
+               <td style="width:10%" class="tablecenter">Moneda </td>
+               <td style="width:10%" class="tablecenter" >Tipo de producto </td>
+               <td style="width:10%" class="tablecenter">Status </td>
+               <td style="width:20%" class="ultimo"></td>
+            </tr>
+            <tr class="grid_text" ng-repeat="table in transactionCode.tableSourceProdcut" >
+               <!--<td class="tablecenter" >1</td>-->
+               <td class="tablecenter" ng-bind="table.originCode"></td>
+               <td class="tablecenter" ng-bind="table.transactionCode" ></td>
+               <td class="tablecenter" ng-bind="table.transactionType"></td>
+               <td class="tablecenter" ng-bind="table.currencyCode"></td>
+               <td class="tablecenter" ng-bind="table.productType"></td>
+               <td class="tablecenter" ng-bind="table.status"></td>
+               <td>
+                  <button class="boton"
+                     ng-click="transactionCode.viewJobsData($index)">Editar
+                  </button> 
+                  <div ng-show="table.status === 'I'">
+                    <button class="botonlarge"                            
+                            ng-click="transactionCode.statusButton($index)">
+                            Activar
+                    </button>
+                  </div>
+                  <div ng-show="table.status === 'A'">
+                    <button class="btnredp"                            
+                            ng-click="transactionCode.statusButton($index)">
+                            Desactivar
+                    </button>
+                  </div>
+               </td>
+            </tr>
+         </table>
+      </div>
+                    <div class="botonareacenter">
+            <button ng-click="transactionCode.modalCancel()" 
+                  class="boton3 btnlager2 btnred" >
+                  Volver a Dashboard
+            </button>
+         </div>
+      <!--Inicio Area footer-->
+      <!--Fin Area mantenimientos--> 
+   </div>
+</div>
