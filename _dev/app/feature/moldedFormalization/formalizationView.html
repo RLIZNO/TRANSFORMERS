@@ -488,20 +488,13 @@
          <div class="w3-modal-content w3-card-4">
             <form name="transitionManteniment.formProductMantenimentNew" id="myForm" novalidate role="form">
                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
-                <div class="divheader">
+                <div class="divheader2">
                   <h2>Formalización</h2>
                 </div> 
                   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="tdc" class="input2">
-                      <p>Número Tarjeta de Claves Vigente</p> 
-                        <span class="input2">
-                          <input 
-                          type="text" 
-                          name="keyCardNumber"
-                          ng-model="moldedFormalization.viewModelmoldedFormalization.keyCardNumber"
-                          ng-disabled="true"
-                           />
-                        </span>
+                      <p>Número Tarjeta de Claves Vigente</p>                          
+                         <h5 class="numberCard"> {{moldedFormalization.viewModelmoldedFormalization.keyCardNumber}}</h5>
                       <!--<h4 class="texto" ng-bind="::i18n.views.creationAccount.labelKeyCardNumber">Clave de tarjeta</h4>
                       <input 
                         type="text" 

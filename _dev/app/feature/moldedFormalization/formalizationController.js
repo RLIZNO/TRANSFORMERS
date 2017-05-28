@@ -26,6 +26,7 @@
         'validationUserService',
         'printCardService',
         '$timeout',
+        '$interval',
         'addTableService'
     ];
 
@@ -49,6 +50,7 @@
         validationUserService,
         printCardService,
         $timeout,
+        $interval,
         addTableService
     ) {
         var vm = this;
@@ -166,7 +168,7 @@
 
         function validateKeyCard(){
             var jsonValKeyCard = {
-                "documentNumber": $rootScope.globalUserJSon.documentNumber,
+                "documentNumber": "00100038397",
                 "positionId":"40", 
                 "positionValue": vm.viewModelmoldedFormalization.positionValueInput
             };
@@ -182,10 +184,25 @@
                             closeOnConfirm: true
                         }, function () {
                             $timeout(function () {
-                                window.location.href = "#/result";
+
                             }, 0);
                         });
-                        printCard();
+                                var increaseCounter = function () {
+                                var idPrint = 170;
+                                printCardService.validPrintExit(idPrint).then(function(response) {
+                                    var requestCode = response.requestCode;
+                                    if(requestCode === undefined){
+                                        
+                                        $interval(increaseCounter, 20000); 
+                                    }
+                                    else {
+                                        $interval.cancel(promise);
+                                        printCard();
+                                    }
+                                }, modalError);
+                            }
+                            var promise = $interval(increaseCounter, 1000); 
+                        
                     } else {
                         modalFactory.error(messages.modals.error.codeIncorrect);
                     }
@@ -197,18 +214,19 @@
 
             var jsonPrint = {
               "flowStepId":"2",
-              "printer": $rootScope.globalUserJSon.printer,
+              "printer": "CINCO",
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
-              "cardHolderName": $rootScope.globalUserJSon.firstName + " " +  $rootScope.globalUserJSon.firstLasname,
-              "documentNumber": $rootScope.globalUserJSon.documentNumber,
+              "cardHolderName": "FABER",
+              "documentNumber": "00100038397",
               "additional":  vm.viewModelmoldedFormalization.aditional,
               "createdBy": vm.username
             }
 
             printCardService.printCard(jsonPrint).then( 
                 function(response){
-                    if (response.success == true) {
-                        modalFactory.success(messages.modals.success.printSuccess);
+                    if (response.success == true) {                      
+                        
+
                     } else {
                         modalFactory.success(messages.modals.error.printError);
                     }

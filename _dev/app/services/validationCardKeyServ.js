@@ -28,7 +28,30 @@
         return service;
 
         /**
-         *	@ngdoc method
+         *	@ngdoc method CREDIT_REQUES
+         *	@description
+         *	Generar posición para validar la tarjeta de clave
+         * 
+         *  @param {String} documentNumber Numero de documento del cliente.
+         *
+         *	@return {Object} La respuesta del servicio.
+         */
+        function getPositionKeyCard(documentNumber) {
+
+            return $http.get(PREFIX_URL.SERVICES + URL.POSITION_KEY_CARD + '?documentNumber=' + documentNumber)
+                .then(
+                    function (response) {
+                    	return response.data;
+                    },
+                      function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+
+        }
+
+                /**
+         *	@ngdoc method CREDIT_REQUES
          *	@description
          *	Generar posición para validar la tarjeta de clave
          * 
