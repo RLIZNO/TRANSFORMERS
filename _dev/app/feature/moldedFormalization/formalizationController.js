@@ -229,11 +229,15 @@
                                 printCardService.validPrintExit(idPrint).then(function(response) {
                                     $timeout(function(){
                                             var requestCode = response.requestCode;
+                                            
                                             contador ++;
                                             console.log('respuesta de la impre-------');
                                             console.log(response);
                                             if(requestCode === "MSGOK"){  
                                                 vm.printCardValid =  true;
+                                                $rootScope.globalUserJSon.idRf = response.data.flowStepId;
+                                                $rootScope.globalUserJSon.additional = response.data.additional;
+                                                $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;
                                                 $interval.cancel(promise);
                                                 validServiMega();    
                                             }
