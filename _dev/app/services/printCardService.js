@@ -22,7 +22,8 @@
 
         var service = {
             printCard: printCard,
-            validPrintExit: validPrintExit
+            validPrintExit: validPrintExit,
+            servicesMega: servicesMega
         };
 
         return service;
@@ -36,6 +37,18 @@
 
         function printCard(json) {
             return $http.post(PREFIX_URL.SERVICES + URL.PRINT_CARD, json)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
+        function servicesMega(json) {
+            return $http.post(PREFIX_URL.SERVICES + URL.VALID_MEGA, json)
                 .then(
                     function (response) {
                         return response.data;

@@ -83,6 +83,7 @@
         vm.getMunicipalities = getMunicipalities;
         vm.getSectors = getSectors;
         vm.getPlaces = getPlaces;
+        vm.validServiMega = vm.validServiMega;
         vm.viewModelmoldedFormalization.basicData = {
             cedula: null,
             firstLastName: null
@@ -108,7 +109,7 @@
         vm.datePassport = "";
         vm.email = "";
         vm.myDate = "";
-        vm.cellphone="";
+        vm.cellphone= "";
         vm.nacionalidad= document.getElementById("nacionalidad");
         vm.genderSelect = document.getElementById("gender");
         vm.validAditional = validAditional;
@@ -116,6 +117,7 @@
         vm.validImpre = validImpre;
         vm.positionCard="";
         $rootScope.globalUserJSon;
+
 
         jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
 
@@ -127,10 +129,10 @@
 
         catalogService.getCatalogBin(URL.CATALOG_BIN).then(
         function (response) {
-            vm.typeProduct = response.data.List;
+            vm.productTyoe = response.data.List;
         });
 
-        creditBureauService.getValidCientExisting(2 , "00100038397", vm.username).then(
+        creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
             function(response){
                 $rootScope.globalUserJSon.keyCardNumber = response.keyCardNumber;
                 vm.viewModelmoldedFormalization.keyCardNumber = response.keyCardNumber;
@@ -140,7 +142,7 @@
 
         function validImpre(){
 
-            validationCardKeyServ.getPositionKeyCard($rootScope.globalUserJSon.documentNumber).then(
+            validationCardKeyServ.getPositionKeyCard(JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(
                 function(response){
                     vm.positionCard = response.data.positionId;
                 }
@@ -168,8 +170,8 @@
 
         function validateKeyCard(){
             var jsonValKeyCard = {
-                "documentNumber": "00100038397",
-                "positionId":"40", 
+                "documentNumber": JSON.parse($rootScope.globalUserJSon.json).documentNumber,
+                "positionId":vm.positionCard, 
                 "positionValue": vm.viewModelmoldedFormalization.positionValueInput
             };
 
@@ -184,24 +186,10 @@
                             closeOnConfirm: true
                         }, function () {
                             $timeout(function () {
-
+                                printCard();  
                             }, 0);
-                        });
-                                var increaseCounter = function () {
-                                var idPrint = 170;
-                                printCardService.validPrintExit(idPrint).then(function(response) {
-                                    var requestCode = response.requestCode;
-                                    if(requestCode === undefined){
-                                        
-                                        $interval(increaseCounter, 20000); 
-                                    }
-                                    else {
-                                        $interval.cancel(promise);
-                                        printCard();
-                                    }
-                                }, modalError);
-                            }
-                            var promise = $interval(increaseCounter, 1000); 
+                        });     
+                                                 
                         
                     } else {
                         modalFactory.error(messages.modals.error.codeIncorrect);
@@ -210,26 +198,119 @@
             );
         }
 
-        function printCard(){
 
+        function printCard(){
+            vm.aditionalPrint = '';
+            vm.printCardValid =  false;
+            var contador = 0;
+            if (vm.viewModelmoldedFormalization.aditional === 21233) {
+                vm.aditionalPrint = 'N';
+            }
             var jsonPrint = {
-              "flowStepId":"2",
-              "printer": "CINCO",
+              "flowStepId": $rootScope.globalUserJSon.id,
+              "printer": "0987",//JSON.parse($rootScope.globalUserJSon.json).printer,
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
-              "cardHolderName": "FABER",
-              "documentNumber": "00100038397",
-              "additional":  vm.viewModelmoldedFormalization.aditional,
+              "cardHolderName": JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+              "documentNumber": JSON.parse($rootScope.globalUserJSon.json).documentNumber,
+              "additional": vm.aditionalPrint,
               "createdBy": vm.username
             }
 
             printCardService.printCard(jsonPrint).then( 
                 function(response){
-                    if (response.success == true) {                      
+                    if (response.success == true) {
+                        var promise; 
+                        var increaseCounter = function () {
+                        console.log('Loading...')
+                        var idPrint = response.data.id;
                         
+                        if (contador < 5) {
+                            if (!vm.printCardValid){
+                                printCardService.validPrintExit(idPrint).then(function(response) {
+                                    $timeout(function(){
+                                            var requestCode = response.requestCode;
+                                            contador ++;
+                                            console.log('respuesta de la impre-------');
+                                            console.log(response);
+                                            if(requestCode === "MSGOK"){  
+                                                vm.printCardValid =  true;
+                                                $interval.cancel(promise);
+                                                validServiMega();    
+                                            }
+                                            else {
 
-                    } else {
+                                            }
+                                    }, 20000);
+                                    
+                                }, modalError);                                    
+                            }
+                        }   else {
+                            vm.printCardValid =  true;
+                            $interval.cancel(promise);
+                          }                         
+                        }
+                        promise =  $interval(increaseCounter, 20000);     
+                    }else {
                         modalFactory.success(messages.modals.error.printError);
-                    }
+                    }               
+                }
+            );
+        }
+
+
+        function validServiMega() {
+            var jsonMega = {
+                "idCustomerStepFlow" : $rootScope.globalUserJSon.id,
+                "DAC": {
+                    "userName": vm.username,
+                    "customerName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+                    "documentNumber":JSON.parse($rootScope.globalUserJSon.json).documentNumber,
+                    "productType":"TARJETA CREDITO",
+                    "limitRD":$rootScope.globalLimitData.limitRD,
+                    "limitUSD":$rootScope.globalLimitData.limitUSD,
+                    "creationDate": JSON.parse($rootScope.globalUserJSon.json).contratacionDate,
+                    "agency":"Aquí",
+                    "productName":"CINCO",
+                    "deferred":$rootScope.globalLimitData.limDiferido,
+                    "nationality":JSON.parse($rootScope.globalUserJSon.json).idNacionality,
+                    "birtDate": JSON.parse($rootScope.globalUserJSon.json).birthDate,
+                    "civilStatus": JSON.parse($rootScope.globalUserJSon.json).idCivilState,
+                    "sex": JSON.parse($rootScope.globalUserJSon.json).sex,
+                    "profession": JSON.parse($rootScope.globalUserJSon.json).idProfession,
+                    "academicLevel": JSON.parse($rootScope.globalUserJSon.json).academicLevel,
+                    "decisionCredit":"OK",
+                    "decisionDate":"2017-05-16",
+                    "isFico":false,
+                    "incomes":"20000",
+                    "incomeEvidence":"21000",
+                    "houseType":"PROPIA",
+                    "houseTime":"8",
+                    "expenses":"25000",
+                    "score":"000",
+                    "contractDate":"2010-04-04"
+                },
+                "AcknowledgmentReceipt":{
+                    "userName":vm.username,
+                    "productType":"TC",
+                    "phone":"12345678",
+                    "address":"Aqui no mas",
+                    "principalCardNumber":vm.viewModelmoldedFormalization.keyCardNumber,
+                    "additionalCardNumber":"N",
+                    "office":"101",
+                    "billingCycle":"MENSUAL",
+                    "receptorName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+                    "documentNumber":JSON.parse($rootScope.globalUserJSon.json).documentNumber,
+                    "bankAssesor":"XXXX XX",
+                    "customerName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+                    "customerBeneficiary":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+                    "receptorFirm":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname
+                }
+            }          
+
+            printCardService.servicesMega(jsonMega).then( 
+                function(response){ 
+                    console.log('Respuesta del servicio para las url de los contratos-----')              
+                    console.log(response);
                 }
             );
         }

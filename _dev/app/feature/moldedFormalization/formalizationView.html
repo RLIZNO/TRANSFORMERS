@@ -62,7 +62,7 @@
                       ng-model="moldedFormalization.viewModelmoldedFormalization.typeProduct"
                       ng-class="{ 'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.typeProduct.$touched)
                                  && moldedFormalization.formMoldedFormalization.typeProduct.$invalid}"
-                      ng-options="product.bin as product.description for product in moldedFormalization.productTyoe"
+                      ng-options="product.productCode as product.description for product in moldedFormalization.productTyoe"
                       required>
                       <option></option>
                     </select>
