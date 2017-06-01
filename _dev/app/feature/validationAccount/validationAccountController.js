@@ -761,8 +761,12 @@
                             return text;  
                  }
 
+<<<<<<< HEAD
 
             validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, $rootScope.dataUser.userName, income, typeProducto).then(function (response) {
+=======
+            validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.username, income, typeProducto).then(function (response) {
+>>>>>>> 1127eefa5c2139f7e95f37c271e0493d8e16e4d1
                         
                 console.log(response);
                 function limitUSD( text, busca, reemplaza ){

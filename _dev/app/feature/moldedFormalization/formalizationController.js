@@ -171,10 +171,19 @@
             
             //window.location.href = "#/result";
             var modal = document.getElementById('myModal');
+            var btnClose = document.getElementById('formPrint');
+            
             var span = document.getElementsByClassName("close")[0];
+
             modal.style.display = "block";
 
             span.onclick = function() {
+                modal.style.display = "none";
+                vm.submitted = false;
+                vm.formNewInvalid =  false;
+            }
+
+            btnClose.onclick = function() {
                 modal.style.display = "none";
                 vm.submitted = false;
                 vm.formNewInvalid =  false;
@@ -198,7 +207,8 @@
 
             validationCardKeyServ.validationCardKey(jsonValKeyCard).then(
                 function(response){
-                    if (response.success == true) {
+                    var count = 0;
+                    if (response.success == true && count < 3) {
                             sweet.show({
                             title: 'Exito',
                             text: messages.modals.success.codeCorrect,
@@ -210,10 +220,9 @@
                                 printCard();  
                             }, 0);
                         });     
-                                                 
-                        
                     } else {
                         modalFactory.error(messages.modals.error.codeIncorrect);
+                        count++;
                     }
                 }
             );
@@ -342,6 +351,7 @@
                 }
             );
         }
+
 
         /**
          *  @ngdoc method
@@ -667,7 +677,7 @@
                         jsonData.nationality = jsonData.nationality;
                     }
 
-                    vm.bornDay = document.getElementById("fechaNacimiento");
+                    //vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.getBureau = true;
                     vm.datePassport = jsonData.birthDate;
                     vm.email = jsonData.email;
@@ -882,7 +892,8 @@
                     vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.datePassport = vm.dataClientExit.birthDate;
                     vm.email = vm.dataClientExit.email;
-                    vm.myDate = vm.dataClientExit.birthDate;
+                    vm.myDate = jsonData.birthDate;
+                    vm.cellphone = jsonData.cellPhone;
                     vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
 
                     /*var year = vm.datePassport.substring(6,10);

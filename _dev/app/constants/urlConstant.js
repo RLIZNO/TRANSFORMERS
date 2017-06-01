@@ -29,7 +29,7 @@
             UPDATE_FOREING_PEP_DATA : '/BHDL_TDPD_Back_Customers/rest/clientPerson/foreignCurrencyPEPData',
             VALIDATE_USER : '/BHDL_TDPD_Back_Customers/rest/userDataInformation/getUserDataInformation',
             SIEBEL_CLIENTE_SIB: '/BHDL_TDPD_Back_Utils/rest/catalogs/retrieveSiebelClientType',
-			GENERATE_PERSON_CODE : '/BHDL_TDPD_Back_Customers/rest/clientPersonCreation/createClientPersonCore',
+		GENERATE_PERSON_CODE : '/BHDL_TDPD_Back_Customers/rest/clientPersonCreation/createClientPersonCore',
             KEY_CARD_ASSIGNMENT : '/BHDL_TDPD_Back_Customers/rest/keyCard/keyCardAssignment',
             POSITION_KEY_CARD : '/BHDL_TDPD_Back_Utils/rest/keyCard/retrieveKeyCard',
             VALIDATE_KEY_CARD : '/BHDL_TDPD_Back_Utils/rest/keyCard/validateKeyCard',
@@ -75,6 +75,8 @@
             ADD_CIERRE_FORZOSO:  '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/add',
             GET_CIERRE_FORZOSO: '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/getByDocumentNumber',
             UPDATE_CIERRE_FORZOSO: '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/update',
-            PRINT_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/add' 
+            PRINT_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/add',
+            ACTIVATE_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/activateCard/activate',
+            GET_FILES_GR: '/BHDL_TDPD_SIREMAS/siremas/uploadedFiles/Get'
         });
 })();

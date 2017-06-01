@@ -20,8 +20,7 @@
         'formalizationResultModule',
         'parameConsultAffModule',
         'parameConsultClientModule',
-
-
+        'consultArchModule',
 
         //module components
         'uploadOnBaseModule'

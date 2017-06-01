@@ -64,6 +64,11 @@
                 url: "/client",
                 templateUrl: "app/feature/consultClient/parameConsultClientView.html",
                 controller: "parameConsultClientController as consultClient"
+            })
+            .state('consultArch',{
+                url: "/arch",
+                templateUrl: "app/feature/consultArch/consultArchView.html",
+                controller: "consultArchController as consultArch"
             });
 
 

@@ -77,7 +77,7 @@
                 ng-model="moldedFormalization.viewModelmoldedFormalization.aditional"
                 ng-class="{ 'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.aditional.$touched)
                            && moldedFormalization.formMoldedFormalization.aditional.$invalid}"
-                ng-options="optionYn.id as optionYn.value for optionYn in moldedFormalization.optionsYesNo"
+                ng-options="optionYn.extrafield1 as optionYn.value for optionYn in moldedFormalization.optionsYesNo"
                 ng-change="moldedFormalization.validAditional();"
                 required>
                 <option></option>
@@ -219,13 +219,68 @@
            ng-bind="::i18n.general.maxLength">
         </span>
         </span> 
-              </div>
-                      
-              </div>
-
-        <div class="mantenimiento">
+      </div>
+      </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="mantenimiento">  
         <div class="columna3_1">
-          <span class="labelAditional margen">Fecha Nacimiento</span>
+          <span class="labelAditional">Cédula</span>
+          <span class="input">
+            <input name="identificationName" type="text"  
+             ng-model="moldedFormalization.viewModelmoldedFormalization.identificationName"
+             ng-class="{ 'hasError': (moldedFormalization.submitted || 
+             moldedFormalization.formMoldedFormalization.identificationName.$touched) && 
+             moldedFormalization.formMoldedFormalization.identificationName.$invalid}" />
+          </span>
+        </div>
+        <div class="columna3_2_1">
+          <div class="botonarealeft ">            
+           <button  
+              class="boton3 btnblue"
+              ng-click="moldedFormalization.validateClient()">
+           Validar
+           </button>
+          </div>
+        </div>
+        <div class="columna3_2_1">
+          <span class="labelAditionalDef">Sexo</span> 
+          <span class="inputDefi inputDef">
+          <select
+             id="gender"
+             name="sex"
+             ng-model="moldedFormalization.viewModelmoldedFormalization.sex"
+             ng-class="{ 'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.sex.$touched)
+             && moldedFormalization.formMoldedFormalization.sex.$invalid}"
+             ng-options="sexo.id as sexo.value for sexo in moldedFormalization.typeSex"
+             ng-required="true">
+          </select>
+          <span class="alerttext" 
+             ng-if="(moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.sex.$touched) 
+             && moldedFormalization.formMoldedFormalization.sex.$error.required">Este campo es obligatorio</span> 
+          </span>
+        </div>
+        <div class="columna3_2_1">
+      <span class="labelAditionalDef">Estado Civil</span> 
+      <span class="inputDefi inputDef">
+      <select
+         name="status"
+         ng-model="moldedFormalization.viewModelmoldedFormalization.status"
+         ng-class="{ 'hasError': (validationAccount.submitted || moldedFormalization.formMoldedFormalization.status.$touched)
+         && moldedFormalization.formMoldedFormalization.status.$invalid}"
+         ng-options="optionYn.id as optionYn.value for optionYn in moldedFormalization.typeStatus"
+         ng-required="true" >
+      <option></option>
+      </select>
+      <span class="alerttext" 
+         ng-if="(validationAccount.submitted || moldedFormalization.formMoldedFormalization.status.$touched) 
+         && moldedFormalization.formMoldedFormalization.status.$error.required">Este campo es obligatorio</span>  
+      </span>
+      </div>
+      </div>
+      <div class="mantenimiento">
+        <div class="columna3_1">
+          <span class="labelAditional">Fecha Nacimiento</span>
           <!--<span class="input">
           <input type="text"
              id="fechaNacimiento"
@@ -513,7 +568,7 @@
                            <p >{{moldedFormalization.positionCard}}</p>
                         </div>
                         <div class="inputKeyWrap">
-                           <input ng-model="moldedFormalization.viewModelmoldedFormalization.positionValueInput" type="text" placeholder="XXXX" maxlength="4" required="">
+                           <input type="password" ng-model="moldedFormalization.viewModelmoldedFormalization.positionValueInput" type="text" placeholder="XXXX" maxlength="4" required="">
                         </div>
                      </div>
                   </div>
@@ -522,6 +577,9 @@
                         class="boton3 btnblue"
                         ng-click="moldedFormalization.validateKeyCard();">
                      Enviar
+                     </button>
+                     <button id="formPrint" class="boton3 btnblue" >
+                        <span class=" w3-animate-opacity">Cancelar</span>  
                      </button>
                   </div> 
                </div>
