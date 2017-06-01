@@ -74,7 +74,6 @@
         //vm.preaprobado=false;
         vm.limitRD="";
         vm.limitUSD="";
-        vm.username = 'AM029969';
                 /**
          *  @ngdoc property
          *  @name formValidationDocument
@@ -763,7 +762,7 @@
                  }
 
 
-            validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.userName, income, typeProducto).then(function (response) {
+            validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, $rootScope.dataUser.userName, income, typeProducto).then(function (response) {
                         
                 console.log(response);
                 function limitUSD( text, busca, reemplaza ){
@@ -882,27 +881,9 @@
         function validateClient() {
             
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
-            creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, vm.username).
-                then(function   
-                    (response) {
-                resetData();
-                validationClientService.getValidationClient(documentNumber, vm.viewModelvalidationAccount.typeIdentification, vm.username).then(function (responseValue) {
-                
-                vm.validationClient = responseValue.validationClient;
-                validateClientCanContinue();
+            var usernumber = vm.viewModelvalidationAccount.numberIdentification;
+            localStorage.setItem("usernumber", usernumber);
 
-               if(!vm.validationClient) {
-                    getCreditBureauNoCLient();
-                    getCreditListService();
-                    vm.clientNo = false;
-                }
-                if (vm.validationClient){
-                    getCreditBureau();
-                    getCreditListService();
-                    vm.clientYes = true;
-                }
-              }, modalError);
-            }, modalError);
 
             /*var getJsonCierreForz = localStorage.getItem('JSON');
             var docNumUserCierreForz = JSON.parse(getJsonCierreForz);
@@ -912,7 +893,30 @@
                 function (response) {   
                     if(response.success == true ){
                         $rootScope.globalUserJSon = response.data;
-                        window.location.href = "#/form";
+                        console.log($rootScope.globalUserJSon);
+                        $state.go('moldedFormalization');
+                    }else {
+                        creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
+                            then(function   
+                                (response) {
+                            resetData();
+                            validationClientService.getValidationClient(documentNumber, vm.viewModelvalidationAccount.typeIdentification, $rootScope.dataUser.userName).then(function (responseValue) {
+                            
+                            vm.validationClient = responseValue.validationClient;
+                            validateClientCanContinue();
+
+                        if(!vm.validationClient) {
+                                getCreditBureauNoCLient();
+                                getCreditListService();
+                                vm.clientNo = false;
+                            }
+                            if (vm.validationClient){
+                                getCreditBureau();
+                                getCreditListService();
+                                vm.clientYes = true;
+                            }
+                        }, modalError);
+                        }, modalError);
                     }
             });  
         }
@@ -943,7 +947,7 @@
                 clientCountry = '',
                 clientAge;
 
-            creditBureauService.getValidCreditBureau(documentNumber, vm.username).then(function (responseValue) {
+            creditBureauService.getValidCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseValue) {
                
                 vm.findJudicialEvaluation = responseValue.validationBuroResult;
                 if (!vm.findJudicialEvaluation) {
@@ -953,13 +957,13 @@
                     vm.decisionMoti = 'Cliente presenta Ficha Judicial';
                     modalFactory.error(messages.modals.error.badJudicialEvaluation);
                 }else {
-                        creditBureauService.getXmlCreditBureau(documentNumber, vm.username).then(function (responseXml) {
+                        creditBureauService.getXmlCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseXml) {
                             stringXml = responseXml;
                             
                             /* URL que almacena el llamado al archivo XML en el servidor */
-                            vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  vm.username;
+                            vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
 
-                         validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, vm.username).then(function(response){
+                         validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, $rootScope.dataUser.userName).then(function(response){
                                 
                                 oJson = response;
                                 if (response.codError === 'Error Inesperado Index: 1, Size: 1'){
@@ -1119,12 +1123,12 @@
                 clientCountry = '',
                 clientAge;
 
-            creditBureauService.getValidCreditBureau(documentNumber, vm.username).then(function (responseValue) {
+            creditBureauService.getValidCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseValue) {
 
                 vm.findJudicialEvaluation = responseValue.validationBuroResult;
 
 
-                creditBureauService.getXmlCreditBureau(documentNumber, vm.username).then(function (responseXml) {
+                creditBureauService.getXmlCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function (responseXml) {
                     
                     stringXml = responseXml;
                     
@@ -1132,7 +1136,7 @@
                     console.log(oJson);
                     clientCountry = oJson.reportecu.reporte.informacionadicional.nacionalidad;
                     /* URL que almacena el llamado al archivo XML en el servidor */
-                    vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  vm.username;
+                    vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
                     /*Si el segundo nombre viene indefinido colocarlo como vacio  */
                     
                     jsonData.typeDocument = vm.viewModelvalidationAccount.typeIdentification;
@@ -1258,7 +1262,7 @@
 
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
 
-            creditListService.getCreditListService(documentNumber, vm.viewModelvalidationAccount.typeIdentification, vm.username).then(function(responseValue) {
+            creditListService.getCreditListService(documentNumber, vm.viewModelvalidationAccount.typeIdentification, $rootScope.dataUser.userName).then(function(responseValue) {
                 console.log(responseValue);
                 $timeout(function(){
                     vm.finObs = responseValue.observed;
@@ -1304,7 +1308,7 @@
                 }
             });
                 
-            validationClientService.getvalidateClientCreditCard(documentNumber, vm.username, typeIdentification, typeProducto).then(
+            validationClientService.getvalidateClientCreditCard(documentNumber, $rootScope.dataUser.userName, typeIdentification, typeProducto).then(
                     function (responseValue) {
                     console.log(responseValue);
                     if(vm.fichaBand){
@@ -1420,7 +1424,7 @@
 
                 /*Llamamos al servicio que elimina el xml del buró de credito obtenido */
                 var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
-                creditBureauService.deleteXmlCreditBureau(documentNumber, vm.username).then(function () {});
+                creditBureauService.deleteXmlCreditBureau(documentNumber, $rootScope.dataUser.userName).then(function () {});
 
                 /*Llamos al servicio que guarda la identificación del cliente */
                 saveIdentificationService.postSaveIdentification(jsonIdentification);
@@ -1460,7 +1464,7 @@
                     jsonIdentification.isJudiciary = '1';       
                     jsonIdentification.isControlList = '1';
 
-                    validationClientService.getValidaClientPortal(jsonIdentification.documentType, jsonIdentification.documentNumber, vm.username).then
+                    validationClientService.getValidaClientPortal(jsonIdentification.documentType, jsonIdentification.documentNumber, $rootScope.dataUser.userName).then
                         (function (response) {
                             vm.validationClientPortal = response.data.existsClientPortal;
                                 if (vm.validationClientPortal){
@@ -1473,7 +1477,7 @@
                             }
                         });
 
-                    creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, vm.username).
+                    creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
                         then(function   
                             (response) {
                             console.log(response);
@@ -1628,6 +1632,10 @@
                     errortc = "Cliente debe pasar por la sucursal más cercana a recibir su tarjeta de claves para continuar.";
                     vm.clientCanContinue =  false;
                 }
+                if(error.message === "En estos momentos no se puede realizar consulta de ficha judicial en data crédito. Inténtelo nuevamente más tarde"){
+                    vm.clientCanContinue =  false;
+                }
+                
                 modalFactory.error(errortc);
             } 
 

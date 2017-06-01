@@ -29,32 +29,11 @@
     ) {
 
         var vm = this;
-        var userNamelocal = '';
 
-        /*Variables*/
-        /*Si el usuario entra por primera vez entonces creamos la cookie */
-        if(angular.isUndefined($cookies.get('userName'))){
-            /*Guardamos el nombre de usuario del en una cookie para mantener la session */
-            $cookies.put('userName', $location.search().USRLOGIN);
-            userNamelocal = $cookies.get('userName');
-            localStorage.setItem("userName", userNamelocal)
-        }
 
         /*Capturamos la cookie que tiene el nombre del usuario*/
         vm.userName = localStorage.getItem("userName");
-        vm.meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        vm.fecha = new Date();
-        vm.init = $interval(function () {
-            var date = new Date();
-            vm.dates = [{
-                "date1": date
-            }];
-        }, 100);
 
-        vm.theTime = new Date().toLocaleTimeString();
-        $interval(function () {
-            vm.theTime = new Date().toLocaleTimeString();
-        }, 1000);
         vm.name = ''; /*Variable que almacena el nombre del usuario a mostrar */
         $rootScope.dataUser = {
             'userValid' : false,

@@ -90,7 +90,7 @@
         };
 
         /* NUEVAS FUNCIONES */
-        vm.printCard = vm.printCard;
+        
         vm.validateClient = validateClient;
         vm.resetData = resetData;
         vm.modalError = modalError;
@@ -100,7 +100,7 @@
         vm.getCreditBureauNoCLient = getCreditBureauNoCLient;
         vm.getCreditListService = getCreditListService;
         vm.getvalidateClientCreditCard = getvalidateClientCreditCard;
-        vm.validateKeyCard = validateKeyCard;
+        
         vm.nameUser="";
         vm.namePlastic2 = "";
         vm.landLine = "";
@@ -114,23 +114,44 @@
         vm.genderSelect = document.getElementById("gender");
         vm.validAditional = validAditional;
         vm.aggAditional = false;
-        vm.validImpre = validImpre;
+        vm.dataEmbozado = {};
+        
         vm.positionCard="";
         $rootScope.globalUserJSon;
+        console.log($rootScope.globalUserJSon);
+        
 
+        /*if ($rootScope.globalUserJSon) {
+            addTableService.getcierreForzosoTC(JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(
+                function(response){
+                    vm.dataEmbozado = JSON.parse(response.data.json);
+                    vm.viewModelmoldedFormalization.namePlastic = JSON.parse(jsonData.numberDocument).documentNumber;
+                }
+            );
+        } else {
+            jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
+            vm.dataEmbozado = jsonData;
+        }*/
 
-        jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
+        /*jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
 
         addTableService.getcierreForzosoTC(jsonData.numberDocument).then(
             function(response){
                 $rootScope.globalUserJSon = response.data;
+                console.log($rootScope.globalUserJSon);
             }
-        );
+        );*/
 
         catalogService.getCatalogBin(URL.CATALOG_BIN).then(
         function (response) {
             vm.productTyoe = response.data.List;
         });
+
+
+        vm.validateKeyCard = validateKeyCard;
+        vm.validImpre = validImpre;
+        vm.printCard = vm.printCard;
+
 
         creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
             function(response){
@@ -208,7 +229,7 @@
             }
             var jsonPrint = {
               "flowStepId": $rootScope.globalUserJSon.id,
-              "printer": "0987",//JSON.parse($rootScope.globalUserJSon.json).printer,
+              "printer": $rootScope.globalUserJSonPrinter, //JSON.parse($rootScope.globalUserJSon.json).printer,
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
               "cardHolderName": JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
               "documentNumber": JSON.parse($rootScope.globalUserJSon.json).documentNumber,
@@ -228,12 +249,12 @@
                             if (!vm.printCardValid){
                                 printCardService.validPrintExit(idPrint).then(function(response) {
                                     $timeout(function(){
-                                            var requestCode = response.requestCode;
+                                            var requestCode = response.responseCode;
                                             
                                             contador ++;
                                             console.log('respuesta de la impre-------');
                                             console.log(response);
-                                            if(requestCode === "MSGOK"){  
+                                            if(requestCode !== ""){  
                                                 vm.printCardValid =  true;
                                                 $rootScope.globalUserJSon.idRf = response.data.flowStepId;
                                                 $rootScope.globalUserJSon.additional = response.data.additional;
@@ -260,6 +281,9 @@
                 }
             );
         }
+        
+
+        
 
 
         function validServiMega() {
@@ -519,7 +543,7 @@
                                 vm.clientYes = true;
                             }
                             }, 0);
-                        }, modalError);
+                }, modalError);
 
             //}
 
