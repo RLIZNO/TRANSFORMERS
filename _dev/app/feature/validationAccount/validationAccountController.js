@@ -762,7 +762,6 @@
                             return text;  
                  }
 
-
             validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.username, income, typeProducto).then(function (response) {
                         
                 console.log(response);
@@ -1288,7 +1287,7 @@
                     }
                     validateClientCanContinue();
 
-                }, 0);
+                }, 200);
 
             }, modalError);
 
@@ -1440,8 +1439,8 @@
                         var dataSiebel = false;
                         localStorage.setItem("dataSiebel", dataSiebel);
                         localStorage.setItem("validclientTc", validclientTc);
-                        //window.location.href = "/wps/portal/ptd/inicio";
-                        window.location.href = "../index.html";
+                        window.location.href = "/wps/portal/ptd/inicio";
+                        //window.location.href = "../index.html";
                     }, 0);
                 });
             }
@@ -1484,8 +1483,8 @@
                             localStorage.setItem("dataSiebel", dataSiebel);
                             var validclientTc = 'validclientTc';
                             localStorage.setItem("validclientTc", validclientTc);
-                            //window.location.href = "/wps/portal/ptd/inicio";
-                            window.location.href = "../index.html";
+                            window.location.href = "/wps/portal/ptd/inicio";
+                            //window.location.href = "../index.html";
                         }, modalError); 
 
             }

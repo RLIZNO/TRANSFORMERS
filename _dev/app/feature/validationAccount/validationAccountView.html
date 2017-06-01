@@ -92,8 +92,8 @@
               <button
                       class="boton btnlager btnInactive" 
                       ng-class="{btnblack: validationAccount.viewModelvalidationAccount.numberIdentification 
-                      && validationAccount.viewModelvalidationAccount.doubleNationality}"
-                      ng-disabled="!validationAccount.viewModelvalidationAccount.doubleNationality || !validationAccount.viewModelvalidationAccount.numberIdentification"
+                      && validationAccount.viewModelvalidationAccount.doubleNationality && validationAccount.viewModelvalidationAccount.typeProduct}"
+                      ng-disabled="!validationAccount.viewModelvalidationAccount.doubleNationality || !validationAccount.viewModelvalidationAccount.numberIdentification || !validationAccount.viewModelvalidationAccount.typeProduct" 
                       ng-click="validationAccount.validateClient();">
                       VALIDAR
                   </button>

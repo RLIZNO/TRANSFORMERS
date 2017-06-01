@@ -90,8 +90,8 @@
                     
                     var validclientTc = 'validclientTclean';
                         localStorage.setItem("validclientTc", validclientTc);
-                    //window.location.href = "/wps/portal/ptd/inicio";
-                    window.location.href = "/#/";
+                    window.location.href = "/wps/portal/ptd/inicio";
+                    //window.location.href = "/#/";
                 }, 0);
             });
 
