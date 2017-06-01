@@ -38,6 +38,7 @@
             SEND_EMAIL : '/BHDL_TDPD_Back_Utils/rest/email/sendEmailNewClient',
             CREATE_INDEX_FILE : '/BHDL_TDPD_Back_Customers/rest/onbase/createIndexFile',
             UPLOAD_FILE : '/BHDL_TDPD_Back_Customers/rest/onbase/uploadFile',
+            CREDIT_REQUES: 'BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/getCreditCardRequest',
             FINALIZE_INDEX_FILE : '/BHDL_TDPD_Back_Customers/rest/onbase/finalizeIndexFile',
             ACCOUNT_CREATION : '/BHDL_TDPD_Back_Customers/rest/customerAccount/create',
             COMPLETE_CLIENTE_DATA : '/BHDL_TDPD_Back_Customers/rest/clientPerson/completeClientData',
@@ -73,6 +74,8 @@
             ADD_CIERRE_FORZOSO:  '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/add',
             GET_CIERRE_FORZOSO: '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/getByDocumentNumber',
             UPDATE_CIERRE_FORZOSO: '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/update',
-            PRINT_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/add' 
+            PRINT_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/add',
+            ACTIVATE_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/activateCard/activate',
+            GET_FILES_GR: '/BHDL_TDPD_SIREMAS/siremas/uploadedFiles/Get'
         });
 })();

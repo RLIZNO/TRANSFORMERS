@@ -26,6 +26,7 @@
         'validationUserService',
         'printCardService',
         '$timeout',
+        '$interval',
         'addTableService'
     ];
 
@@ -49,6 +50,7 @@
         validationUserService,
         printCardService,
         $timeout,
+        $interval,
         addTableService
     ) {
         var vm = this;
@@ -146,10 +148,19 @@
             
             //window.location.href = "#/result";
             var modal = document.getElementById('myModal');
+            var btnClose = document.getElementById('formPrint');
+            
             var span = document.getElementsByClassName("close")[0];
+
             modal.style.display = "block";
 
             span.onclick = function() {
+                modal.style.display = "none";
+                vm.submitted = false;
+                vm.formNewInvalid =  false;
+            }
+
+            btnClose.onclick = function() {
                 modal.style.display = "none";
                 vm.submitted = false;
                 vm.formNewInvalid =  false;
@@ -173,7 +184,8 @@
 
             validationCardKeyServ.validationCardKey(jsonValKeyCard).then(
                 function(response){
-                    if (response.success == true) {
+                    var count = 0;
+                    if (response.success == true && count < 3) {
                             sweet.show({
                             title: 'Exito',
                             text: messages.modals.success.codeCorrect,
@@ -184,16 +196,21 @@
                             $timeout(function () {
                                 window.location.href = "#/result";
                             }, 0);
-                        });
-                        printCard();
+                        });     
+                        printCard();                           
+                        count = 0;
                     } else {
                         modalFactory.error(messages.modals.error.codeIncorrect);
+                        count++;
                     }
                 }
             );
         }
 
+
         function printCard(){
+
+            vm.printCardValid =  false;
 
             var jsonPrint = {
               "flowStepId":"2",
@@ -208,13 +225,48 @@
             printCardService.printCard(jsonPrint).then( 
                 function(response){
                     if (response.success == true) {
-                        modalFactory.success(messages.modals.success.printSuccess);
-                    } else {
+                        var promise; 
+                        var increaseCounter = function () {
+                        console.log('Loading...')
+                        var idPrint = response.data.id;
+                        
+                        if (contador < 5) {
+                            if (!vm.printCardValid){
+                                printCardService.validPrintExit(idPrint).then(function(response) {
+                                    $timeout(function(){
+                                            var requestCode = response.requestCode;
+                                            
+                                            contador ++;
+                                            console.log('respuesta de la impre-------');
+                                            console.log(response);
+                                            if(requestCode === "MSGOK"){  
+                                                vm.printCardValid =  true;
+                                                $rootScope.globalUserJSon.idRf = response.data.flowStepId;
+                                                $rootScope.globalUserJSon.additional = response.data.additional;
+                                                $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;
+                                                $interval.cancel(promise);
+                                                validServiMega();    
+                                            }
+                                            else {
+
+                                            }
+                                    }, 20000);
+                                    
+                                }, modalError);                                    
+                            }
+                        }   else {
+                            vm.printCardValid =  true;
+                            $interval.cancel(promise);
+                          }                         
+                        }
+                        promise =  $interval(increaseCounter, 20000);     
+                    }else {
                         modalFactory.success(messages.modals.error.printError);
-                    }
+                    }               
                 }
             );
         }
+
 
         /**
          *  @ngdoc method
@@ -540,7 +592,7 @@
                         jsonData.nationality = jsonData.nationality;
                     }
 
-                    vm.bornDay = document.getElementById("fechaNacimiento");
+                    //vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.getBureau = true;
                     vm.datePassport = jsonData.birthDate;
                     vm.email = jsonData.email;
@@ -755,7 +807,8 @@
                     vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.datePassport = vm.dataClientExit.birthDate;
                     vm.email = vm.dataClientExit.email;
-                    vm.myDate = vm.dataClientExit.birthDate;
+                    vm.myDate = jsonData.birthDate;
+                    vm.cellphone = jsonData.cellPhone;
                     vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
 
                     /*var year = vm.datePassport.substring(6,10);

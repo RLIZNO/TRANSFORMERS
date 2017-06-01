@@ -11,11 +11,11 @@
 
 /* inject:imports */
 
-@import "components/loading/_loading.scss";
-
 @import "features/feature_example/_feature_example.scss";
 
 @import "features/feature_example/_feature_validationDocumentView.scss";
+
+@import "components/loading/_loading.scss";
 
 /* endinject */
 

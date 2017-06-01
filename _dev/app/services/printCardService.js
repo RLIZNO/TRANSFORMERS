@@ -21,7 +21,8 @@
     ) {
 
         var service = {
-            printCard: printCard
+            printCard: printCard,
+            validPrintExit: validPrintExit
         };
 
         return service;
@@ -35,6 +36,18 @@
 
         function printCard(json) {
             return $http.post(PREFIX_URL.SERVICES + URL.PRINT_CARD, json)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
+        function validPrintExit(idPrint) {
+            return $http.get(PREFIX_URL.SERVICES + URL.CREDIT_REQUES + '?idCreditCardRequest=' + idPrint)
                 .then(
                     function (response) {
                         return response.data;

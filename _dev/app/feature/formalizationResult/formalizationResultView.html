@@ -66,7 +66,7 @@
                     <p class="resumentxt"><b>XXXX XXX XXXX</b></p>
                   </div>
                 </div>
-                                <div class="row">
+                <div class="row">
                   <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                     <p class="resumenTittle">No. TC adicional:</p>
                   </div>
@@ -74,7 +74,30 @@
                     <p class="resumentxt">5415470028789874</p>
                   </div>
                 </div>
-               
+                <div class="row">
+                  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                    <p class="resumenTittle">Estado de tarjeta de crédito:</p>
+                  </div>
+                  <div ng-show="formalizationResult.status === 'I'">
+                    <div class="txtBtnAct">
+                      <span>Inactiva</span>
+                    </div>
+                    <button class="btnredp"                            
+                            ng-click="formalizationResult.actCredCard(false)">
+                            Activar
+                    </button>
+                  </div>
+                  <div ng-show="formalizationResult.status === 'A'">
+                    <div class="txtBtnAct">
+                      <span>Activa</span>
+                    </div>
+                    <button class="botonlarge"                            
+                            ng-click="formalizationResult.actCredCard(true)">
+                            Desactivar
+                    </button>
+                  </div> 
+                </div>
+                   
                 <div class="clear20"></div>
                 <div class="row">
                  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
