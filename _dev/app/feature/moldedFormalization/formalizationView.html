@@ -16,6 +16,7 @@
       </div>
 
       <div id="bodymantenimientos">
+        <div id="loader" style="display:none;"></div>
         <div id="cuerpomantenimientos"> 
           <!--Inicio Area mantenimientos-->
           <form name="moldedFormalization.formMoldedFormalization" novalidate role="form">
@@ -223,61 +224,6 @@
       </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="mantenimiento">  
-        <div class="columna3_1">
-          <span class="labelAditional">Cédula</span>
-          <span class="input">
-            <input name="identificationName" type="text"  
-             ng-model="moldedFormalization.viewModelmoldedFormalization.identificationName"
-             ng-class="{ 'hasError': (moldedFormalization.submitted || 
-             moldedFormalization.formMoldedFormalization.identificationName.$touched) && 
-             moldedFormalization.formMoldedFormalization.identificationName.$invalid}" />
-          </span>
-        </div>
-        <div class="columna3_2_1">
-          <div class="botonarealeft ">            
-           <button  
-              class="boton3 btnblue"
-              ng-click="moldedFormalization.validateClient()">
-           Validar
-           </button>
-          </div>
-        </div>
-        <div class="columna3_2_1">
-          <span class="labelAditionalDef">Sexo</span> 
-          <span class="inputDefi inputDef">
-          <select
-             id="gender"
-             name="sex"
-             ng-model="moldedFormalization.viewModelmoldedFormalization.sex"
-             ng-class="{ 'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.sex.$touched)
-             && moldedFormalization.formMoldedFormalization.sex.$invalid}"
-             ng-options="sexo.id as sexo.value for sexo in moldedFormalization.typeSex"
-             ng-required="true">
-          </select>
-          <span class="alerttext" 
-             ng-if="(moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.sex.$touched) 
-             && moldedFormalization.formMoldedFormalization.sex.$error.required">Este campo es obligatorio</span> 
-          </span>
-        </div>
-        <div class="columna3_2_1">
-      <span class="labelAditionalDef">Estado Civil</span> 
-      <span class="inputDefi inputDef">
-      <select
-         name="status"
-         ng-model="moldedFormalization.viewModelmoldedFormalization.status"
-         ng-class="{ 'hasError': (validationAccount.submitted || moldedFormalization.formMoldedFormalization.status.$touched)
-         && moldedFormalization.formMoldedFormalization.status.$invalid}"
-         ng-options="optionYn.id as optionYn.value for optionYn in moldedFormalization.typeStatus"
-         ng-required="true" >
-      <option></option>
-      </select>
-      <span class="alerttext" 
-         ng-if="(validationAccount.submitted || moldedFormalization.formMoldedFormalization.status.$touched) 
-         && moldedFormalization.formMoldedFormalization.status.$error.required">Este campo es obligatorio</span>  
-      </span>
-      </div>
-      </div>
       <div class="mantenimiento">
         <div class="columna3_1">
           <span class="labelAditional">Fecha Nacimiento</span>
@@ -560,7 +506,7 @@
                         />-->
                     </div>
                      <div class="tdc">
-                        <img src="img/tdcImg.png" width="296" height="134" />
+                        <img src="images/tdcImg.png" width="296" height="134" />
                         <p>Digite la clave solicitada de la tarjeta de claves</p>
                      </div>
                      <div class="inputTdcWrap">

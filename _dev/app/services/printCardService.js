@@ -22,12 +22,8 @@
 
         var service = {
             printCard: printCard,
-<<<<<<< HEAD
-            validPrintExit: validPrintExit
-=======
             validPrintExit: validPrintExit,
             servicesMega: servicesMega
->>>>>>> 552ec68b623f56ed4a92c048f878bfac57aff487
         };
 
         return service;
