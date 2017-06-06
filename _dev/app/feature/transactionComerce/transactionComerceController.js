@@ -45,6 +45,7 @@
         vm.viewJobsData = viewJobsData;
         vm.editJobsData = editJobsData;
         vm.modalCancel = modalCancel;
+        vm.statusButton = statusButton;
 
         /**
          *  @ngdoc method
@@ -243,6 +244,40 @@
 
                 );   
          }
+
+         function statusButton(index){
+                sweet.show({
+                title: messages.modals.warning.modaltitleWarning,
+                text: "¿Esta seguro que desea inactivar/activar este producto?",
+                type: messages.modals.warning.modalTypeWarning,
+                showCancelButton: true,
+                cancelButtonText: messages.modals.warning.modalCancelButton,
+                confirmButtonColor: messages.modals.warning.modalColorButton,
+                confirmButtonText: messages.modals.warning.modalConfirText,
+                closeOnConfirm: true
+            }, function () {
+                $timeout(function () {
+                    vm.viewModelManteniment = angular.copy(vm.tableSourceProdcut[index]);
+                        var json = {};
+                        var jsonUpdate = {};
+                        json = vm.viewModelManteniment;
+                        vm.tableSourceProdcut.splice(index, 1, vm.viewModelManteniment);
+                        if (vm.viewModelManteniment.status === 'I') {
+                            vm.viewModelManteniment.status = 'A';
+                            jsonUpdate.status = json.status; 
+                        } else {
+                            vm.viewModelManteniment.status = 'I';
+                            jsonUpdate.status = json.status;
+                        }
+                        jsonUpdate.description = json.description;
+                        validTransactionAffiliate.updateAffiliate(jsonUpdate);
+                        vm.viewModelManteniment = {};
+                        vm.formProductMantenimentAffiliate.$setUntouched();
+                        vm.formProductMantenimentAffiliate.$setUntouched();
+
+                }, 0);
+            });
+        }
 
          tablaBin();
 

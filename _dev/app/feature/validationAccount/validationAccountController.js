@@ -238,7 +238,11 @@
         vm.validFico = validFico;
         vm.datePassport = "";
         //console.log($rootScope.globalLimitData);
-        $rootScope.globalLimitData={};
+        $rootScope.globalLimitData       = {};
+        //$rootScope.validDataGlobUser     = {};
+        $rootScope.globalValClntExist    = {};
+        $rootScope.globalSiebelCust      = {};
+        $rootScope.globalValClntCredCard = {};    
 
         function loadCreditCardFirstData(){
            addTableService.allTable().then(function(responseValue) {
@@ -761,12 +765,8 @@
                             return text;  
                  }
 
-<<<<<<< HEAD
-
             validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, $rootScope.dataUser.userName, income, typeProducto).then(function (response) {
-=======
-            validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.username, income, typeProducto).then(function (response) {
->>>>>>> 1127eefa5c2139f7e95f37c271e0493d8e16e4d1
+            //validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.username, income, typeProducto).then(function (response) {
                         
                 console.log(response);
                 function limitUSD( text, busca, reemplaza ){
@@ -886,6 +886,7 @@
             
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
             var usernumber = vm.viewModelvalidationAccount.numberIdentification;
+
             localStorage.setItem("usernumber", usernumber);
 
 
@@ -900,6 +901,8 @@
                         console.log($rootScope.globalUserJSon);
                         $state.go('moldedFormalization');
                     }else {
+                        //$rootScope.validDataGlobUser.productName    = vm.viewModelvalidationAccount.typeProduct;
+
                         creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
                             then(function   
                                 (response) {
@@ -968,7 +971,9 @@
                             vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
 
                          validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, $rootScope.dataUser.userName).then(function(response){
-                                
+                                $rootScope.globalSiebelCust = response.data;
+                                localStorage.setItem("globalSiebelCust", globalSiebelCust);
+
                                 oJson = response;
                                 if (response.codError === 'Error Inesperado Index: 1, Size: 1'){
                                     modalFactory.error('Siebel no devolvio resultados');
@@ -1314,6 +1319,9 @@
                 
             validationClientService.getvalidateClientCreditCard(documentNumber, $rootScope.dataUser.userName, typeIdentification, typeProducto).then(
                     function (responseValue) {
+                    $rootScope.globalValClntCredCard = responseValue.data; 
+                    localStorage.setItem("globalValClntCredCard", globalValClntCredCard);
+
                     console.log(responseValue);
                     if(vm.fichaBand){
                         vm.decisionMessage = 'RECHAZADO';
@@ -1484,6 +1492,23 @@
                     creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
                         then(function   
                             (response) {
+                                
+                            $rootScope.globalValClntExist = response.data;
+                            localStorage.setItem("globalValClntExist", globalValClntExist);
+
+                            /*
+                            $rootScope.globalUserJSon = $.extend(true, {},{
+                                json1 : "jsonValidCli",
+                                JSONcierreForzoso : $rootScope.globalValClntExist
+                            },{
+                                json2 : "jsonSiebelCust",
+                                JSONcierreForzoso : $rootScope.globalSiebelCust
+                            },{
+                                json3 : "jsonClntCredCard",
+                                JSONcierreForzoso : $rootScope.globalValClntCredCard
+                            }
+                            );*/
+
                             console.log(response);
                             var proyect = 'CreditCard';
                             localStorage.setItem("Proyecto", proyect);

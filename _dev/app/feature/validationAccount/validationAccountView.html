@@ -389,9 +389,9 @@
             </button>
             <button  
                   class="boton3 btnlager2 btngreen" 
-                  ng-class="{'btnInactive': !validationAccount.clientCanContinue}" 
+                  ng-class="{'btnInactive': !validationAccount.clientCanContinue || !validationAccount.cleintInvalid }" 
                   ng-click="validationAccount.validationData()"
-                  ng-disabled="!validationAccount.clientCanContinue || validationAccount.valueLimit || validationAccount.maximumLimitRDtrue || validationAccount.minimumLimitRDtrue || validationAccount.maximumLimitUStrue || validationAccount.minimumLimitUStrue" >
+                  ng-disabled="!validationAccount.cleintInvalid || !validationAccount.clientCanContinue || validationAccount.valueLimit || validationAccount.maximumLimitRDtrue || validationAccount.minimumLimitRDtrue || validationAccount.maximumLimitUStrue || validationAccount.minimumLimitUStrue" >
                   Siguiente
             </button>
          </div>

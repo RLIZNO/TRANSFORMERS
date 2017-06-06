@@ -67,6 +67,7 @@
             STATUS:       'BHDL_TDPD_SIREMAS/siremas/catalog/getCatalogByCode?code=Status',
             VALIDATE_AFF: 'BHDL_TDPD_SIREMAS/siremas/maintenance/affiliate/all',
             VALIDATE_AFF_COM: 'BHDL_TDPD_SIREMAS/siremas/maintenance/commerce/all',
+            UPDATE_AFF_COM: 'BHDL_TDPD_SIREMAS/siremas/maintenance/commerce/update',
             INSERT_TABLE_AFF: 'BHDL_TDPD_SIREMAS/siremas/maintenance/affiliate/add',
             INSERT_TABLE_COM: 'BHDL_TDPD_SIREMAS/siremas/maintenance/commerce/add',
             VALIDATE_RULE: 'BHDL_TDPD_SIREMAS/siremas/rule/getAll',

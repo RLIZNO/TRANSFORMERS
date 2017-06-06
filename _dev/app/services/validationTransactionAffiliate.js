@@ -121,6 +121,18 @@
                 );
 
         }
+
+        function updateAffiliate(json) {
+            $http.put(PREFIX_URL.SERVICES + URL.UPDATE_AFF_COM, json)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
     }
 
 })();

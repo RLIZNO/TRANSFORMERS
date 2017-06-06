@@ -104,6 +104,18 @@
                           ng-click="transactionComerce.deleteJobsData($index)">
                           Ver Detalle
                   </button>
+                  <div ng-show="table.status === 'I'">
+                    <button class="botonlarge"                            
+                            ng-click="transactionComerce.statusButton($index)">
+                            Activar
+                    </button>
+                  </div>
+                  <div ng-show="table.status === 'A'">
+                    <button class="btnredp"                            
+                            ng-click="transactionComerce.statusButton($index)">
+                            Desactivar
+                    </button>
+                  </div>
                 </td>
                 </tr>
             </table>
