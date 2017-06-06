@@ -766,7 +766,6 @@
                  }
 
             validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, $rootScope.dataUser.userName, income, typeProducto).then(function (response) {
-            //validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, vm.username, income, typeProducto).then(function (response) {
                         
                 console.log(response);
                 function limitUSD( text, busca, reemplaza ){
@@ -897,20 +896,19 @@
             addTableService.getcierreForzosoTC(documentNumber).then(
                 function (response) {   
                     if(response.success == true ){
+                        var cierreForzosoIdCA = false;
+                        localStorage.setItem('cierreForzosoIdCA', cierreForzosoIdCA);
                         $rootScope.globalUserJSon = response.data;
                         console.log($rootScope.globalUserJSon);
                         $state.go('moldedFormalization');
                     }else {
-                        //$rootScope.validDataGlobUser.productName    = vm.viewModelvalidationAccount.typeProduct;
 
-                        creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
-                            then(function   
-                                (response) {
-                            resetData();
-                            validationClientService.getValidationClient(documentNumber, vm.viewModelvalidationAccount.typeIdentification, $rootScope.dataUser.userName).then(function (responseValue) {
-                            
-                            vm.validationClient = responseValue.validationClient;
-                            validateClientCanContinue();
+
+                        resetData();
+                        validationClientService.getValidationClient(documentNumber, vm.viewModelvalidationAccount.typeIdentification, $rootScope.dataUser.userName).then(function (responseValue) {
+                        
+                        vm.validationClient = responseValue.validationClient;
+                        validateClientCanContinue();
 
                         if(!vm.validationClient) {
                                 getCreditBureauNoCLient();
@@ -918,12 +916,25 @@
                                 vm.clientNo = false;
                             }
                             if (vm.validationClient){
-                                getCreditBureau();
-                                getCreditListService();
-                                vm.clientYes = true;
+                                    creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
+                                        then(function   
+                                            (response) {
+                                            /* Si la tarjeta clave viene vacia o indefinida colocarla como vacio  */
+                                            if (angular.isObject(response.keyCardNumber) || response.keyCardNumber==='') {
+                                                    var keyCardNumber = "";                                        
+                                                    localStorage.setItem('keyCardNumber', keyCardNumber);
+                                            } else {
+                                                    var keyCardNumber = response.keyCardNumber;                                        
+                                                    localStorage.setItem('keyCardNumber', keyCardNumber);
+                                            }
+                                            getCreditBureau();
+                                            getCreditListService();
+                                            vm.clientYes = true;
+                                    }, modalError);
+
                             }
                         }, modalError);
-                        }, modalError);
+
                     }
             });  
         }
@@ -1026,9 +1037,6 @@
                                         jsonData.incomes.push(oJson.incomes);
                                     }
                                 }
-
-
-
                                
                                 /*Si la el telefono de la casa viene indefinido colocarlo como vacio  */
                                 if (angular.isObject(oJson.phone)) {
@@ -1210,6 +1218,7 @@
                     } else {
                         jsonData.civilStatus = oJson.reportecu.clienteunico.estadocivil;
                     }
+
 
                     /*Guardamos el numero de identidad del cliente para poder borrarlo en el la fabrica del modal de cancelar*/
                     jsonData.numberIdentification = vm.viewModelvalidationAccount.numberIdentification;

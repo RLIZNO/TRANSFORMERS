@@ -29,7 +29,7 @@
             UPDATE_FOREING_PEP_DATA : '/BHDL_TDPD_Back_Customers/rest/clientPerson/foreignCurrencyPEPData',
             VALIDATE_USER : '/BHDL_TDPD_Back_Customers/rest/userDataInformation/getUserDataInformation',
             SIEBEL_CLIENTE_SIB: '/BHDL_TDPD_Back_Utils/rest/catalogs/retrieveSiebelClientType',
-		GENERATE_PERSON_CODE : '/BHDL_TDPD_Back_Customers/rest/clientPersonCreation/createClientPersonCore',
+		    GENERATE_PERSON_CODE : '/BHDL_TDPD_Back_Customers/rest/clientPersonCreation/createClientPersonCore',
             KEY_CARD_ASSIGNMENT : '/BHDL_TDPD_Back_Customers/rest/keyCard/keyCardAssignment',
             POSITION_KEY_CARD : '/BHDL_TDPD_Back_Utils/rest/keyCard/retrieveKeyCard',
             VALIDATE_KEY_CARD : '/BHDL_TDPD_Back_Utils/rest/keyCard/validateKeyCard',

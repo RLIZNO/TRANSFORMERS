@@ -1025,7 +1025,7 @@ background: black;
     font-size: 15px !important;
     float: left;
     width: 70px;
-    height: 35px;
+    height: 44px;
     text-align: center;
     border-radius: 0 6px 6px 0;
     margin:0px;
@@ -1658,4 +1658,71 @@ button.boton4 {
     border-radius: 2px;
     padding: 6px 9px;
     text-align: center;
+}
+
+
+#loader {
+	position: fixed;
+    /* content: ''; */
+    top: 55%;
+    left: 52%;
+    z-index: 999999;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 10px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 10px solid #3498db;
+    width: 80px;
+    height: 80px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+#loadingBody {
+	top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+    background: rgba(43, 46, 56, 0.9);
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    display: block;
+    position: absolute;
+    z-index: 9999;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+  text-align: center;
 }
