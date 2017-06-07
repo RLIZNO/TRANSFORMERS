@@ -146,15 +146,17 @@
                 console.log($rootScope.globalUserJSon);
             }
         );*/
-        var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
+        //var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
+        var cierreForzosoIdCA = true;
         if (JSON.parse(cierreForzosoIdCA)) {
             jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
 
             addTableService.getcierreForzosoTC(jsonData.numberDocument).then(
                 function(response){
                     $rootScope.globalUserJSon = response.data;
+                    var jsonLocal = JSON.parse(response.data.json);
                     console.log($rootScope.globalUserJSon);
-
+                    vm.viewModelmoldedFormalization.namePlastic = jsonLocal.firstName + " " + jsonLocal.firstLasname;
                         // Servicio para numero tarjeta de credito
                         creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
                             function(response){
@@ -869,9 +871,11 @@
                     vm.email = jsonData.email;
                     vm.myDate = jsonData.birthDate;
                     vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
-
+                    vm.cellphoneNumb = parseInt(jsonData.landLine);
                     vm.namePlastic2 = jsonData.firtsName + ' ' + jsonData.surname;
-                    vm.landLine = parseInt(jsonData.landLine);
+                    vm.BornCity = jsonData.birthCountry;
+                    //vm.landLine = parseInt(jsonData.landLine);
+                    
 
                     /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
                     angular.forEach(vm.typeSex, function (value, key) {
@@ -1053,7 +1057,9 @@
                     vm.namePlastic2 = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.firstLastname;
                     vm.nameUser = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.secondName + ' ' + vm.dataClientExit.firstLastname + ' ' + vm.dataClientExit.secondLastname;
 
-                    vm.landLine = parseInt(vm.dataClientExit.cellPhone);
+                    //vm.landLine = parseInt(vm.dataClientExit.cellPhone);
+                    vm.cellphoneNumb = parseInt(jsonData.landLine);
+                    vm.BornCity = jsonData.birthCountry;
 
                     /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
                     angular.forEach(vm.typeSex, function (value, key) {
