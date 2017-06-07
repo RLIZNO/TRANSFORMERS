@@ -37,7 +37,13 @@
                      ng-model="moldedFormalization.viewModelmoldedFormalization.namePlastic"
                      ng-maxlength="18"
                      ng-change= "moldedFormalization.validAditional();"
+                     ng-pattern="/^[a-zA-Z\s]*$/"
                      ng-required="true" />
+                  <span
+                    class="alerttext"
+                    ng-if="moldedFormalization.formMoldedFormalization.namePlastic.$error.pattern" 
+                  >
+                    Este campo no permite caracteres especiales
                   <span 
                      class="alerttext" 
                      ng-if="(validationAccount.submitted ||  moldedFormalization.formMoldedFormalization.namePlastic.$touched) &&  
@@ -173,12 +179,19 @@
                      ng-model="moldedFormalization.namePlastic2"
                      ng-maxlength="50"
                      ng-change= "moldedFormalization.validAcen2();"
+                     ng-pattern="/^[a-zA-Z\s]*$/"
                      ng-required="true" />
                   <span 
                      class="alerttext" 
                      ng-if="(validationAccount.submitted || moldedFormalization.formMoldedFormalization.namePlastic2.$touched) &&  
                      moldedFormalization.formMoldedFormalization.namePlastic2.$invalid"
                      >Este campo es obligatorio
+                  </span>
+                  <span
+                    class="alerttext"
+                    ng-if="moldedFormalization.formMoldedFormalization.namePlastic2.$error.pattern" 
+                  >
+                    Este campo no permite caracteres especiales
                   </span>
                   <span 
                      class="alerttext" 
@@ -196,6 +209,7 @@
           <input name="nameUser"
            type="text"
            class="mayusculas"
+           ng-disabled="true"
            ng-class="{ 'hasError': (moldedFormalization.formMoldedFormalization.nameUser.$touched)
            && moldedFormalization.formMoldedFormalization.nameUser.$invalid 
            || moldedFormalization.espresion2}"
@@ -274,9 +288,15 @@
                         && moldedFormalization.formMoldedFormalization.datePassport.$error.required">Este campo es obligatorio</span>         
                      </span>
         </div>
-        <div class="columna3_2"><span class="label margen">Ciudad de <br />Nacimiento</span> 
+        <div class="columna3_2">
+          <span class="label margen">Ciudad de <br />Nacimiento</span> 
           <span class="input">
-            <input name="" type="text" />
+            <input 
+              type="text" 
+              name="BornCity" 
+              ng-model="moldedFormalization.BornCity" 
+              ng-class="{'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.BornCity.$touched) && moldedFormalization.formMoldedFormalization.BornCity.$invalid}"
+            />
           </span>
         </div>
         <div class="columna3_3">
@@ -317,9 +337,20 @@
                         <span class="alerttext" ng-if="moldedFormalization.formMoldedFormalization.landLine.$error.minlength" ng-bind="::i18n.general.errorValid10Digi"></span>
                            </span>
                       </div>
-              <div class="columna3_2"><span class="labelAditional">Teléfono móvil</span> <span class="input">
-                  <input name="" type="text" />
-                  </span></div>
+              <div class="columna3_2">
+                <span class="labelAditional">Teléfono móvil</span> 
+                <span class="input">
+                  <input 
+                    type="number" 
+                    name="cellphoneNumb" 
+                    ng-model="moldedFormalization.cellphoneNumb" 
+                    ng-class="{'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.cellphoneNumb.$touched) && moldedFormalization.formMoldedFormalization.cellphoneNumb.$invalid}"
+                    ng-maxlength="10"
+                    ng-minlength="10"
+                    required
+                  />
+                </span>
+              </div>
               <div class="columna3_3">
                 <span class="labelAditional">Correo Electrónico</span> 
                 <span class="input">
@@ -479,6 +510,7 @@
       <div class="botonareacenter">            
          <button  
             class="boton3 btnlager2 btnblue"
+            ng-disabled="moldedFormalization.formMoldedFormalization.namePlastic.$error.pattern || moldedFormalization.formMoldedFormalization.namePlastic2.$error.pattern"
             ng-click="moldedFormalization.validImpre()">
          Impresión Tarjetas
          </button>
