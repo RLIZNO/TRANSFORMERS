@@ -1157,6 +1157,7 @@
                     /*Si el segundo nombre viene indefinido colocarlo como vacio  */
                     
                     jsonData.typeDocument = vm.viewModelvalidationAccount.typeIdentification;
+                    jsonData.numberDocument =  vm.viewModelvalidationAccount.numberIdentification;
                     if (angular.isObject(oJson.reportecu.clienteunico.segundonombre)) {
                         jsonData.secondName = '';
                     } else {

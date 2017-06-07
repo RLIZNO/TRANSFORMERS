@@ -11,6 +11,7 @@
 	 	'URL',
 	 	'addCodeService',
 	 	'messages',
+		'$rootScope',
 	 	'modalFactory',
         'catalogService'
 	];
@@ -21,6 +22,7 @@
 		URL,
 		addCodeService,
 		messages,
+		$rootScope,
 		modalFactory,
         catalogService
 	){
@@ -31,7 +33,8 @@
 		vm.actCredCard = actCredCard;
 		vm.status="I";
 		vm.userName = 'AM029969';
-
+		vm.dataResult = $rootScope.globalUserJSon;
+		console.log(vm.dataResult);
 		function validImpre() {
 			window.location.href = "/wps/portal/ptd/inicio";
 		}

@@ -293,11 +293,14 @@
                                     printCardService.validPrintExit(idPrint).then(function(response) {
                                         $timeout(function(){
                                                 var requestCode = response.responseCode;
-                                                
+                                                $rootScope.globalUserJSon.cardHolderName = response.cardHolderName;
+                                                $rootScope.globalUserJSon.creditCardNumber = response.creditCardNumber;
+                                                $rootScope.globalUserJSon.productCode = response.productCode;
                                                 contador ++;
                                                 console.log('respuesta de la impre-------');
                                                 console.log(response);
-                                                if(requestCode !== ""){  
+                                                if (requestCode !== ""){
+                                                if(requestCode === "000"){  
                                                     vm.printCardValid =  true;
                                                     vm.functionAditional = false;
                                                     loading.style.display = "none";
@@ -307,18 +310,46 @@
                                                     $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;*/
                                                     $interval.cancel(promise);
                                                     if (vm.megaService) {
-                                                        if (vm.viewModelmoldedFormalization.aditional === "S"){
-                                                            validAdi();
+                                                        if (vm.viewModelmoldedFormalization.aditional === "S"){                                                                                        
+                                                                sweet.show({
+                                                                    title: '',
+                                                                    text: "La tarjeta principal fue impresa correctamente. Ahora procederemos a imprimir la tarjeta adicional.",
+                                                                    type: 'success',
+                                                                    confirmButtonText: 'Ok',
+                                                                    closeOnConfirm: true
+                                                                }, function () {
+                                                                    $timeout(function () {
+                                                                        validAdi(); 
+                                                                    }, 0);
+                                                                });    
+                                                            
                                                         }else {
-                                                            vm.megaService = false; 
-                                                            validServiMega(); 
+                                                                sweet.show({
+                                                                    title: '',
+                                                                    text: "La tarjeta fue impresa correctamente. Ahora procederemos a validar los contratos.",
+                                                                    type: 'success',
+                                                                    confirmButtonText: 'Ok',
+                                                                    closeOnConfirm: true
+                                                                }, function () {
+                                                                    $timeout(function () {
+                                                                        validServiMega(); 
+                                                                    }, 0);
+                                                                });
+                                                            vm.megaService = false;
                                                             contador = 15;
                                                         }
                                                     }
                                                                                                          
                                                 }
-                                                else {
 
+                                                    else 
+                                                      if (requestCode !== "000"){
+                                                            loading.style.display = "none"; 
+                                                            loadingBody.style.display = "none"; 
+                                                            modalFactory.error(response.responseDescription);
+                                                            contador = 15;
+                                                            vm.megaService = false;
+                                                    }
                                                 }
                                         }, 0);
                                         
@@ -383,7 +414,9 @@
                                     printCardService.validPrintExit(idPrintAdi).then(function(response) {
                                         $timeout(function(){
                                                 var requestCode = response.responseCode;
-                                                
+                                                $rootScope.globalUserJSon.cardHolderName = response.cardHolderName;
+                                                $rootScope.globalUserJSon.creditCardNumber = response.creditCardNumber;
+                                                $rootScope.globalUserJSon.productCode = response.productCode;
                                                 contador ++;
                                                 console.log('respuesta de la impre-------');
                                                 console.log(response);
@@ -396,8 +429,18 @@
                                                     $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;*/
                                                     $interval.cancel(promise);
                                                     if (vm.megaService) {
-                                                            validServiMega(); 
-                                                            contador = 15;                                                        
+                                                        sweet.show({
+                                                            title: '',
+                                                            text: "La tarjeta adicional fue impresa correctamente. Ahora procederemos a validar los contratos.",
+                                                            type: 'success',
+                                                            confirmButtonText: 'Ok',
+                                                            closeOnConfirm: true
+                                                        }, function () {
+                                                            $timeout(function () {
+                                                                validServiMega(); 
+                                                            }, 0);
+                                                        });
+                                                        contador = 15;                                                        
                                                     }
                                                                                                          
                                                 }
@@ -444,52 +487,53 @@
                     "productType":"TARJETA CREDITO",
                     "limitRD":"",
                     "limitUSD":"",
-                    "creationDate": $filter('date')(JSON.parse($rootScope.globalUserJSon.json).contratacionDate,'yyyy-MM-dd'),
-                    "agency":"Aquí",
-                    "productName":"CINCO",
+                    "creationDate": "2017-05-16",
+                    "agency":"Aquí", // sucursal user
+                    "productName":"CINCO", // gn - gr
                     "deferred":"",
                     "nationality":JSON.parse($rootScope.globalUserJSon.json).idNacionality,                    
-                    "birtDate": $filter('date')(JSON.parse($rootScope.globalUserJSon.json).birthDate,'yyyy-MM-dd'),
+                    "birtDate": "2017-05-16",
                     "civilStatus": JSON.parse($rootScope.globalUserJSon.json).idCivilState,
                     "sex": JSON.parse($rootScope.globalUserJSon.json).sex,
                     "profession": JSON.parse($rootScope.globalUserJSon.json).idProfession,
                     "academicLevel": JSON.parse($rootScope.globalUserJSon.json).academicLevel,
-                    "decisionCredit":"OK",
-                    "decisionDate":"2017-05-16",
-                    "isFico":false,
-                    "incomes":"20000",
-                    "incomeEvidence":"21000",
-                    "houseType":"PROPIA",
-                    "houseTime":"8",
-                    "expenses":"25000",
-                    "score":"000",
-                    "contractDate":"2010-04-04"
+                    "decisionCredit":"OK", // decision pre
+                    "decisionDate":"2017-05-16", // fecha hoy
+                    "isFico":true, // pasa por fico
+                    "incomes":"20000", // reporte
+                    "incomeEvidence":"21000", // diff datacredito
+                    "houseType":"PROPIA", // campo fico
+                    "houseTime":"8", // campo fico
+                    "expenses":"25000", // gastos fico 
+                    "score":"000", // fico puntos
+                    "contractDate":"2010-04-04" // fecha fico
                 },
                 "AcknowledgmentReceipt":{
-                     "idCustomerStepFlow" : $rootScope.globalUserJSon.id,
+                    "idCustomerStepFlow" : $rootScope.globalUserJSon.id,
                     "userName":vm.username,
                     "productType":"TC",
-                    "phone":"12345678",
-                    "address":"Aqui no mas",
+                    "phone":"12345678", // tel user
+                    "address":"Aqui no mas", // dire
                     "principalCardNumber":vm.viewModelmoldedFormalization.keyCardNumber,
-                    "additionalCardNumber":"N",
-                    "office":"101",
+                    "additionalCardNumber":"N", // # campo adit
+                    "office":"101", //sucursalcode username
                     "billingCycle":"MENSUAL",
                     "receptorName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
                     "documentNumber":JSON.parse($rootScope.globalUserJSon.json).documentNumber,
-                    "bankAssesor":"XXXX XX",
+                    "bankAssesor":"XXXX XX", // userName
                     "customerName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
-                    "customerBeneficiary":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
-                    "receptorFirm":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname
+                    "customerBeneficiary": "",// nombre adit,
+                    "receptorFirm":"" /// numero tarjeta de clave - cordenada
                 }
-            }          
-                printCardService.servicesMega(jsonMega).then( 
-                    function(response){ 
-                        if (response.success === true) {
-                                $state.go('formalizationResult');
-                            }
-                    }
-                );
+            }  
+
+            printCardService.servicesMega(jsonMega).then( 
+                function(response){ 
+                    if (response.success === true) {
+                            $state.go('formalizationResult');
+                        }
+                }
+            );
             
 
         }
