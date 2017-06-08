@@ -72,6 +72,7 @@
         vm.optionsYesNo = [];
         // variable de username quemado
         vm.username = 'AM029969';
+        vm.specialCharacterError = "Este campo no permite caracteres especiales"; 
 
         //funciones
         vm.modalCancel = modalCancel;
@@ -108,6 +109,7 @@
         vm.namePlastic2 = "";
         vm.landLine = "";
         vm.sex = "";
+        vm.BornCity = "";
         vm.nationality = "";
         vm.datePassport = "";
         vm.email = "";
@@ -146,8 +148,7 @@
                 console.log($rootScope.globalUserJSon);
             }
         );*/
-        //var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
-        var cierreForzosoIdCA = true;
+        var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
         if (JSON.parse(cierreForzosoIdCA)) {
             jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
 
@@ -167,14 +168,21 @@
                 }
             );
 
-        }else {
-            creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
-                function(response){
-                    $rootScope.globalUserJSon.keyCardNumber = response.keyCardNumber;
-                    vm.viewModelmoldedFormalization.keyCardNumber = response.keyCardNumber;
+        }else {          
+
+                   /* jsonData = JSON.parse($rootScope.globalUserJSon.json);
+                    console.log(jsonData);*/
+                    //vm.viewModelmoldedFormalization.namePlastic = jsonData.firstName + " " + jsonData.firstLasname;
+                        // Servicio para numero tarjeta de credito
+                        creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
+                            function(response){
+                                $rootScope.globalUserJSon.keyCardNumber = response.keyCardNumber;
+                                vm.viewModelmoldedFormalization.keyCardNumber = response.keyCardNumber;
+                            }
+                        );
                 }
-            );
-        }
+
+        
 
         catalogService.getCatalogBin(URL.CATALOG_BIN).then(
         function (response) {
@@ -266,7 +274,7 @@
               "flowStepId": $rootScope.globalUserJSon.id,
               "printer": $rootScope.globalUserJSonPrinter, //JSON.parse($rootScope.globalUserJSon.json).printer,
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
-              "cardHolderName": JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+              "cardHolderName": vm.viewModelmoldedFormalization.namePlastic,
               "documentNumber": JSON.parse($rootScope.globalUserJSon.json).documentNumber,
               "additional": vm.viewModelmoldedFormalization.aditional,
               "createdBy": vm.username
@@ -360,7 +368,10 @@
                             }   else {
                                 vm.printCardValid =  true;
                                 $interval.cancel(promise);
-                                //modalFactory.success(messages.modals.error.printError);
+                                if(contador === 15){
+                                    modalFactory.error("No tuvimos respuesta de CardWizard, por favor revisar el estado en proceso");
+                                }
+                                
                                 loading.style.display = "none"; 
                                 loadingBody.style.display = "none"; 
                             }       
@@ -387,7 +398,7 @@
               "flowStepId": $rootScope.globalUserJSon.id,
               "printer": $rootScope.globalUserJSonPrinter, //JSON.parse($rootScope.globalUserJSon.json).printer,
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
-              "cardHolderName": "Faber Herrera",
+              "cardHolderName": vm.viewModelmoldedFormalization.namePlastic2,
               "documentNumber": "1036655422",
               "additional": "S",
               "createdBy": vm.username
@@ -1053,13 +1064,6 @@
                     } else {
                         vm.isDominicanRepublic = true;
                     }
-                            
-                    vm.namePlastic2 = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.firstLastname;
-                    vm.nameUser = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.secondName + ' ' + vm.dataClientExit.firstLastname + ' ' + vm.dataClientExit.secondLastname;
-
-                    //vm.landLine = parseInt(vm.dataClientExit.cellPhone);
-                    vm.cellphoneNumb = parseInt(jsonData.landLine);
-                    vm.BornCity = jsonData.birthCountry;
 
                     /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
                     angular.forEach(vm.typeSex, function (value, key) {
@@ -1082,11 +1086,25 @@
                         }
                     });
                     vm.bornDay = document.getElementById("fechaNacimiento");
-                    vm.datePassport = vm.dataClientExit.birthDate;
+                    //var convertDate = new Date(vm.dataClientExit.birthDate);
+                    var day   = vm.dataClientExit.birthDate.substr(0,2);
+                    var month = vm.dataClientExit.birthDate.substr(3,2); 
+                    var year  = vm.dataClientExit.birthDate.substr(6,4);
+                    var invertDate = year + '/' + month + '/' + day; 
+                    var convertDate = new Date(invertDate); //aaaa/mm/dd
+                    //var a  = $filter('date')(Date.parse(vm.dataClientExit.birthDate),'yyyy-MM-dd');
+                    vm.namePlastic2 = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.firstLastname;
+                    vm.nameUser = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.secondName + ' ' + vm.dataClientExit.firstLastname + ' ' + vm.dataClientExit.secondLastname;
+
+                    //vm.landLine = parseInt(vm.dataClientExit.cellPhone);
+                    vm.cellphoneNumb = parseInt(vm.dataClientExit.cellPhone);
+                    vm.datePassport = convertDate;
+                    vm.viewModelmoldedFormalization.BornCity = vm.dataClientExit.birthCountry;
+                   // vm.landLine = telefono de casa 
                     vm.email = vm.dataClientExit.email;
-                    vm.myDate = jsonData.birthDate;
-                    vm.cellphone = jsonData.cellPhone;
-                    vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
+                    //vm.myDate = jsonData.birthDate; 
+                    //vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
+                    
 
                     /*var year = vm.datePassport.substring(6,10);
                     var month = vm.datePassport.substring(3,5);

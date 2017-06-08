@@ -43,7 +43,7 @@
                     class="alerttext"
                     ng-if="moldedFormalization.formMoldedFormalization.namePlastic.$error.pattern" 
                   >
-                    Este campo no permite caracteres especiales
+                    {{moldedFormalization.specialCharacterError}}
                   <span 
                      class="alerttext" 
                      ng-if="(validationAccount.submitted ||  moldedFormalization.formMoldedFormalization.namePlastic.$touched) &&  
@@ -107,10 +107,17 @@
           <span class="input">
             <input name="identificationName" type="text"  
              ng-model="moldedFormalization.viewModelmoldedFormalization.identificationName"
+             ng-pattern="/^[0-9a-zA-Z]*$/"
              ng-class="{ 'hasError': (moldedFormalization.submitted || 
              moldedFormalization.formMoldedFormalization.identificationName.$touched) && 
              moldedFormalization.formMoldedFormalization.identificationName.$invalid}" />
           </span>
+          <span 
+          class="alerttext" 
+          ng-if="moldedFormalization.formMoldedFormalization.identificationName.$error.pattern">
+            {{moldedFormalization.specialCharacterError}}
+          </span>
+
         </div>
         <div class="columna3_2_1">
           <div class="botonarealeft ">            
@@ -191,7 +198,7 @@
                     class="alerttext"
                     ng-if="moldedFormalization.formMoldedFormalization.namePlastic2.$error.pattern" 
                   >
-                    Este campo no permite caracteres especiales
+                    {{moldedFormalization.specialCharacterError}}
                   </span>
                   <span 
                      class="alerttext" 
@@ -294,7 +301,7 @@
             <input 
               type="text" 
               name="BornCity" 
-              ng-model="moldedFormalization.BornCity" 
+              ng-model="moldedFormalization.viewModelmoldedFormalization.BornCity" 
               ng-class="{'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.BornCity.$touched) && moldedFormalization.formMoldedFormalization.BornCity.$invalid}"
             />
           </span>
@@ -510,7 +517,6 @@
       <div class="botonareacenter">            
          <button  
             class="boton3 btnlager2 btnblue"
-            ng-disabled="moldedFormalization.formMoldedFormalization.namePlastic.$error.pattern || moldedFormalization.formMoldedFormalization.namePlastic2.$error.pattern"
             ng-click="moldedFormalization.validImpre()">
          Impresión Tarjetas
          </button>

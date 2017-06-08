@@ -982,8 +982,8 @@
                             vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
 
                          validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, $rootScope.dataUser.userName).then(function(response){
-                                $rootScope.globalSiebelCust = response.data;
-                                localStorage.setItem("globalSiebelCust", globalSiebelCust);
+                                $rootScope.globalSiebelCust = response;
+                                localStorage.setItem("globalSiebelCust", $rootScope.globalSiebelCust);
 
                                 oJson = response;
                                 if (response.codError === 'Error Inesperado Index: 1, Size: 1'){
@@ -1329,8 +1329,8 @@
                 
             validationClientService.getvalidateClientCreditCard(documentNumber, $rootScope.dataUser.userName, typeIdentification, typeProducto).then(
                     function (responseValue) {
-                    $rootScope.globalValClntCredCard = responseValue.data; 
-                    localStorage.setItem("globalValClntCredCard", globalValClntCredCard);
+                    $rootScope.globalValClntCredCard = responseValue; 
+                    localStorage.setItem("globalValClntCredCard", $rootScope.globalValClntCredCard);
 
                     console.log(responseValue);
                     if(vm.fichaBand){
@@ -1503,10 +1503,10 @@
                         then(function   
                             (response) {
                                 
-                            $rootScope.globalValClntExist = response.data;
-                            localStorage.setItem("globalValClntExist", globalValClntExist);
+                            $rootScope.globalValClntExist = response;
+                            localStorage.setItem("globalValClntExist", $rootScope.globalValClntExist);
 
-                            /*
+                            
                             $rootScope.globalUserJSon = $.extend(true, {},{
                                 json1 : "jsonValidCli",
                                 JSONcierreForzoso : $rootScope.globalValClntExist
@@ -1517,7 +1517,9 @@
                                 json3 : "jsonClntCredCard",
                                 JSONcierreForzoso : $rootScope.globalValClntCredCard
                             }
-                            );*/
+                            );
+
+                            localStorage.setItem('$rootScope.globalUserJSonValAco',JSON.stringify($rootScope.globalUserJSon.JSONcierreForzoso));
 
                             console.log(response);
                             var proyect = 'CreditCard';
@@ -1675,6 +1677,9 @@
                     vm.clientCanContinue =  false;
                 }
                 
+                if(error.message === "La consulta no devolvio ningun registro"){
+                    vm.clientCanContinue =  false;
+                }
                 modalFactory.error(errortc);
             } 
 
