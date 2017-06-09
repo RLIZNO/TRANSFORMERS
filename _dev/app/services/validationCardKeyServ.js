@@ -22,10 +22,58 @@
         
         var service = {
             getPositionKeyCard : getPositionKeyCard,
-            validationCardKey : validationCardKey
+            validationCardKey : validationCardKey,
+            getCreditReques : getCreditReques,
+            gettariff : gettariff
          };
 
         return service;
+
+
+        /**
+         *	@ngdoc method CREDIT_REQUES
+         *	@description
+         *	Generar posición para validar la tarjeta de clave
+         * 
+         *  @param {String} documentNumber Numero de documento del cliente.
+         *
+         *	@return {Object} La respuesta del servicio.
+         */
+        function gettariff(prodoctuvuty, document) {
+
+            return $http.get(PREFIX_URL.SERVICES + URL.PRODOCT_DOCUMENTS + '?prodoctivityDocumentType=' + prodoctuvuty + '&documentNumber=' + document)
+                .then(
+                    function (response) {
+                    	return response.data;
+                    },
+                      function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+
+        }
+                /**
+         *	@ngdoc method CREDIT_REQUES
+         *	@description
+         *	Generar posición para validar la tarjeta de clave
+         * 
+         *  @param {String} documentNumber Numero de documento del cliente.
+         *
+         *	@return {Object} La respuesta del servicio.
+         */
+        function getCreditReques(idFlow) {
+
+            return $http.get(PREFIX_URL.SERVICES + URL.CREDIT_CARD_REQUEST + '?idCustomerStepFlow=' + idFlow)
+                .then(
+                    function (response) {
+                    	return response.data;
+                    },
+                      function (errResponse) {
+                        return $q.reject(errResponse);
+                    }
+                );
+
+        }
 
         /**
          *	@ngdoc method CREDIT_REQUES

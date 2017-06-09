@@ -16,10 +16,11 @@
       </div>
 
     <div id="bodymantenimientos">
+      <div id="loader" style="display:none;"></div>
         <div id="cuerpomantenimientos"> 
           <!--Inicio Area mantenimientos-->
 
-          <form name="transactionAffiliate.formProductMantenimentAffiliate" novalidate role="form">
+          <form name="formalizationResult.formProductMantenimentAffiliate" novalidate role="form">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
             <div class="divheader">
               <h2>Personalizacion de Plástico / Embozado (Resumen de Transacción)</h2>
@@ -31,7 +32,7 @@
                     <p class="resumenTittle">Nombre Tarjeta Principal:</p>
                   </div>
                   <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt"><b>XXX XXX XXX</b></p>
+                    <p class="resumentxt"><b>{{formalizationResult.viewModelMantResult.namePrinc}}</b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -47,7 +48,7 @@
                     <p class="resumenTittle">No. TC principal:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt">5415470028789874</p>
+                    <p class="resumentxt">{{formalizationResult.viewModelMantResult.numberTarje}}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -55,7 +56,7 @@
                     <p class="resumenTittle">Tipo de TC:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt">XXXXXXX</p>
+                    <p class="resumentxt">{{formalizationResult.viewModelMantResult.typeTc}}</p>
                   </div>
                 </div>
                  <div class="row">
@@ -63,7 +64,7 @@
                     <p class="resumenTittle">Nombre tarjeta adicional:</p>
                   </div>
                   <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt"><b>XXXX XXX XXXX</b></p>
+                    <p class="resumentxt"><b>----------</b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -71,7 +72,7 @@
                     <p class="resumenTittle">No. TC adicional:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt">5415470028789874</p>
+                    <p class="resumentxt">----------</p>
                   </div>
                 </div>
                 <div class="row">
@@ -105,9 +106,36 @@
                   </div>
                   <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                     <p class="resumentxt">
-	                    <button href="#" class="boton ">Contrato y Manual Operativo</button> 
-	                    <button href="#" class="boton ">Tarifario de Producto</button>
-	                    <button href="#" class="boton ">Acuse</button>
+	                    <a
+                         href="{{formalizationResult.urlAccountTariff}}"
+                         ng-class="{'disabled' : !formalizationResult.passiveValid}" 
+                         class="boton "
+                         target="_blank">
+                         Tarifario de Producto
+                         
+                      </a> 
+
+                      <a href="{{formalizationResult.urlAccounDac}}"
+                         ng-class="{'disabled' : !formalizationResult.passiveValid}" 
+                         class="boton "
+                         target="_blank">
+                         Manual Operativo
+                       </a> 
+
+
+	                    <a href="{{formalizationResult.urlAccountAcuse}}" 
+                         ng-class="{'disabled' : !formalizationResult.passiveValid}" 
+                         class="boton "
+                         target="_blank">
+                         Acuse
+                      </a>
+
+
+	                    <a href="http://serwebdev07.cfbhd.com:10039/BHDL_TDPD_Back_Credit_Card/rest/files/handBook?documentNumber=00100078344&customerNumber=2370625"
+                       class="boton "
+                       target="_blank">
+                       Contrato Manual Operativo
+                       </a>
                     </p>
                   </div>
                    <div class="clear30"></div>

@@ -896,12 +896,11 @@
             addTableService.getcierreForzosoTC(documentNumber).then(
                 function (response) {   
                     if(response.success == true ){
-                        var cierreForzosoIdCA = false;
-                        localStorage.setItem('cierreForzosoIdCA', cierreForzosoIdCA);
+                        localStorage.setItem('cierreForzosoIdCA', documentNumber);
                         $rootScope.globalUserJSon = response.data;
                         console.log($rootScope.globalUserJSon);
                         $state.go('moldedFormalization');
-                    }else {
+                    } else {
 
 
                         resetData();
@@ -982,8 +981,8 @@
                             vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName='+  $rootScope.dataUser.userName;
 
                          validationClientService.getSiebelCustomer(vm.viewModelvalidationAccount.typeIdentification, documentNumber, $rootScope.dataUser.userName).then(function(response){
-                                $rootScope.globalSiebelCust = response;
-                                localStorage.setItem("globalSiebelCust", $rootScope.globalSiebelCust);
+                                //$rootScope.globalSiebelCust = response;
+                                //localStorage.setItem("globalSiebelCust", $rootScope.globalSiebelCust);
 
                                 oJson = response;
                                 if (response.codError === 'Error Inesperado Index: 1, Size: 1'){
@@ -1466,8 +1465,8 @@
                         var dataSiebel = false;
                         localStorage.setItem("dataSiebel", dataSiebel);
                         localStorage.setItem("validclientTc", validclientTc);
-                        window.location.href = "/wps/portal/ptd/inicio";
-                        //window.location.href = "../index.html";
+                        //window.location.href = "/wps/portal/ptd/inicio";
+                        window.location.href = "../index.html";
                     }, 0);
                 });
             }
@@ -1503,17 +1502,11 @@
                         then(function   
                             (response) {
                                 
-                            $rootScope.globalValClntExist = response;
-                            localStorage.setItem("globalValClntExist", $rootScope.globalValClntExist);
+                            //$rootScope.globalValClntExist = response;
+                            //localStorage.setItem("globalValClntExist", $rootScope.globalValClntExist);
 
                             
                             $rootScope.globalUserJSon = $.extend(true, {},{
-                                json1 : "jsonValidCli",
-                                JSONcierreForzoso : $rootScope.globalValClntExist
-                            },{
-                                json2 : "jsonSiebelCust",
-                                JSONcierreForzoso : $rootScope.globalSiebelCust
-                            },{
                                 json3 : "jsonClntCredCard",
                                 JSONcierreForzoso : $rootScope.globalValClntCredCard
                             }
@@ -1529,8 +1522,8 @@
                             localStorage.setItem("dataSiebel", dataSiebel);
                             var validclientTc = 'validclientTc';
                             localStorage.setItem("validclientTc", validclientTc);
-                            window.location.href = "/wps/portal/ptd/inicio";
-                            //window.location.href = "../index.html";
+                            //window.location.href = "/wps/portal/ptd/inicio";
+                            window.location.href = "../index.html";
                         }, modalError); 
 
             }

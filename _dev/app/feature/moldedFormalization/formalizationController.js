@@ -71,7 +71,7 @@
         vm.countries = []; /*Array con toda la lista de paises */
         vm.optionsYesNo = [];
         // variable de username quemado
-        vm.username = 'AM029969';
+        vm.username = $rootScope.dataUser.userName;
         vm.specialCharacterError = "Este campo no permite caracteres especiales"; 
 
         //funciones
@@ -124,65 +124,26 @@
         vm.functionAditional = true;
         
         vm.positionCard="";
-        $rootScope.globalUserJSon;
-        console.log($rootScope.globalUserJSon);
-        
-
-        /*if ($rootScope.globalUserJSon) {
-            addTableService.getcierreForzosoTC(JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(
-                function(response){
-                    vm.dataEmbozado = JSON.parse(response.data.json);
-                    vm.viewModelmoldedFormalization.namePlastic = JSON.parse(jsonData.numberDocument).documentNumber;
-                }
-            );
-        } else {
-            jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
-            vm.dataEmbozado = jsonData;
-        }*/
-
-        /*jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
-
-        addTableService.getcierreForzosoTC(jsonData.numberDocument).then(
-            function(response){
-                $rootScope.globalUserJSon = response.data;
-                console.log($rootScope.globalUserJSon);
-            }
-        );*/
+        $rootScope.globalUserJSon = [];
+         var JSONCF = [];
+    
         var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
-        if (JSON.parse(cierreForzosoIdCA)) {
-            jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
 
-            addTableService.getcierreForzosoTC(jsonData.numberDocument).then(
+        addTableService.getcierreForzosoTC(cierreForzosoIdCA).then(      
                 function(response){
                     $rootScope.globalUserJSon = response.data;
-                    var jsonLocal = JSON.parse(response.data.json);
-                    console.log($rootScope.globalUserJSon);
-                    vm.viewModelmoldedFormalization.namePlastic = jsonLocal.firstName + " " + jsonLocal.firstLasname;
+                    JSONCF = JSON.parse($rootScope.globalUserJSon.json);
+                    console.log(JSONCF);
+                    vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLasname;
                         // Servicio para numero tarjeta de credito
-                        creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
+                        creditBureauService.getValidCientExisting(2 , JSONCF.documentNumber, vm.username).then(
                             function(response){
-                                $rootScope.globalUserJSon.keyCardNumber = response.keyCardNumber;
+                                JSONCF.keyCardNumber = response.keyCardNumber;
                                 vm.viewModelmoldedFormalization.keyCardNumber = response.keyCardNumber;
                             }
                         );
                 }
-            );
-
-        }else {          
-
-                   /* jsonData = JSON.parse($rootScope.globalUserJSon.json);
-                    console.log(jsonData);*/
-                    //vm.viewModelmoldedFormalization.namePlastic = jsonData.firstName + " " + jsonData.firstLasname;
-                        // Servicio para numero tarjeta de credito
-                        creditBureauService.getValidCientExisting(2 , JSON.parse($rootScope.globalUserJSon.json).documentNumber, vm.username).then(
-                            function(response){
-                                $rootScope.globalUserJSon.keyCardNumber = response.keyCardNumber;
-                                vm.viewModelmoldedFormalization.keyCardNumber = response.keyCardNumber;
-                            }
-                        );
-                }
-
-        
+        );
 
         catalogService.getCatalogBin(URL.CATALOG_BIN).then(
         function (response) {
@@ -199,7 +160,7 @@
 
         function validImpre(){
 
-            validationCardKeyServ.getPositionKeyCard(JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(
+            validationCardKeyServ.getPositionKeyCard(JSONCF.documentNumber).then(
                 function(response){
                     vm.positionCard = response.data.positionId;
                 }
@@ -237,7 +198,7 @@
 
         function validateKeyCard(){
             var jsonValKeyCard = {
-                "documentNumber": JSON.parse($rootScope.globalUserJSon.json).documentNumber,
+                "documentNumber": JSONCF.documentNumber,
                 "positionId":vm.positionCard, 
                 "positionValue": vm.viewModelmoldedFormalization.positionValueInput
             };
@@ -275,8 +236,8 @@
               "printer": $rootScope.globalUserJSonPrinter, //JSON.parse($rootScope.globalUserJSon.json).printer,
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
               "cardHolderName": vm.viewModelmoldedFormalization.namePlastic,
-              "documentNumber": JSON.parse($rootScope.globalUserJSon.json).documentNumber,
-              "additional": vm.viewModelmoldedFormalization.aditional,
+              "documentNumber": JSONCF.documentNumber,
+              "additional": "N",
               "createdBy": vm.username
             }
 
@@ -399,7 +360,7 @@
               "printer": $rootScope.globalUserJSonPrinter, //JSON.parse($rootScope.globalUserJSon.json).printer,
               "productCode": vm.viewModelmoldedFormalization.typeProduct,
               "cardHolderName": vm.viewModelmoldedFormalization.namePlastic2,
-              "documentNumber": "1036655422",
+              "documentNumber": JSONCF.documentNumber,
               "additional": "S",
               "createdBy": vm.username
             }
@@ -427,9 +388,9 @@
                                     printCardService.validPrintExit(idPrintAdi).then(function(response) {
                                         $timeout(function(){
                                                 var requestCode = response.responseCode;
-                                                $rootScope.globalUserJSon.cardHolderName = response.cardHolderName;
-                                                $rootScope.globalUserJSon.creditCardNumber = response.creditCardNumber;
-                                                $rootScope.globalUserJSon.productCode = response.productCode;
+                                                JSONCF.cardHolderName = response.cardHolderName;
+                                                $rootScope.globalUserJSon.creditCardNumberAditional = response.creditCardNumber;
+                                                JSONCF.productCode = response.productCode;
                                                 contador ++;
                                                 console.log('respuesta de la impre-------');
                                                 console.log(response);
@@ -489,55 +450,190 @@
 
 
         function validServiMega() {
-            
             var jsonMega = {
                 "idCustomerStepFlow":$rootScope.globalUserJSon.id,
                 "DAC": {
-                    "idCustomerStepFlow" : $rootScope.globalUserJSon.id,
+                    "idCustomerFlowStep" : $rootScope.globalUserJSon.id,
+                    "campaignId":JSONCF.idCampaign, 
                     "userName": vm.username,
-                    "customerName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
-                    "documentNumber":JSON.parse($rootScope.globalUserJSon.json).documentNumber,
+                    "contactId":"1-20R2IRS", // consulta de siebel
+                    "creditCardNumber":$rootScope.globalUserJSon.creditCardNumber, // tarjeta de credito
+                    "customerName": JSONCF.firstName + " " +  JSONCF.firstLasname,
+                    "documentNumber": JSONCF.documentNumber,
                     "productType":"TARJETA CREDITO",
-                    "limitRD":"",
-                    "limitUSD":"",
-                    "creationDate": "2017-05-16",
-                    "agency":"Aquí", // sucursal user
+                    "limitRD":JSONCF.dopLimit,
+                    "limitUSD":JSONCF.usdLimit,
+                    "agency":$rootScope.dataUser.userNameDescription, // sucursal user
                     "productName":"CINCO", // gn - gr
-                    "deferred":"",
-                    "nationality":JSON.parse($rootScope.globalUserJSon.json).idNacionality,                    
-                    "birtDate": "2017-05-16",
-                    "civilStatus": JSON.parse($rootScope.globalUserJSon.json).idCivilState,
-                    "sex": JSON.parse($rootScope.globalUserJSon.json).sex,
-                    "profession": JSON.parse($rootScope.globalUserJSon.json).idProfession,
-                    "academicLevel": JSON.parse($rootScope.globalUserJSon.json).academicLevel,
-                    "decisionCredit":"OK", // decision pre
-                    "decisionDate":"2017-05-16", // fecha hoy
+                    "deferred":JSONCF.deferred,
+                    "nationality":JSONCF.addressList[0].country.value,                    
+                    "birthDate": "2010-04-04",
+                    "civilStatus": "",
+                    "sex": JSONCF.sex,
+                    "profession": JSONCF.idProfession,
+                    "academicLevel": "", // Observar
+                    "decisionCredit":JSONCF.decisionMessage, // decision pre
                     "isFico":true, // pasa por fico
                     "incomes":"20000", // reporte
-                    "incomeEvidence":"21000", // diff datacredito
                     "houseType":"PROPIA", // campo fico
                     "houseTime":"8", // campo fico
-                    "expenses":"25000", // gastos fico 
-                    "score":"000", // fico puntos
                     "contractDate":"2010-04-04" // fecha fico
                 },
                 "AcknowledgmentReceipt":{
-                    "idCustomerStepFlow" : $rootScope.globalUserJSon.id,
+                    "idCustomerFlowStep" : $rootScope.globalUserJSon.id,
                     "userName":vm.username,
-                    "productType":"TC",
-                    "phone":"12345678", // tel user
-                    "address":"Aqui no mas", // dire
+                    "productType":"TARJETA CREDITO",
+                    "phone":JSONCF.cellPhone, // tel user
+                    "address":JSONCF.addressList[0].street, // dire
                     "principalCardNumber":vm.viewModelmoldedFormalization.keyCardNumber,
                     "additionalCardNumber":"N", // # campo adit
-                    "office":"101", //sucursalcode username
+                    "office":$rootScope.dataUser.userNameDescription, //sucursalcode username
                     "billingCycle":"MENSUAL",
-                    "receptorName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
-                    "documentNumber":JSON.parse($rootScope.globalUserJSon.json).documentNumber,
-                    "bankAssesor":"XXXX XX", // userName
-                    "customerName":JSON.parse($rootScope.globalUserJSon.json).firstName + " " +  JSON.parse($rootScope.globalUserJSon.json).firstLasname,
+                    "receptorName":JSONCF.firstName + " " +  JSONCF.firstLasname,
+                    "documentNumber":JSONCF.documentNumber,
+                    "bankAssesor":vm.username, // userName
+                    "customerName":JSONCF.firstName + " " +  JSONCF.firstLasname,
                     "customerBeneficiary": "",// nombre adit,
-                    "receptorFirm":"" /// numero tarjeta de clave - cordenada
-                }
+                    "receptorFirm":vm.viewModelmoldedFormalization.keyCardNumber +"-"+vm.positionCard /// numero tarjeta de clave - cordenada
+                },
+                "TARIFF": {
+                    "billfoldType": "TARJETA CREDITO",
+                    "accountNumber": $rootScope.globalUserJSon.creditCardNumber, // numero tarjeta de credito
+                    "customerNumber": "123456", // dato siebel
+                    "documentNumber": "12341234002", // dato de siebel
+                    "userCreatorName": $rootScope.dataUser.userNameDescription,
+                    "agreement": "OK",
+                    "customerName": JSONCF.firstName + " " +  JSONCF.firstLasname,
+                    "userName": vm.username,
+                    "idCustomerFlowStep": $rootScope.globalUserJSon.id
+                },
+                "CONTRACT_TC": {
+                    "selectedProduct": "TARJETA CINCO",
+                    "cityName": JSONCF.idBirthCity,
+                    "creatorName": $rootScope.dataUser.userNameDescription,
+                    "userName": vm.username,
+                    "customerName": JSONCF.firstName + " " +  JSONCF.firstLasname,
+                    "documentType": "2",//JSONCF.documentType, // agregar al json
+                    "documentNumber": JSONCF.documentNumber,
+                    "nationality": JSONCF.idNacionality,
+                    "civilStatus": JSONCF.idCivilState,
+                    "residenceAddress": JSONCF.addressList[0].street,
+                    "email": JSONCF.email,
+                    "phone": JSONCF.cellPhone,
+                    "authenticationCode": vm.viewModelmoldedFormalization.keyCardNumber,
+                    "keyCardNumber": JSONCF.keyCardNumber,
+                    "idCustomerFlowStep":  $rootScope.globalUserJSon.id
+                },
+                "VNCAS400": {
+                    "CodigoPersona": "0001080",
+                    "CodigoPersonaAdicional": "",
+                    "TipoDocumento": "2",
+                    "NumeroDocumento": JSONCF.documentNumber,
+                    "NumeroTarjeta": JSONCF.keyCardNumber,
+                    "Sucursal": $rootScope.dataUser.sucursalId,
+                    "TipoTarjeta": "P",//gn - gr
+                    "MarcaTarjeta": "",//
+                    "Adicional": "N",
+                    "TarjetaAmparadora": "",
+                    "TipoDocumentoAdicional": "2",
+                    "NumeroDocumentoAdicional": "",
+                    "userName": vm.username,
+                    "idCustomerFlowStep": $rootScope.globalUserJSon.id
+                },
+                "VNCAS400_ADDITIONAL": {
+                    "CodigoPersona": "",
+                    "CodigoPersonaAdicional": "0001080",
+                    "TipoDocumento": "2",
+                    "NumeroDocumento": JSONCF.documentNumber,
+                    "NumeroTarjeta": JSONCF.keyCardNumber,
+                    "Sucursal": $rootScope.dataUser.sucursalId,
+                    "TipoTarjeta": "P",
+                    "MarcaTarjeta": "",
+                    "Adicional": "N",
+                    "TarjetaAmparadora": "4517000510020841",
+                    "TipoDocumentoAdicional": "003",
+                    "NumeroDocumentoAdicional": "00101044261",
+                    "userName": "AM029969",
+                    " idCustomerFlowStep ": "42"
+                },
+                "ADDITIONAL_CONTACT": {
+                    "IdType": "CEDULA NUEVA",
+                    "IdNumber": "03103162188",
+                    "firstName": "CORA",
+                    "lastName": "GONZALES",
+                    "birthDate": "07/29/1979",
+                    "sex": "FEMENINO",
+                    "maritalStatus": "SOLTERO/A",
+                    "cardNumber": "4540080512264946",
+                    "userName": "AM029969",
+                    "ProductName": " EMPLEADO VCI ",
+                    " idCustomerFlowStep ": "42"
+                },
+                "ADDITIONAL_CONVERTION": {
+                    "userName": "AM029969",
+                    "tarjetaPrincipal": "4517000510018656",
+                    "tarjetaAdicional": "4517000510018649 ",
+                    "idCustomerFlowStep": "22"
+                },
+                "PERSONALIZATION_CREDIT_CARD": {
+                    "cardData": [
+                        {
+                            "principal": true,
+                            "userName": "AM029969",
+                            "documentType": "C",
+                            "documentNumber": "05800243668",
+                            "customerName": "Ramon",
+                            "firstLatName": "Ramoncito",
+                            "secondLastName": "Ramo",
+                            "brithDate": "1970/03/05",
+                            "sex": "MASCULINO",
+                            "proffesion": "EMPLEADO",
+                            "civilStatus": "Soltero",
+                            "passport": "",
+                            "monthlyIncome": "50000",
+                            "salary": "50000",
+                            "creditLimitRD": "20000",
+                            "creditLimitUSD": "2000",
+                            "creditLimitDeferred": "25000",
+                            "workAddress": "calle falsa 123",
+                            "workPhone": "1234567",
+                            "workExtension": "",
+                            "homeAddress": "calle falsa 123",
+                            "homePhone": "1234567",
+                            "homeExtension": "",
+                            "cardNumber": "05800243668",
+                            "idCustomerFlowStep":"42"
+                        },
+                        {
+                            "principal": false,
+                            "userName": "AM029969",
+                            "documentType": "C",
+                            "documentNumber": "05800243668",
+                            "customerName": "Ramon",
+                            "firstLatName": "Ramoncito",
+                            "secondLastName": "Ramo",
+                            "brithDate": "1970/03/05",
+                            "sex": "MASCULINO",
+                            "proffesion": "EMPLEADO",
+                            "civilStatus": "Soltero",
+                            "passport": "",
+                            "monthlyIncome": "50000",
+                            "salary": "50000",
+                            "creditLimitRD": "20000",
+                            "creditLimitUSD": "2000",
+                            "creditLimitDeferred": "25000",
+                            "workAddress": "calle falsa 123",
+                            "workPhone": "1234567",
+                            "workExtension": "",
+                            "homeAddress": "calle falsa 123",
+                            "homePhone": "1234567",
+                            "homeExtension": "",
+                            "cardNumber": "05800243668",
+                            "idCustomerFlowStep":"42"
+                        }
+                ]
+    }
+
             }  
 
             printCardService.servicesMega(jsonMega).then( 
@@ -574,8 +670,24 @@
            }
         }
 
-        var dataSiebel = localStorage.getItem("dataSiebel");
-           if (dataSiebel === null) {
+        var dataSiebel = localStorage.getItem("dataSiebel");   
+
+        if ($rootScope.globalUserJSon.email == undefined ){
+            vm.placeSendingSlect = [
+                { value:"Casa" },
+                { value:"Trabajo" },
+                { value:"Otro" }
+            ];
+        }else{
+            vm.placeSendingSlect = [
+                { value:"Correo" },
+                { value:"Casa" },
+                { value:"Trabajo" },
+                { value:"Otro" }
+            ];
+        }
+        
+           /*if (dataSiebel === null) {
 
            } else { 
             if(dataSiebel === "true"){
@@ -619,7 +731,7 @@
 
             }
 
-           }
+    }*/
             
         
         function getValidPlace(){
@@ -1124,7 +1236,7 @@
                     
                     //vm.myDate = "2016-07-05";
                     //vm.bornDay.setRangeText(dataTest.substring(0, 10));    
-                    }, modalError);
+                    });
                 }
 
                 

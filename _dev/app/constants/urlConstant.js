@@ -60,7 +60,7 @@
             UPDATE_CODE_PARAM: '/BHDL_TDPD_SIREMAS/siremas/transactionCode/update',
             ALL_CODE_PARAM: '/BHDL_TDPD_SIREMAS/siremas/transactionCode/getAll?originCode&transactionCode&productType',
             TRANSACTION_TYPE: '/BHDL_TDPD_SIREMAS/siremas/catalog/getCatalogByCode?code=TransactionType',
-            CATALOG_BIN: '/BHDL_TDPD_Back_Credit_Card/rest/productTyper/Get?bin=491697',
+            CATALOG_BIN: '/BHDL_TDPD_Back_Credit_Card/rest/productTyper/Get?bin=451700',
             CURRENCY_CODE: 'BHDL_TDPD_SIREMAS/siremas/catalog/getCatalogByCode?code=CurrencyCode',
             TYPE_ROLE: 'BHDL_TDPD_SIREMAS/siremas/catalog/getCatalogByCode?code=RuleType',
             PRODUCT_TYPE: 'BHDL_TDPD_SIREMAS/siremas/catalog/getCatalogByCode?code=ProductType',
@@ -78,6 +78,8 @@
             UPDATE_CIERRE_FORZOSO: '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/update',
             PRINT_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/add',
             ACTIVATE_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/activateCard/activate',
-            GET_FILES_GR: '/BHDL_TDPD_SIREMAS/siremas/uploadedFiles/Get'
+            GET_FILES_GR: '/BHDL_TDPD_SIREMAS/siremas/uploadedFiles/Get',
+            CREDIT_CARD_REQUEST: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequestState/getCreditCardRequest',
+            PRODOCT_DOCUMENTS: '/BHDL_TDPD_Back_Credit_Card/rest/prodoctivityDocuments/getUrl'
         });
 })();

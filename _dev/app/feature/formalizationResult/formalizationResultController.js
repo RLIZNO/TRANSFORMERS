@@ -13,7 +13,8 @@
 	 	'messages',
 		'$rootScope',
 	 	'modalFactory',
-        'catalogService'
+        'catalogService',
+		'validationCardKeyServ'
 	];
 
 	function formalizationResultController(
@@ -24,7 +25,8 @@
 		messages,
 		$rootScope,
 		modalFactory,
-        catalogService
+        catalogService,
+		validationCardKeyServ
 	){
 		var vm = this;	
 
@@ -39,6 +41,7 @@
 			window.location.href = "/wps/portal/ptd/inicio";
 		}
 
+		console.log($rootScope.globalUserJSon);
 		function actCredCard(status) {
 			if (status == false ) {
 				var jsonAct = {
@@ -64,7 +67,81 @@
 				alert("e");
 			}
 		}
- 
+
+		vm.viewModelMantResult.namePrinc = $rootScope.globalUserJSon.cardHolderName;
+		vm.viewModelMantResult.numberTarje = $rootScope.globalUserJSon.creditCardNumber;
+		vm.viewModelMantResult.typeTc = $rootScope.globalUserJSon.productCode;
 		
+
+		var loading = document.getElementById("loader");
+		var loadingBody = document.getElementById("loadingBody");
+			loading.style.display = "block"; 
+			loadingBody.style.display = "block"; 
+			var promise; 
+			var myVar;
+			var increaseCounter = function () {
+			myVar = setTimeout(showPage, 20000);
+			
+			function showPage() {
+				loading.style.display = "block";
+				loadingBody.style.display = "block"; 
+				
+				if (contador < 5) {
+						validationCardKeyServ.getCreditReques($rootScope.globalUserJSon.id).then(function(response) {
+							$timeout(function(){
+									if (response.success == true) {
+										vm.tariff = "TARIFF_TC";
+										vm.acuse = "ACKNOWLEDGEMENT_RECEIPT";
+										vm.contrato = "CONTRACT_TC";
+										vm.dac = "DAC – TC";
+											var request = response.data;
+											if (request.tariffDocumentState === 'Y' ){
+												validationCardKeyServ.getCreditReques(vm.tariff, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+													$timeout(function(){
+														vm.urlAccountTariff = response.data;
+												}, 0);
+												}, modalError);
+											}
+											if (request.dacDocumentState === 'Y' ){
+												validationCardKeyServ.getCreditReques(vm.dac, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+													$timeout(function(){
+														vm.urlAccounDac = response.data;
+												}, 0);
+												}, modalError);
+											}
+											if (request.contractDocumentState === 'Y' ){
+												validationCardKeyServ.getCreditReques(vm.contrato, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+													$timeout(function(){
+														vm.urlAccountContrac = response.data;
+												}, 0);
+												}, modalError);
+											}
+											if (request.receiptDocumentState === 'Y' ){
+												validationCardKeyServ.getCreditReques(vm.acuse, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+													$timeout(function(){
+														vm.urlAccountAcuse = response.data;
+												}, 0);
+												}, modalError);
+											}											
+											contador ++;
+									} else {
+
+									}
+									
+							}, 0);
+							
+						}, modalError);                                    
+					
+				}   else {
+					$interval.cancel(promise);
+					//modalFactory.success(messages.modals.error.printError);
+					loading.style.display = "none"; 
+					loadingBody.style.display = "none"; 
+				}       
+			}
+				loading.style.display = "none"; 
+				loadingBody.style.display = "none"; 
+			}
+			promise =  $interval(increaseCounter, 20000); 
 	}
 })();
