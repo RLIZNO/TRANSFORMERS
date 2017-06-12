@@ -253,23 +253,8 @@
 
             printCardService.printCard(jsonPrint).then( 
                 function(response){
-                        if (response.success) {
-                            vm.idPrint = response.data.id;
-                                vm.increaseCounter = function () {
-                                     printCardService.validPrintExit(idPrint).then(function(response) {
-                                        $timeout(function () {
-                                            //la funcion se llama a si misma para volver a enviar el servicio
-                                            console.log(response);
-                                        }, 0);
-                                    });
-                                    var promise = $interval(function() { 
-                                        //Aqui es cuando llama tu función
-                                        vm.increaseCounter();
-                                     },5000);
-                                }
 
-                            } 
-                /*
+                
                     var loading = document.getElementById("loader");
                     var loadingBody = document.getElementById("loadingBody");
                     if (response.success == true) {
@@ -306,7 +291,7 @@
                                                 /* $rootScope.globalUserJSon.idRf = response.data.flowStepId;
                                                     $rootScope.globalUserJSon.additional = response.data.additional;
                                                     $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;*/
-                                                /*    $interval.cancel(promise);
+                                                    $interval.cancel(promise);
                                                     if (vm.megaService) {
                                                         if (vm.viewModelmoldedFormalization.aditional === "S"){                                                                                        
                                                                 sweet.show({
@@ -363,12 +348,12 @@
                          loading.style.display = "none"; 
                          loadingBody.style.display = "none"; 
                         }
-                        promise =  $interval(increaseCounter, 20000);     
+                        promise =  $interval(increaseCounter, 0);     
                     }else {
                         modalFactory.success(messages.modals.error.printError);
                         loading.style.display = "none"; 
                         loadingBody.style.display = "none"; 
-                    } */              
+                    }               
                 }
             );
         }

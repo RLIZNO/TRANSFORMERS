@@ -243,7 +243,8 @@
         //$rootScope.validDataGlobUser     = {};
         $rootScope.globalValClntExist    = {};
         $rootScope.globalSiebelCust      = {};
-        $rootScope.globalValClntCredCard = {};    
+        $rootScope.globalValClntCredCard = {};
+        $rootScope.globalClientSIebel = {}; // variable global que guardamos en el Json para el forzoso    
 
         function loadCreditCardFirstData(){
            addTableService.allTable().then(function(responseValue) {
@@ -923,6 +924,8 @@
                                     creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
                                         then(function   
                                             (response) {
+                                            
+                                            $rootScope.globalClientSIebel = response;
                                             /* Si la tarjeta clave viene vacia o indefinida colocarla como vacio  */
                                             if (angular.isObject(response.keyCardNumber) || response.keyCardNumber==='') {
                                                     var keyCardNumber = "";                                        
@@ -1513,6 +1516,9 @@
                             $rootScope.globalUserJSon = $.extend(true, {},{
                                 json3 : "jsonClntCredCard",
                                 JSONcierreForzoso : $rootScope.globalValClntCredCard
+                            },{
+                                json2 : "jsonClientSieble",
+                                JSONcierreForzoso :$rootScope.globalClientSIebel
                             }
                             );
 
