@@ -13,6 +13,8 @@
 	 	'messages',
 		'$rootScope',
 	 	'modalFactory',
+		'$timeout',
+		'$interval',
         'catalogService',
 		'validationCardKeyServ'
 	];
@@ -25,6 +27,8 @@
 		messages,
 		$rootScope,
 		modalFactory,
+		$timeout,
+		$interval,
         catalogService,
 		validationCardKeyServ
 	){
@@ -72,7 +76,7 @@
 		vm.viewModelMantResult.numberTarje = $rootScope.globalUserJSon.creditCardNumber;
 		vm.viewModelMantResult.typeTc = $rootScope.globalUserJSon.productCode;
 		
-
+		var contador = 0;
 		var loading = document.getElementById("loader");
 		var loadingBody = document.getElementById("loadingBody");
 			loading.style.display = "block"; 
@@ -96,32 +100,53 @@
 										vm.dac = "DAC – TC";
 											var request = response.data;
 											if (request.tariffDocumentState === 'Y' ){
-												validationCardKeyServ.getCreditReques(vm.tariff, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+												validationCardKeyServ.gettariff(vm.tariff, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
 													$timeout(function(){
-														vm.urlAccountTariff = response.data;
+													  if (response.success == true){
+														vm.urlAccountTariff = response.data.url;
+														vm.tariffValid = true;
+													  }else {
+														  vm.tariffValid = false;
+													  }
+
 												}, 0);
-												}, modalError);
+												});
 											}
 											if (request.dacDocumentState === 'Y' ){
-												validationCardKeyServ.getCreditReques(vm.dac, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+												validationCardKeyServ.gettariff(vm.dac, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
 													$timeout(function(){
-														vm.urlAccounDac = response.data;
+													if (response.success == true){
+														vm.urlAccounDac = response.data.url;
+														vm.validDac = true;
+													  }else {
+														  vm.validDac = false;
+													  }
 												}, 0);
-												}, modalError);
+												});
 											}
 											if (request.contractDocumentState === 'Y' ){
-												validationCardKeyServ.getCreditReques(vm.contrato, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+												validationCardKeyServ.gettariff(vm.contrato, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
 													$timeout(function(){
-														vm.urlAccountContrac = response.data;
+													if (response.success == true){
+														vm.urlAccountContrac = response.data.url;
+														vm.validContra = true;
+													  }else {
+														  vm.validContra = false;
+													  }
 												}, 0);
-												}, modalError);
+												});
 											}
 											if (request.receiptDocumentState === 'Y' ){
-												validationCardKeyServ.getCreditReques(vm.acuse, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
+												validationCardKeyServ.gettariff(vm.acuse, JSON.parse($rootScope.globalUserJSon.json).documentNumber).then(function(response) {
 													$timeout(function(){
-														vm.urlAccountAcuse = response.data;
+													if (response.success == true){
+														vm.urlAccountAcuse = response.data.url;
+														vm.validacuse = true;
+													  }else {
+														  vm.validacuse = false;
+													  }
 												}, 0);
-												}, modalError);
+												});
 											}											
 											contador ++;
 									} else {
@@ -142,6 +167,17 @@
 				loading.style.display = "none"; 
 				loadingBody.style.display = "none"; 
 			}
-			promise =  $interval(increaseCounter, 20000); 
+			promise =  $interval(increaseCounter, 10000); 
+
+
+        function modalError(error) {
+            if(error.message !== '') {
+                modalFactory.error(error.message);
+            } else {
+                modalFactory.error(messages.modals.error.errorDefault);
+
+            }
+        }
+
 	}
 })();

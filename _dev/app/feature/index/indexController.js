@@ -29,7 +29,7 @@
     ) {
 
         var vm = this;
-
+        $rootScope.customerDataCredit = {};
 
         /*Capturamos la cookie que tiene el nombre del usuario*/
         vm.userName = localStorage.getItem("userName");
@@ -62,6 +62,7 @@
                     $rootScope.dataUser.userValid = response.success;
                     $rootScope.dataUser.userNameDescription = response.data.userName;
                     $rootScope.dataUser.sucursalId = response.data.sucursalCode;
+                    $rootScope.dataUser.sucursal = response.data.sucursalName;
                     $rootScope.dataUser.inventaryTDC = angular.isObject(response.data.inventary.Information[0].inventaryData[0]);
                     if(!response.success){
                         modalFactory.error(response.error.message);

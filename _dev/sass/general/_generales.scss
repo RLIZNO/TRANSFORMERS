@@ -643,6 +643,13 @@ button.boton, button.boton2, button.boton3{
 	text-align: center;
 }
 
+.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	pointer-events: none;
+	color: grey;
+}
+
 a.boton{
 	background: #235384;
 	border: solid 1px #235384;
@@ -1699,7 +1706,7 @@ button.boton4 {
     left: 0;
     width: 100%;
     display: none;
-    background: rgba(43, 46, 56, 0.9);
+    background: rgba(43, 46, 56, 0.8);
     -webkit-overflow-scrolling: touch;
     height: 100%;
     display: block;

@@ -74,6 +74,7 @@
         //vm.preaprobado=false;
         vm.limitRD="";
         vm.limitUSD="";
+        vm.deferredCalc ="";
                 /**
          *  @ngdoc property
          *  @name formValidationDocument
@@ -608,6 +609,7 @@
                     vm.minimumLimitRDtrue=true;
                     vm.minimumLimitRD=scopeMinLimitRD;
                     vm.viewModelvalidationAccount.limitRD="";
+                    vm.viewModelvalidationAccount.limitDiferidoRD = 0;
                 } else {
                     vm.minimumLimitRDtrue=false;
                     var viewMaxLimitRD = parseInt((vm.viewModelvalidationAccount.limitRD).replace(/,/g,""));
@@ -629,9 +631,12 @@
                         vm.viewModelvalidationAccount.limitRD = ""; 
                         vm.maximumLimitRDtrue=true;
                         vm.maximumLimitRD=scopeMaxLimitRD;
+                        vm.viewModelvalidationAccount.limitDiferidoRD = 0;
                     }else{
                         vm.maximumLimitRDtrue=false;
                     }
+                    vm.deferredCalc = vm.viewModelvalidationAccount.limitRD * 1.5;
+                    vm.viewModelvalidationAccount.limitDiferidoRD = vm.deferredCalc;
                 }           
             }  else {
                 modalFactory.warning(messages.modals.warning.modalEmptyField);
@@ -1423,8 +1428,7 @@
          *  Valida si el formulario de la pantalla esta correctamente completado para continuar.
          */
         function validationData(){
-
-
+            $rootScope.globalLimitData.limDiferido = vm.deferredCalc;
             if (!vm.clientNo){
                 var jsonIdentification = {}; /*json donde vamos almacenar la información del cliente a guardar */
             
@@ -1465,8 +1469,8 @@
                         var dataSiebel = false;
                         localStorage.setItem("dataSiebel", dataSiebel);
                         localStorage.setItem("validclientTc", validclientTc);
-                        //window.location.href = "/wps/portal/ptd/inicio";
-                        window.location.href = "../index.html";
+                        window.location.href = "/wps/portal/ptd/inicio";
+                        //window.location.href = "../index.html";
                     }, 0);
                 });
             }
@@ -1522,8 +1526,8 @@
                             localStorage.setItem("dataSiebel", dataSiebel);
                             var validclientTc = 'validclientTc';
                             localStorage.setItem("validclientTc", validclientTc);
-                            //window.location.href = "/wps/portal/ptd/inicio";
-                            window.location.href = "../index.html";
+                            window.location.href = "/wps/portal/ptd/inicio";
+                            //window.location.href = "../index.html";
                         }, modalError); 
 
             }

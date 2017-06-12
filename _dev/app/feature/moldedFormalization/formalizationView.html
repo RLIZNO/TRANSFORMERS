@@ -66,6 +66,7 @@
                 <span class="label margen2"> Tipo de Producto</span> <span class="input2 inputMedio ">
                     <select style="width:162px"
                       name="typeProduct"
+                      ng-change="moldedFormalization.typeProducCinco();"
                       ng-model="moldedFormalization.viewModelmoldedFormalization.typeProduct"
                       ng-class="{ 'hasError': (moldedFormalization.submitted || moldedFormalization.formMoldedFormalization.typeProduct.$touched)
                                  && moldedFormalization.formMoldedFormalization.typeProduct.$invalid}"
@@ -517,6 +518,8 @@
       <div class="botonareacenter">            
          <button  
             class="boton3 btnlager2 btnblue"
+            ng-class="{'disabled' : !moldedFormalization.viewModelmoldedFormalization.namePlastic || !moldedFormalization.viewModelmoldedFormalization.typeProduct || 
+            !moldedFormalization.viewModelmoldedFormalization.aditional || !moldedFormalization.viewModelmoldedFormalization.palceSending || $ctrl.selectedDocumentType}"
             ng-click="moldedFormalization.validImpre()">
          Impresión Tarjetas
          </button>
