@@ -1747,3 +1747,33 @@ button.boton4 {
   display: none;
   text-align: center;
 }
+.modalStatic {
+    background-color: #fff;
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    width: 478px;
+    height: 185px;
+    padding: 17px;
+    border-radius: 1px;
+    text-align: center;
+    left: 52%;
+    top: 64%;
+    position: fixed;
+    margin-left: -256px;
+    margin-top: -200px;
+    overflow: hidden;
+    z-index: 99999;
+}
+
+.modalStatic p {
+font-size: 14pt;
+    width: 100%;
+    float: left;
+    text-align: center;
+    color: #797979;
+    font-weight: 300;
+    margin: 0;
+    top: 32%;
+    position: relative;
+    padding: 0;
+}
+

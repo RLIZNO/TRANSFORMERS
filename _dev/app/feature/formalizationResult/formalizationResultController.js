@@ -75,6 +75,18 @@
 		vm.viewModelMantResult.namePrinc = $rootScope.globalUserJSon.cardHolderName;
 		vm.viewModelMantResult.numberTarje = $rootScope.globalUserJSon.creditCardNumber;
 		vm.viewModelMantResult.typeTc = $rootScope.globalUserJSon.productCode;
+
+		if ($rootScope.globalUserJSon.nameAdicional === undefined){
+			vm.viewModelMantResult.nameAdicional = "";
+		}else {
+			vm.viewModelMantResult.nameAdicional = $rootScope.globalUserJSon.nameAdicional;
+		}
+
+		if ($rootScope.globalUserJSon.creditCardNumberAditional === undefined) {
+			vm.viewModelMantResult.noTCAdicional = ""
+		}else {
+			vm.viewModelMantResult.noTCAdicional = $rootScope.globalUserJSon.creditCardNumberAditional;
+		}
 		
 		var contador = 0;
 		var loading = document.getElementById("loader");
@@ -87,10 +99,8 @@
 			myVar = setTimeout(showPage, 20000);
 			
 			function showPage() {
-				loading.style.display = "block";
-				loadingBody.style.display = "block"; 
 				
-				if (contador < 5) {
+				if (contador < 8) {
 						validationCardKeyServ.getCreditReques($rootScope.globalUserJSon.id).then(function(response) {
 							$timeout(function(){
 									if (response.success == true) {

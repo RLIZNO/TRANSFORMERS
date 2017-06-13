@@ -61,7 +61,7 @@
         vm.popupDatePassport = { /*Boolean que abre y cierra el datepicker de fecha de pasaporte */
             opened: false
         };
-        var jsonData = {};
+        var JSONCF = {};
         vm.viewModelmoldedFormalization = {
             typeIdentification: SELECT_DEFAULT.TYPE_DOCUMENTS,
             positionValue: '',
@@ -99,9 +99,7 @@
         vm.modalError = modalError;
         vm.clientCanContinue = false;
         vm.nameUser="";
-        vm.getCreditBureau = getCreditBureau;
-        vm.getCreditBureauNoCLient = getCreditBureauNoCLient;
-        vm.getCreditListService = getCreditListService;
+        vm.loadSelect=loadSelect;
         //vm.getvalidateClientCreditCard = getvalidateClientCreditCard;
         vm.validAdi = validAdi;
         
@@ -123,6 +121,7 @@
         vm.megaService = true;
         vm.functionAditional = true;
         vm.typeProducCinco = typeProducCinco;
+        vm.validDataAdicional = validDataAdicional;
         
         vm.positionCard="";
         $rootScope.globalUserJSon = [];
@@ -135,6 +134,7 @@
                     $rootScope.globalUserJSon = response.data;
                     JSONCF = JSON.parse($rootScope.globalUserJSon.json);
                     console.log(JSONCF);
+                    loadSelect();
                     vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLasname;
                         // Servicio para numero tarjeta de credito
                         creditBureauService.getValidCientExisting(2 , JSONCF.documentNumber, vm.username).then(
@@ -160,7 +160,7 @@
 
 
         function validImpre(){
-
+            resetData();
             validationCardKeyServ.getPositionKeyCard(JSONCF.documentNumber).then(
                 function(response){
                     vm.positionCard = response.data.positionId;
@@ -207,6 +207,7 @@
         }
 
         function validateKeyCard(){
+            resetData();
             var jsonValKeyCard = {
                 "documentNumber": JSONCF.documentNumber,
                 "positionId":vm.positionCard, 
@@ -225,6 +226,8 @@
                             closeOnConfirm: true
                         }, function () {
                             $timeout(function () {
+                                var modal = document.getElementById('myModal');
+                                modal.style.display = "none";
                                 printCard();  
                             }, 0);
                         });     
@@ -253,28 +256,20 @@
 
             printCardService.printCard(jsonPrint).then( 
                 function(response){
-
-                
+                   $timeout(function(){
+                    if (response.success == true){
+                    var modalStatic = document.getElementById('myModalStatic');
                     var loading = document.getElementById("loader");
                     var loadingBody = document.getElementById("loadingBody");
-                    if (response.success == true) {
-                        loading.style.display = "block"; 
-                        loadingBody.style.display = "block"; 
-                        var promise; 
-                        var myVar;
-                        var increaseCounter = function () {
-                        myVar = setTimeout(showPage, 20000);
-                        
-                        function showPage() {
-                            loading.style.display = "block";
-                            loadingBody.style.display = "block";  
-                            console.log('Loading...')
-                            var idPrint = response.data.id;
-                            
+                    modalStatic.style.display = "block";
+                            var idPrint = response.data.id;                            
                             if (contador < 14) {
                                 if (!vm.printCardValid && vm.functionAditional){
-                                    printCardService.validPrintExit(idPrint).then(function(response) {
+                                  vm.peticion = function(){
+                                        printCardService.validPrintExit(idPrint).then(function(response) {
                                         $timeout(function(){
+                                                loading.style.display = "block"; 
+                                                loadingBody.style.display = "block"; 
                                                 var requestCode = response.responseCode;
                                                 $rootScope.globalUserJSon.cardHolderName = response.cardHolderName;
                                                 $rootScope.globalUserJSon.creditCardNumber = response.creditCardNumber;
@@ -287,11 +282,9 @@
                                                     vm.printCardValid =  true;
                                                     vm.functionAditional = false;
                                                     loading.style.display = "none";
-                                                    loadingBody.style.display = "none";  
-                                                /* $rootScope.globalUserJSon.idRf = response.data.flowStepId;
-                                                    $rootScope.globalUserJSon.additional = response.data.additional;
-                                                    $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;*/
-                                                    $interval.cancel(promise);
+                                                    loadingBody.style.display = "none"; 
+                                                    modalStatic.style.display = "none"; 
+                                                    $interval.cancel(increaseCounter);
                                                     if (vm.megaService) {
                                                         if (vm.viewModelmoldedFormalization.aditional === "S"){                                                                                        
                                                                 sweet.show({
@@ -315,7 +308,8 @@
                                                                     closeOnConfirm: true
                                                                 }, function () {
                                                                     $timeout(function () {
-                                                                        validServiMega(); 
+                                                                        validServiMega();
+                                                                        validDataAdicional(); 
                                                                     }, 0);
                                                                 });
                                                             vm.megaService = false;
@@ -324,40 +318,49 @@
                                                     }
                                                                                                          
                                                 }
-
-                                                    else 
-                                                      if (requestCode !== "000"){
-                                                            loading.style.display = "none"; 
-                                                            loadingBody.style.display = "none"; 
-                                                            modalFactory.error(response.responseDescription);
-                                                            contador = 15;
-                                                            vm.megaService = false;
-                                                    }
+                                                else 
+                                                    if (requestCode !== "000"){
+                                                        loading.style.display = "none"; 
+                                                        loadingBody.style.display = "none"; 
+                                                        modalStatic.style.display = "none";
+                                                        modalFactory.error(response.responseDescription);
+                                                        contador = 15;
+                                                        vm.megaService = false;
+                                                   }
                                                 }
                                         }, 0);
                                         
-                                    }, modalError);                                    
+                                    }, modalError);    
+                                  };                                 
                                 }
                             }   else {
                                 vm.printCardValid =  true;
-                                $interval.cancel(promise);
+                                $interval.cancel(increaseCounter);
                                 loading.style.display = "none"; 
                                 loadingBody.style.display = "none"; 
+                                modalStatic.style.display = "none";
                             }       
-                        }
                          loading.style.display = "none"; 
                          loadingBody.style.display = "none"; 
-                        }
-                        promise =  $interval(increaseCounter, 0);     
+                            var increaseCounter = $interval(function() {  
+                                if(contador < 14){
+                                    vm.peticion();
+                                }                         
+                            },20000); 
                     }else {
-                        modalFactory.success(messages.modals.error.printError);
-                        loading.style.display = "none"; 
-                        loadingBody.style.display = "none"; 
-                    }               
+                        modalFactory.error(response.error.message);
+                    } 
+                   }, 0);   
+           
+                                 
                 }
             );
         }
         
+        function validDataAdicional(){
+            vm.viewModelmoldedFormalization.typeProduct
+        }
+
         function validAdi(){
             
             vm.printCardValid =  false;
@@ -375,81 +378,88 @@
 
             printCardService.printCard(jsonPrint).then( 
                 function(response){
-                    var loading = document.getElementById("loader");
-                    var loadingBody = document.getElementById("loadingBody");
-                    if (response.success == true) {
-                        loading.style.display = "block"; 
-                        loadingBody.style.display = "block"; 
-                        var promise; 
-                        var myVar;
-                        var increaseCounter = function () {
-                        myVar = setTimeout(showPage, 20000);
-                        
-                        function showPage() {
-                            loading.style.display = "block";
-                            loadingBody.style.display = "block";  
-                            console.log('Loading...')
-                            var idPrintAdi = response.data.id;
+                   $timeout(function(){
+                    if (response.success == true){
+                        var loading = document.getElementById("loader");
+                        var loadingBody = document.getElementById("loadingBody");
+                        if (response.success == true) {
+                            loading.style.display = "block"; 
+                            loadingBody.style.display = "block"; 
+                            var promise; 
+                            var myVar;
+                            var increaseCounter = function () {
+                            myVar = setTimeout(showPage, 20000);
                             
-                            if (contador < 14) {
-                                if (!vm.printCardValid){
-                                    printCardService.validPrintExit(idPrintAdi).then(function(response) {
-                                        $timeout(function(){
-                                                var requestCode = response.responseCode;
-                                                JSONCF.cardHolderName = response.cardHolderName;
-                                                $rootScope.globalUserJSon.creditCardNumberAditional = response.creditCardNumber;
-                                                JSONCF.productCode = response.productCode;
-                                                contador ++;
-                                                console.log('respuesta de la impre-------');
-                                                console.log(response);
-                                                if(requestCode !== ""){  
-                                                    vm.printCardValid =  true;
-                                                    loading.style.display = "none";
-                                                    loadingBody.style.display = "none";  
-                                                /* $rootScope.globalUserJSon.idRf = response.data.flowStepId;
-                                                    $rootScope.globalUserJSon.additional = response.data.additional;
-                                                    $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;*/
-                                                    $interval.cancel(promise);
-                                                    if (vm.megaService) {
-                                                        sweet.show({
-                                                            title: '',
-                                                            text: "La tarjeta adicional fue impresa correctamente. Ahora procederemos a validar los contratos.",
-                                                            type: 'success',
-                                                            confirmButtonText: 'Ok',
-                                                            closeOnConfirm: true
-                                                        }, function () {
-                                                            $timeout(function () {
-                                                                validServiMega(); 
-                                                            }, 0);
-                                                        });
-                                                        contador = 15;                                                        
+                            function showPage() {
+                                loading.style.display = "block";
+                                loadingBody.style.display = "block";  
+                                console.log('Loading...')
+                                var idPrintAdi = response.data.id;
+                                
+                                if (contador < 14) {
+                                    if (!vm.printCardValid){
+                                        printCardService.validPrintExit(idPrintAdi).then(function(response) {
+                                            $timeout(function(){
+                                                    var requestCode = response.responseCode;
+                                                    $rootScope.globalUserJSon.cardHolderNameAdi = response.cardHolderName;
+                                                    $rootScope.globalUserJSon.creditCardNumberAditional = response.creditCardNumber;
+                                                    $rootScope.globalUserJSon.productCodeAdi = response.productCode;
+                                                    $rootScope.globalUserJSon.nameAdicional = vm.viewModelmoldedFormalization.namePlastic2;
+                                                    contador ++;
+                                                    console.log('respuesta de la impre-------');
+                                                    console.log(response);
+                                                    if(requestCode !== ""){  
+                                                        vm.printCardValid =  true;
+                                                        loading.style.display = "none";
+                                                        loadingBody.style.display = "none";  
+                                                    /* $rootScope.globalUserJSon.idRf = response.data.flowStepId;
+                                                        $rootScope.globalUserJSon.additional = response.data.additional;
+                                                        $rootScope.globalUserJSon.nrTa = response.data.creditCardNumber;*/
+                                                        $interval.cancel(promise);
+                                                        if (vm.megaService) {
+                                                            sweet.show({
+                                                                title: '',
+                                                                text: "La tarjeta adicional fue impresa correctamente. Ahora procederemos a validar los contratos.",
+                                                                type: 'success',
+                                                                confirmButtonText: 'Ok',
+                                                                closeOnConfirm: true
+                                                            }, function () {
+                                                                $timeout(function () {
+                                                                    validServiMega(); 
+                                                                }, 0);
+                                                            });
+                                                            contador = 15;                                                        
+                                                        }
+                                                                                                            
                                                     }
-                                                                                                         
-                                                }
-                                                else {
+                                                    else {
 
-                                                }
-                                        }, 0);
-                                        
-                                    }, modalError);                                    
-                                }
-                            }   else {
-                                vm.printCardValid =  true;
-                                $interval.cancel(promise);
-                                //modalFactory.success(messages.modals.error.printError);
-                                loading.style.display = "none"; 
-                                loadingBody.style.display = "none"; 
-                            }       
-                        }
-                         loading.style.display = "none"; 
-                         loadingBody.style.display = "none"; 
-                        }
-                        promise =  $interval(increaseCounter, 20000);     
+                                                    }
+                                            }, 0);
+                                            
+                                        }, modalError);                                    
+                                    }
+                                }   else {
+                                    vm.printCardValid =  true;
+                                    $interval.cancel(promise);
+                                    //modalFactory.success(messages.modals.error.printError);
+                                    loading.style.display = "none"; 
+                                    loadingBody.style.display = "none"; 
+                                }       
+                            }
+                            loading.style.display = "none"; 
+                            loadingBody.style.display = "none"; 
+                            }
+                            promise =  $interval(increaseCounter, 20000);     
+                        }else {
+                            modalFactory.success(messages.modals.error.printError);
+                            loading.style.display = "none"; 
+                            loadingBody.style.display = "none"; 
+                        }    
                     }else {
-                        modalFactory.success(messages.modals.error.printError);
-                        loading.style.display = "none"; 
-                        loadingBody.style.display = "none"; 
-                    }               
+                        modalFactory.error(response.error.message);
+                    }                    
+                   }, 0);           
                 }
             );
         }
@@ -464,7 +474,7 @@
                     "idCustomerFlowStep" : $rootScope.globalUserJSon.id,
                     "campaignId":JSONCF.idCampaign, 
                     "userName": vm.username,
-                    "contactId":"1-20R2IRS", // consulta de siebel
+                    "contactId": JSONCF.idClientSiebel, // consulta de siebel
                     "creditCardNumber":$rootScope.globalUserJSon.creditCardNumber, // tarjeta de credito
                     "customerName": JSONCF.firstName + " " +  JSONCF.firstLasname,
                     "documentNumber": JSONCF.documentNumber,
@@ -475,8 +485,8 @@
                     "productName":vm.typeDocumentSiebel, // gn - gr
                     "deferred":JSONCF.deferred,
                     "nationality":JSONCF.addressList[0].country.value,                    
-                    "birthDate": "2017-04-04",
-                    "civilStatus": "SOLTERO",
+                    "birthDate": $filter('date')(JSONCF.birthDate, 'yyyy-MM-dd'),
+                    "civilStatus": JSONCF.civilState,
                     "sex": JSONCF.sex,
                     "profession": "EMPLEADO",
                     "academicLevel": "UNIVERSITARIO", // Observar
@@ -507,8 +517,8 @@
                 "TARIFF": {
                     "billfoldType": "Tarjetas de Credito",
                     "accountNumber": $rootScope.globalUserJSon.creditCardNumber, // numero tarjeta de credito
-                    "customerNumber": "123456", // dato siebel
-                    "documentNumber": "12341234002", // dato de siebel
+                    "customerNumber": JSONCF.clientNumber, // dato siebel
+                    "documentNumber": JSONCF.documentNumber, // dato de siebel
                     "userCreatorName": $rootScope.dataUser.userNameDescription,
                     "agreement": "OK",
                     "customerName": JSONCF.firstName + " " +  JSONCF.firstLasname,
@@ -517,14 +527,14 @@
                 },
                 "CONTRACT_TC": {
                     "selectedProduct": "Tarjetas de Credito",
-                    "cityName": "SANTA DOMINGO",
+                    "cityName": JSONCF.idBirthCity,
                     "creatorName": $rootScope.dataUser.userNameDescription,
                     "userName": vm.username,
                     "customerName": JSONCF.firstName + " " +  JSONCF.firstLasname,
-                    "documentType": "2",//JSONCF.documentType, // agregar al json
+                    "documentType": "CEDULA NUEVA",//JSONCF.documentType, // agregar al json
                     "documentNumber": JSONCF.documentNumber,
-                    "nationality": "REPUBLICA",
-                    "civilStatus": "SOLTERO/A",
+                    "nationality": JSONCF.nacionality,
+                    "civilStatus": JSONCF.civilState,
                     "residenceAddress": JSONCF.addressList[0].street,
                     "email": JSONCF.email,
                     "phone": JSONCF.cellPhone,
@@ -533,13 +543,13 @@
                     "idCustomerFlowStep":  $rootScope.globalUserJSon.id
                 },
                 "VNCAS400": {
-                    "CodigoPersona": "0001080",
+                    "CodigoPersona": JSONCF.personNumber,
                     "CodigoPersonaAdicional": "",
-                    "TipoDocumento": "2",
+                    "TipoDocumento": "CEDULA NUEVA",
                     "NumeroDocumento": JSONCF.documentNumber,
                     "NumeroTarjeta": JSONCF.keyCardNumber,
                     "Sucursal": $rootScope.dataUser.sucursalId,
-                    "TipoTarjeta": "P",//gn - gr
+                    "TipoTarjeta":vm.typeDocumentSiebel,//gn - gr
                     "MarcaTarjeta": "",//
                     "Adicional": "N",
                     "TarjetaAmparadora": "",
@@ -550,19 +560,19 @@
                 },
                 "VNCAS400_ADDITIONAL": {
                     "CodigoPersona": "",
-                    "CodigoPersonaAdicional": "0001080",
-                    "TipoDocumento": "2",
+                    "CodigoPersonaAdicional": JSONCF.personNumber,
+                    "TipoDocumento": "CEDULA NUEVA",
                     "NumeroDocumento": JSONCF.documentNumber,
                     "NumeroTarjeta": JSONCF.keyCardNumber,
                     "Sucursal": $rootScope.dataUser.sucursalId,
-                    "TipoTarjeta": "P",
+                    "TipoTarjeta": vm.typeDocumentSiebel,
                     "MarcaTarjeta": "",
-                    "Adicional": "N",
-                    "TarjetaAmparadora": "4517000510020841",
-                    "TipoDocumentoAdicional": "003",
+                    "Adicional": "S",
+                    "TarjetaAmparadora": $rootScope.globalUserJSon.creditCardNumberAditional, // numero tarjeta de credito
+                    "TipoDocumentoAdicional": "CEDULA NUEVA",
                     "NumeroDocumentoAdicional": "00101044261",
-                    "userName": "AM029969",
-                    " idCustomerFlowStep ": "42"
+                    "userName": vm.username,
+                    "idCustomerFlowStep ": $rootScope.globalUserJSon.id
                 },
                 "ADDITIONAL_CONTACT": {
                     "IdType": "CEDULA NUEVA",
@@ -573,44 +583,44 @@
                     "sex": "FEMENINO",
                     "maritalStatus": "SOLTERO/A",
                     "cardNumber": "4540080512264946",
-                    "userName": "AM029969",
+                    "userName": vm.username,
                     "ProductName": " EMPLEADO VCI ",
                     " idCustomerFlowStep ": "42"
                 },
                 "ADDITIONAL_CONVERTION": {
-                    "userName": "AM029969",
-                    "tarjetaPrincipal": "4517000510018656",
-                    "tarjetaAdicional": "4517000510018649 ",
-                    "idCustomerFlowStep": "22"
+                    "userName": vm.username,
+                    "tarjetaPrincipal": $rootScope.globalUserJSon.creditCardNumber,
+                    "tarjetaAdicional": $rootScope.globalUserJSon.creditCardNumberAditional,
+                    "idCustomerFlowStep": $rootScope.globalUserJSon.id
                 },
                 "PERSONALIZATION_CREDIT_CARD": {
                     "cardData": [
                         {
                             "principal": true,
-                            "userName": "AM029969",
-                            "documentType": "C",
-                            "documentNumber": "05800243668",
-                            "customerName": "Ramon",
-                            "firstLatName": "Ramoncito",
-                            "secondLastName": "Ramo",
-                            "brithDate": "1970/03/05",
-                            "sex": "MASCULINO",
+                            "userName": vm.username,
+                            "documentType": "CEDULA NUEVA",
+                            "documentNumber": JSONCF.documentNumber,
+                            "customerName": JSONCF.clientNumber,
+                            "firstLatName": JSONCF.firstName,
+                            "secondLastName": JSONCF.secondName,
+                            "brithDate": $filter('date')(JSONCF.birthDate, 'yyyy-MM-dd'),
+                            "sex": JSONCF.sex,
                             "proffesion": "EMPLEADO",
-                            "civilStatus": "Soltero",
+                            "civilStatus": JSONCF.civilState,
                             "passport": "",
-                            "monthlyIncome": "50000",
-                            "salary": "50000",
-                            "creditLimitRD": "20000",
-                            "creditLimitUSD": "2000",
-                            "creditLimitDeferred": "25000",
-                            "workAddress": "calle falsa 123",
-                            "workPhone": "1234567",
+                            "monthlyIncome": JSONCF.monthlyIncomeRD,
+                            "salary": JSONCF.monthlyIncomeRD,
+                            "creditLimitRD": JSONCF.dopLimit,
+                            "creditLimitUSD": JSONCF.usdLimit,
+                            "creditLimitDeferred": JSONCF.deferred,
+                            "workAddress": JSONCF.addressList[0].street,
+                            "workPhone": JSONCF.companyPhone,
                             "workExtension": "",
-                            "homeAddress": "calle falsa 123",
-                            "homePhone": "1234567",
+                            "homeAddress": JSONCF.addressList[0].street,
+                            "homePhone": JSONCF.cellPhone,
                             "homeExtension": "",
-                            "cardNumber": "05800243668",
-                            "idCustomerFlowStep":"42"
+                            "cardNumber": vm.viewModelmoldedFormalization.keyCardNumber,
+                            "idCustomerFlowStep":$rootScope.globalUserJSon.id
                         },
                         {
                             "principal": false,
@@ -679,104 +689,61 @@
         }
 
         //var dataSiebel = localStorage.getItem("dataSiebel");   
-        jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
+        JSONCF = JSON.parse(localStorage.getItem("JSONCFClient"));
 
-        if (jsonData.email == undefined ){
-            vm.placeSendingSlect = [
-                { value:"Casa" },
-                { value:"Trabajo" }
-            ];
-        }else{
-            vm.placeSendingSlect = [
-                { value:"Correo" },
-                { value:"Casa" },
-                { value:"Trabajo" }
-            ];
-        }
-        
-           /*if (dataSiebel === null) {
 
-           } else { 
-            if(dataSiebel === "true"){
-                jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
-                vm.viewModelmoldedFormalization.namePlastic =  jsonData.firtsName + ' ' + jsonData.surname;
-                if (jsonData.email === undefined){
-                    vm.placeSendingSlect = [
-                        { value:"Casa" },
-                        { value:"Trabajo" },
-                        { value:"Otro" }
-                    ];
-                }else {
-                    vm.placeSendingSlect = [
-                        { value:"Correo" },
-                        { value:"Casa" },
-                        { value:"Trabajo" },
-                        { value:"Otro" }
-                    ];
-                    vm.viewModelmoldedFormalization.correo = jsonData.email;
-                }
-            }else {
-                jsonData = JSON.parse(localStorage.getItem("jsonData"));
-                if (jsonData === '') {
-                    vm.viewModelmoldedFormalization.namePlastic =  jsonData.firtsName + ' ' + jsonData.surname;
-                    if (jsonData.email === undefined){
-                        vm.placeSendingSlect = [
-                            { value:"Casa" },
-                            { value:"Trabajo" },
-                            { value:"Otro" }
-                        ];
-                    }else {
-                        vm.placeSendingSlect = [
-                            { value:"Correo" },
-                            { value:"Casa" },
-                            { value:"Trabajo" },
-                            { value:"Otro" }
-                        ];
-                        vm.viewModelmoldedFormalization.correo = jsonData.email;
-                    }
-                }
-
+        function loadSelect() {
+            if (JSONCF.email == undefined ){
+                vm.placeSendingSlect = [
+                    { value:"Casa" },
+                    { value:"Trabajo" }
+                ];
+            }else{
+                vm.placeSendingSlect = [
+                    { value:"Correo" },
+                    { value:"Casa" },
+                    { value:"Trabajo" }
+                ];
             }
-
-    }*/
-            
+        }         
         
         function getValidPlace(){
 
             if (vm.viewModelmoldedFormalization.palceSending.value === 'Correo') {
                 vm.validCorreo = true;
+                vm.viewModelmoldedFormalization.correo = JSONCF.email;
             }
 
             if (vm.viewModelmoldedFormalization.palceSending.value === 'Casa') {
                 vm.validCorreo = false;
                 vm.disableSelect = true;
-                if (jsonData.addressList[0].street === undefined) {
+                if (JSONCF.addressList[0].street === undefined) {
                     vm.viewModelmoldedFormalization.calle = '';
                 } else {
-                    vm.viewModelmoldedFormalization.calle = jsonData.addressList[0].street;
+                    vm.viewModelmoldedFormalization.calle = JSONCF.addressList[0].street;
                 }
-
-                if (jsonData.addressList[0].number === undefined) {
+                
+                if (JSONCF.addressList[0].number === undefined) {
                     vm.viewModelmoldedFormalization.number = '';
                 } else {
-                    vm.viewModelmoldedFormalization.number = parseInt(jsonData.addressList[0].number);
+                    vm.viewModelmoldedFormalization.number = parseInt(JSONCF.addressList[0].number);
                 }
 
-                if (jsonData.addressList[0].apartmentNumber === undefined) {
+                if (JSONCF.addressList[0].apartmentNumber === undefined) {
                     vm.viewModelmoldedFormalization.apartament = '';
                 } else {
-                    vm.viewModelmoldedFormalization.apartament = jsonData.addressList[0].apartmentNumber;
+                    vm.viewModelmoldedFormalization.apartament = JSONCF.addressList[0].apartmentNumber;
                 }
 
-                vm.viewModelmoldedFormalization.residenceCountry = parseInt(jsonData.addressList[0].country.id);
-                vm.viewModelmoldedFormalization.residenceProvince = parseInt(jsonData.addressList[0].province.id);
-                vm.viewModelmoldedFormalization.residenceMunicipality = parseInt(jsonData.addressList[0].municipality.id);
-                vm.viewModelmoldedFormalization.section = parseInt(jsonData.addressList[0].section.id);
-                vm.viewModelmoldedFormalization.place = parseInt(jsonData.addressList[0].place.id);
-                if (jsonData.email === undefined){
+                vm.viewModelmoldedFormalization.residenceCountry = parseInt(JSONCF.addressList[0].country.id);
+                vm.viewModelmoldedFormalization.residenceProvince = parseInt(JSONCF.addressList[0].province.id);
+                vm.viewModelmoldedFormalization.residenceMunicipality = parseInt(JSONCF.addressList[0].municipality.id);
+                vm.viewModelmoldedFormalization.section = parseInt(JSONCF.addressList[0].section.id);
+                vm.viewModelmoldedFormalization.place = parseInt(JSONCF.addressList[0].place.id);
+                if (JSONCF.email === undefined){
                     vm.viewModelmoldedFormalization.correoCasa = '';
                 }else {
-                    vm.viewModelmoldedFormalization.correoCasa = jsonData.email;
+                    vm.viewModelmoldedFormalization.correoCasa = JSONCF.email;
                 }
 
                 getCitiesResidences(vm.viewModelmoldedFormalization.residenceCountry);
@@ -788,33 +755,33 @@
             if (vm.viewModelmoldedFormalization.palceSending.value === 'Trabajo') {
                 vm.validCorreo = false;
                 vm.disableSelect = true;
-                if (jsonData.incomes[0].address.street === undefined) {
+                if (JSONCF.street === undefined) {
                     vm.viewModelmoldedFormalization.calle = '';
                 } else {
-                    vm.viewModelmoldedFormalization.calle = jsonData.incomes[0].address.street;
+                    vm.viewModelmoldedFormalization.calle = JSONCF.street   ;
                 }
 
-                if (jsonData.incomes[0].address.number === undefined) {
+                if (JSONCF.numbers === undefined) {
                     vm.viewModelmoldedFormalization.number = '';
                 } else {
-                    vm.viewModelmoldedFormalization.number = parseInt(jsonData.incomes[0].address.number);
+                    vm.viewModelmoldedFormalization.number = parseInt(JSONCF.numbers);
                 }
 
-                if (jsonData.apartmentNumber === undefined) {
+                /*if (JSONCF.apartmentNumber === undefined) {
                     vm.viewModelmoldedFormalization.apartament = '';
                 } else {
-                    vm.viewModelmoldedFormalization.apartament = jsonData.apartmentNumber;
-                }
+                    vm.viewModelmoldedFormalization.apartament = JSONCF.apartmentNumber;
+                }*/
 
-                vm.viewModelmoldedFormalization.residenceCountry = parseInt(jsonData.incomes[0].address.country.id);
-                vm.viewModelmoldedFormalization.residenceProvince = parseInt(jsonData.incomes[0].address.province.id);
-                vm.viewModelmoldedFormalization.residenceMunicipality = parseInt(jsonData.incomes[0].address.municipality.id);
-                vm.viewModelmoldedFormalization.section = parseInt(jsonData.incomes[0].address.section.id);
-                vm.viewModelmoldedFormalization.place = parseInt(jsonData.incomes[0].address.place.id);  
-                if (jsonData.email === undefined){
+                vm.viewModelmoldedFormalization.residenceCountry = parseInt(JSONCF.idCountry);
+                vm.viewModelmoldedFormalization.residenceProvince = parseInt(JSONCF.idProvince);
+                vm.viewModelmoldedFormalization.residenceMunicipality = parseInt(JSONCF.idMunicipality);
+                vm.viewModelmoldedFormalization.section = parseInt(JSONCF.idSection);
+                vm.viewModelmoldedFormalization.place = parseInt(JSONCF.idPlace);  
+                if (JSONCF.email === undefined){
                     vm.viewModelmoldedFormalization.correoCasa = '';
                 }else {
-                    vm.viewModelmoldedFormalization.correoCasa = jsonData.email;
+                    vm.viewModelmoldedFormalization.correoCasa = JSONCF.email;
                 }
 
                 getCitiesResidences(vm.viewModelmoldedFormalization.residenceCountry);
@@ -981,21 +948,19 @@
                     $rootScope.customerDataCredit.residenceCountry = oJson.reportecu.reporte.datoslocalizacion.paisresidencia;
                     $rootScope.customerDataCredit.residenceProvince = oJson.reportecu.reporte.datoslocalizacion.cod_provincia_nombre;
                     $rootScope.customerDataCredit.residenceMunicipality = oJson.reportecu.reporte.datoslocalizacion.ciudadresidencia;
-                    
-
-                    
-                    //vm.bornDay = document.getElementById("fechaNacimiento");
-                    vm.getBureau = true;
+ 
+                    vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.datePassport = $rootScope.customerDataCredit.birthDate;
-                    vm.email = "";
-                    vm.myDate = $rootScope.customerDataCredit.birthDate;
-                    //vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
-                    vm.cellphoneNumb = parseInt($rootScope.customerDataCredit.landLine);
+                    var convertDate = new Date(vm.datePassport); //aaaa/mm/dd
+                    //var a  = $filter('date')(Date.parse(vm.dataClientExit.birthDate),'yyyy-MM-dd');
                     vm.viewModelmoldedFormalization.namePlastic2 =  $rootScope.customerDataCredit.firtsName + ' ' + $rootScope.customerDataCredit.surname;
-                    vm.BornCity = $rootScope.customerDataCredit.countryBirth;
-                    //vm.landLine = parseInt(jsonData.landLine);
-                    
-
+                    vm.nameUser = $rootScope.customerDataCredit.firtsName + ' ' + $rootScope.customerDataCredit.secondName + ' ' + oJson.reportecu.clienteunico.primerapellido + ' ' + oJson.reportecu.clienteunico.segundoapellido;
+                    vm.cellphoneNumb = parseInt($rootScope.customerDataCredit.mobilePhone);
+                    vm.datePassport = convertDate;
+                    vm.viewModelmoldedFormalization.BornCity = $rootScope.customerDataCredit.countryBirth;
+                    vm.landLine = parseInt($rootScope.customerDataCredit.landLine);
+                    vm.cellphoneNumb = parseInt($rootScope.customerDataCredit.mobilePhone);
+                    //vm.email NO HAY EMAIL PARA EL ADICIONAL
                     /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
                     angular.forEach(vm.typeSex, function (value, key) {
                         if (value.value === $rootScope.customerDataCredit.sex) {
@@ -1005,7 +970,7 @@
 
                     /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
                     angular.forEach(vm.nationalities, function (value, key) {
-                        if (value.value === $rootScope.customerDataCredit.nationality) {
+                        if (value.value === $rootScope.customerDataCredit.residenceCountry  ) {
                             vm.viewModelmoldedFormalization.nacionalidad = value.id;
                         }
                     });
@@ -1016,7 +981,6 @@
                             vm.viewModelmoldedFormalization.status = value.id;
                         }
                     });
-                    getCreditListService();
                 }, getErrorDefault);
 
                 if (!vm.findJudicialEvaluation) {
@@ -1033,168 +997,6 @@
          *
          **/
 
-        function getCreditBureauNoCLient() {
-
-            var documentNumber = vm.viewModelmoldedFormalization.identificationName,
-                stringXml = '',
-                urlBase = window.location.origin + URL.XML_BUREAU,
-                oJson = {},
-                clientCountry = '',
-                clientAge;
-
-
-            creditBureauService.getValidCreditBureau(documentNumber, vm.username).then(function(responseValue) {
-
-                vm.findJudicialEvaluation = responseValue.validationBuroResult;
-
-
-                creditBureauService.getXmlCreditBureau(documentNumber, vm.username).then(function(responseXml) {
-
-                    stringXml = responseXml;
-
-                    oJson = ngXml2json.parser(stringXml);
-                    console.log(oJson);
-                    clientCountry = oJson.reportecu.reporte.informacionadicional.nacionalidad;
-                    /* URL que almacena el llamado al archivo XML en el servidor */
-                    vm.urlXml = urlBase + '?documentNumber=' + documentNumber + '&userName=' + vm.username;
-                    /*Si el segundo nombre viene indefinido colocarlo como vacio  */
-
-                    jsonData.typeDocument = vm.viewModelmoldedFormalization.typeIdentification;
-                    if (angular.isObject(oJson.reportecu.clienteunico.segundonombre)) {
-                        jsonData.secondName = '';
-                    } else {
-                        jsonData.secondName = oJson.reportecu.clienteunico.segundonombre;
-                    }
-
-                    /*Si el segundo apellido viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.clienteunico.segundoapellido)) {
-                        jsonData.secondSurname = '';
-                    } else {
-                        jsonData.secondSurname = oJson.reportecu.clienteunico.segundoapellido;
-                    }
-
-                    /*Si la ocupación viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.reporte.datosgenerales.ocupacion)) {
-                        jsonData.profession = '';
-                    } else {
-                        jsonData.profession = oJson.reportecu.reporte.datosgenerales.ocupacion;
-                    }
-
-                    /*Si la el telefono de la casa viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.reporte.datoslocalizacion.telefonoresidencia)) {
-                        jsonData.landLine = '';
-                    } else {
-                        jsonData.landLine = oJson.reportecu.reporte.datoslocalizacion.telefonoresidencia;
-                    }
-
-                    /*Si la el telefono móvil viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.reporte.datoslocalizacion.telefonocelular)) {
-                        jsonData.mobilePhone = '';
-                    } else {
-                        jsonData.mobilePhone = oJson.reportecu.reporte.datoslocalizacion.telefonocelular;
-                    }
-
-                    /*Si la calle de residencia viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.reporte.datoslocalizacion.calleresidencia)) {
-                        jsonData.street = '';
-                    } else {
-                        jsonData.street = oJson.reportecu.reporte.datoslocalizacion.calleresidencia;
-                    }
-
-                    /*Si el numero de residencia viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.reporte.datoslocalizacion.direccionnumero)) {
-                        jsonData.residenceNumber = '';
-                    } else {
-                        jsonData.residenceNumber = oJson.reportecu.reporte.datoslocalizacion.direccionnumero;
-                    }
-
-                    /* Validamos si el pais de residencia es la republica dominicana */
-                    if (clientCountry !== messages.general.dominicanCountry) {
-                        modalFactory.error(messages.modals.error.notCountryAllowedClient);
-                    } else {
-                        vm.isDominicanRepublic = true;
-                    }
-
-                    /*Si el numero de residencia viene indefinido colocarlo como vacio  */
-                    if (angular.isObject(oJson.reportecu.clienteunico.estadocivil)) {
-                        jsonData.civilStatus = '';
-                    } else {
-                        jsonData.civilStatus = oJson.reportecu.clienteunico.estadocivil;
-                    }
-
-                    /*Guardamos el numero de identidad del cliente para poder borrarlo en el la fabrica del modal de cancelar*/
-                    jsonData.numberIdentification = vm.viewModelmoldedFormalization.numberIdentification;
-
-                    /*Almacenar los datos extraidos del cliente desde data credito */
-                    jsonData.firtsName = oJson.reportecu.clienteunico.primernombre;
-                    jsonData.surname = oJson.reportecu.clienteunico.primerapellido;
-                    jsonData.birthDate = oJson.reportecu.clienteunico.fechanacimiento;
-                    jsonData.sex = oJson.reportecu.clienteunico.sexo;
-                    jsonData.countryBirth = oJson.reportecu.clienteunico.paisnacimiento;
-                    jsonData.cityBirth = oJson.reportecu.clienteunico.lugarnacimiento;
-                    jsonData.nationality = oJson.reportecu.clienteunico.nacionalidad;
-                    jsonData.residenceCountry = oJson.reportecu.reporte.datoslocalizacion.paisresidencia;
-                    jsonData.residenceProvince = oJson.reportecu.reporte.datoslocalizacion.cod_provincia_nombre;
-                    jsonData.residenceMunicipality = oJson.reportecu.reporte.datoslocalizacion.ciudadresidencia;
-
-
-                     /*Verificamos si la nacionalidad del cliente nuevo es DOMINICANA para convertirlo a REPUBLICA DOMINICANA */
-                    if(jsonData.nationality === messages.general.dominicanCountry){
-                        jsonData.nationality = messages.general.dominicanCountrySibel;
-                    }else{
-                        jsonData.nationality = jsonData.nationality;
-                    }
-
-                    //vm.bornDay = document.getElementById("fechaNacimiento");
-                    vm.getBureau = true;
-                    vm.datePassport = jsonData.birthDate;
-                    vm.email = jsonData.email;
-                    vm.myDate = jsonData.birthDate;
-                    vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
-                    vm.cellphoneNumb = parseInt(jsonData.landLine);
-                    vm.namePlastic2 = jsonData.firtsName + ' ' + jsonData.surname;
-                    vm.BornCity = jsonData.birthCountry;
-                    //vm.landLine = parseInt(jsonData.landLine);
-                    
-
-                    /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
-                    angular.forEach(vm.typeSex, function (value, key) {
-                        if (value.value === jsonData.sex) {
-                            vm.viewModelmoldedFormalization.sex = value.id;
-                        }
-                    });
-
-                    /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
-                    angular.forEach(vm.nationalities, function (value, key) {
-                        if (value.value === jsonData.nationality) {
-                            vm.viewModelmoldedFormalization.nacionalidad = value.id;
-                        }
-                    });
-
-                    /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
-                    angular.forEach(vm.typeStatus, function (value, key) {
-                        if (value.value === jsonData.civilStatus) {
-                            vm.viewModelmoldedFormalization.status = value.id;
-                        }
-                    });
-
-                }, modalError);
-
-                if (!vm.findJudicialEvaluation) {
-                    vm.fichaBand = true;
-                    vm.decisionMessage = 'RECHAZADO';
-                    vm.decisionMoti = 'Cliente presenta Ficha Judicial';
-                    modalFactory.error(messages.modals.error.badJudicialEvaluation);
-                }
-
-
-            }, modalError);
-
-
-
-
-        }
-
         /**
          *  @ngdoc function
          *  @name resetData
@@ -1204,6 +1006,8 @@
          *  Reinicia los valores de los datos de la pantalla
          */
         function resetData() {
+            vm.viewModelmoldedFormalization.positionValueInput = "";
+            vm.positionCard = "";
             vm.ageAllowed = false;
             vm.clientCanContinue = false;
             vm.findControlListReport = false;
@@ -1236,146 +1040,6 @@
 
         resetData();
 
-
-        function getCreditListService() {
-
-            var documentNumber = vm.viewModelmoldedFormalization.identificationName;
-
-            creditListService.getCreditListService(documentNumber, vm.viewModelmoldedFormalization.typeIdentification, vm.username).then(function(responseValue) {
-                console.log(responseValue);
-                $timeout(function() {
-                    vm.finObs = responseValue.observed;
-                    vm.findPep = responseValue.pep;
-                    vm.findControlListReport = responseValue.controlList;
-                    vm.getControlList = true;
-
-                    if (vm.finObs) {
-                        vm.fichaBand = true;
-                        vm.decisionMoti = messages.modals.error.badOberved;
-                        modalFactory.error(messages.modals.error.badOberved);
-                    }
-
-                    if (!vm.findControlListReport) {
-                        vm.fichaBand = true;
-                        modalFactory.error(messages.modals.error.badControlListCreationAccount);
-                    }
-
-                    if (vm.findPep) {
-                        vm.fichaBand = true;
-                        modalFactory.error(messages.modals.error.badPepListCreationAccount);
-                    }
-
-                }, 0);
-
-            }, modalError);
-
-        }
-
-        /**
-         *
-         *
-         *
-         **/
-
-
-
-        function getCreditBureau() {
-            var documentNumber = vm.viewModelmoldedFormalization.identificationName,
-                stringXml = '',
-                urlBase = window.location.origin + URL.XML_BUREAU,
-                oJson = {},
-                clientCountry = '',
-                clientAge;
-
-            resetData();
-            creditBureauService.getValidCreditBureau(documentNumber, vm.username).then(function (responseValue) {
-            
-                vm.findJudicialEvaluation = responseValue.validationBuroResult;
-                if (!vm.findJudicialEvaluation) {
-                    vm.getBureau = true;
-                    modalFactory.error(messages.modals.error.badJudicialEvaluation);
-                } else {
-
-                    creditBureauService.getValidCientExisting(vm.viewModelmoldedFormalization.typeIdentification ,documentNumber, vm.username).
-                        then(function   
-                            (response) {
-
-                            vm.dataClientExit = response;
-                            oJson =  response;
-
-                    /* Validamos si el pais de residencia es la republica dominicana */
-                    if (vm.dataClientExit.nacionality !== messages.general.dominicanCountrySibel) {
-                        modalFactory.error(messages.modals.error.notCountryAllowedAccount);
-                    } else {
-                        vm.isDominicanRepublic = true;
-                    }
-
-                    /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
-                    angular.forEach(vm.typeSex, function (value, key) {
-                        if (value.value === vm.dataClientExit.sex) {
-                            vm.viewModelmoldedFormalization.sex = value.id;
-                        }
-                    });
-
-                    /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
-                    angular.forEach(vm.nationalities, function (value, key) {
-                        if (value.value === vm.dataClientExit.nacionality) {
-                            vm.viewModelmoldedFormalization.nacionalidad = value.id;
-                        }
-                    });
-
-                    /** Validaciones para el tipo de moneda en dolares, donde se ocultan los campos Compra cheques de gerencia */
-                    angular.forEach(vm.typeStatus, function (value, key) {
-                        if (value.value === vm.dataClientExit.civilState) {
-                            vm.viewModelmoldedFormalization.status = value.id;
-                        }
-                    });
-                    vm.bornDay = document.getElementById("fechaNacimiento");
-                    //var convertDate = new Date(vm.dataClientExit.birthDate);
-                    var day   = vm.dataClientExit.birthDate.substr(0,2);
-                    var month = vm.dataClientExit.birthDate.substr(3,2); 
-                    var year  = vm.dataClientExit.birthDate.substr(6,4);
-                    var invertDate = year + '/' + month + '/' + day; 
-                    var convertDate = new Date(invertDate); //aaaa/mm/dd
-                    //var a  = $filter('date')(Date.parse(vm.dataClientExit.birthDate),'yyyy-MM-dd');
-                    vm.namePlastic2 = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.firstLastname;
-                    vm.nameUser = vm.dataClientExit.firstName + ' ' + vm.dataClientExit.secondName + ' ' + vm.dataClientExit.firstLastname + ' ' + vm.dataClientExit.secondLastname;
-
-                    //vm.landLine = parseInt(vm.dataClientExit.cellPhone);
-                    vm.cellphoneNumb = parseInt(vm.dataClientExit.cellPhone);
-                    vm.datePassport = convertDate;
-                    vm.viewModelmoldedFormalization.BornCity = vm.dataClientExit.birthCountry;
-                   // vm.landLine = telefono de casa 
-                    vm.email = vm.dataClientExit.email;
-                    //vm.myDate = jsonData.birthDate; 
-                    //vm.bornDay.setRangeText(vm.datePassport.substring(0, 10));
-                    
-
-                    /*var year = vm.datePassport.substring(6,10);
-                    var month = vm.datePassport.substring(3,5);
-                    var day = vm.datePassport.substring(0,2);
-                    var completeDate =  year  + "-" + month   + "-" + day  ;
-                    var today = new Date(completeDate);
-                    var today1 = new Date(completeDate);
-                    vm.myDate = today1;
-                    var dd = today.getDate();
-                    var mm = today.getMonth()+1; //
-                    var yyyy = today.getFullYear();
-                    today = yyyy +'-'+mm +'-'+dd; 
-                    vm.email = vm.dataClientExit.email;
-                    /*var dateTest =  new Date(completeDate);
-                    var dateTest2 = new Date(completeDate);*/
-                    //var dataTest = today;
-                    
-                    //vm.myDate = "2016-07-05";
-                    //vm.bornDay.setRangeText(dataTest.substring(0, 10));    
-                    });
-                }
-
-                
-
-            }, modalError);
-        }
 
         /**
         * Función que carga todos las nacionalidades desde el catalogo de servicios

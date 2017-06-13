@@ -45,6 +45,21 @@
         }
 
         /**
+         * Función global que abre el modal de error
+         * recibe como parametro el mensaje del error
+         * @param {any} message
+         */
+        function alert(message) {
+            sweet.show({
+                title: "",
+                text: message,
+                type: messages.modals.warning.modalTypeError,
+                confirmButtonColor: messages.modals.warning.modalColorButton
+            });
+        }
+
+
+        /**
          * Función global que abre el modal de warning
          * recibe como parametro el mensaje del warning
          * @param {any} message
