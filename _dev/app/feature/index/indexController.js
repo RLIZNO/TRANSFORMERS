@@ -30,10 +30,11 @@
 
         var vm = this;
         $rootScope.customerDataCredit = {};
+        
 
         /*Capturamos la cookie que tiene el nombre del usuario*/
         vm.userName = localStorage.getItem("userName");
-
+        
         vm.name = ''; /*Variable que almacena el nombre del usuario a mostrar */
         $rootScope.dataUser = {
             'userValid' : false,
@@ -42,7 +43,7 @@
 
         
         
-        
+        vm.namePrinter = "";
 
          /**
          *  @ngdoc function
@@ -58,7 +59,7 @@
             validationUserService.getValidationUser(vm.userName)
                 .then(
                 function (response) {
-                    $rootScope.globalUserJSonPrinter = response.data.printer ;
+                    $rootScope.globalUserJSonPrinter = response.data.printer;
                     $rootScope.dataUser.userValid = response.success;
                     $rootScope.dataUser.userNameDescription = response.data.userName;
                     $rootScope.dataUser.sucursalId = response.data.sucursalCode;
@@ -68,6 +69,7 @@
                         modalFactory.error(response.error.message);
                     }
                     vm.name=response.data.userName;
+                    vm.namePrinter = response.data.userName + " // Printer: " +$rootScope.globalUserJSonPrinter;
                     
                 }
                 );

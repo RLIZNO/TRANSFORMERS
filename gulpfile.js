@@ -261,6 +261,7 @@ gulp.task('connect', function () {
 		root: '_dev/',
 		middleware: function (connect, opt) {
 			return [proxy('/BHDL_', {
+				//target: 'http://172.20.234.149:9080/',
 				target: 'http://172.17.103.210:10039/',
 				changeOrigin: true
 				//auth: argv.auth || (config.server.user + ':' + config.server.pass)

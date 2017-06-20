@@ -651,17 +651,18 @@ button.boton, button.boton2, button.boton3{
 }
 
 a.boton{
-	background: #235384;
-	border: solid 1px #235384;
-	border-radius: 5px;
-	color: #fff;
-	float: left;
-	font-size: 10pt;
-	margin: 0px;
-	margin-right: 5px;
-	border-radius: 5px;
-	padding: 5px 5px;
-	text-align: center;
+    background:  #33495f;
+    border: solid 1px  #33495f;
+    border-radius: 5px;
+    color: #fff;
+    float: left;
+    font-size: 10pt;
+    margin: 0px;
+    margin-right: 9px;
+    /* width: 24%; */
+    border-radius: 2px;
+    padding: 10px 14px;
+    text-align: left;
 }
 button.boton2 {
 	float: right;
@@ -669,11 +670,6 @@ button.boton2 {
 }
 button.boton3{
 	float:none}
-a.boton:hover, button.boton2:hover {
-	background: #3680cc;
-	border: solid 1px #3680cc;
-	color: #fff;
-}
 a.btnsmall {
 	padding: 2px 3px;
 }
@@ -1112,23 +1108,16 @@ button.botonlarge {
 }
 
 button.btnredp {
-    background: #a40000;
-    border: solid 1px #a40000;
-    border-radius: 5px;
+background: #33495f;
+    border: 1px solid #33495f;
+    border-radius: 2px;
     color: #fff;
     float: left;
-    font-size: 10pt;
+    font-size: 9pt;
     margin: 0px;
     margin-right: 5px;
-    padding: 5px 10px;
+    padding: 4px 30px;
     text-align: center;
-}
-
-
-
-button.btnredp:hover {
-    background: #700000;
-    border: solid 1px #700000;
 }
 
 button.botonlarge:hover {
@@ -1536,13 +1525,11 @@ border-bottom: solid 1px #c5c5c5;
     font-size: 14px;
 	    color: #333;
 		font-weight:bold;
-		padding:10px 5px
 }
 .resumen p.resumentxt{
 	    text-align: left;
     font-size: 14px;
 	    color: #33495f;
-		padding:10px 0px
 }
 
 .inputTdcWrap .keyWrap{float: left;
@@ -1777,3 +1764,178 @@ font-size: 14pt;
     padding: 0;
 }
 
+.modalStatic h2 {
+    color: #2b2e38;
+    font-size: 23pt;
+    line-height: 24pt;
+    padding: 10px 0;
+    width: 100%;
+    float: left;
+}
+
+
+.cs-loader-inner {
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    top: 50%;
+    position: absolute;
+    width: calc(100% - 100px);
+    color: #17758A;
+    padding: 0 100px;
+    text-align: center;
+}
+
+.cs-loader-inner label {
+  font-size: 20px;
+  opacity: 0;
+  display:inline-block;
+}
+
+@keyframes lol {
+  0% {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+  33% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+}
+
+@-webkit-keyframes lol {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-300px);
+  }
+  33% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+  }
+  66% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(300px);
+  } 
+}
+
+.cs-loader-inner label:nth-child(6) {
+  -webkit-animation: lol 3s infinite ease-in-out;
+  animation: lol 3s infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(5) {
+  -webkit-animation: lol 3s 100ms infinite ease-in-out;
+  animation: lol 3s 100ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(4) {
+  -webkit-animation: lol 3s 200ms infinite ease-in-out;
+  animation: lol 3s 200ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(3) {
+  -webkit-animation: lol 3s 300ms infinite ease-in-out;
+  animation: lol 3s 300ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(2) {
+  -webkit-animation: lol 3s 400ms infinite ease-in-out;
+  animation: lol 3s 400ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(1) {
+  -webkit-animation: lol 3s 500ms infinite ease-in-out;
+  animation: lol 3s 500ms infinite ease-in-out;
+}
+
+.cs-loader {
+position: relative;
+    top: 88%;
+    left: 9%;
+    z-index: 99999;
+}
+
+.positionBtnAct {
+  float: left;
+  margin: 5px 20px;
+}
+
+.boton.pdf {
+    width: 16%;
+    background: url(../img/icono-doc2.png) no-repeat 3% 50%, url(../img/iconmonstr.png) no-repeat 97% 50% #33495f;
+    background-size: auto, 23%;
+    text-transform: capitalize;
+}
+
+.boton.pdf2 {
+    width: 28%;
+    background: url(../img/icono-doc2.png) no-repeat 3% 50%, url(../img/iconmonstr.png) no-repeat 97% 50% #33495f;
+    background-size: auto, 13%;
+    text-transform: capitalize;
+}
+
+.col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.onoffswitch {
+    position: relative; width: 114px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 4px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 27px; padding: 0; line-height: 27px;
+    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "Inactiva";
+    padding-left: 8px;
+    background-color: #EEEEEE; color: #947F7F;
+}
+.onoffswitch-inner:after {
+    content: "Activada";
+    padding-right: 8px;
+    background-color: #404952; color: #D8DFE6;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 18px; margin: 4.5px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 83px;
+    border: 2px solid #999999; border-radius: 4px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+
+ 

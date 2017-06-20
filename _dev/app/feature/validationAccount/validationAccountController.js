@@ -257,6 +257,7 @@
            });
         }
         loadCreditCardFirstData();
+
         /**
          * Función que abre el popup del datepicker para la fecha de expedicion del pasaporte
          */
@@ -814,6 +815,13 @@
                 vm.decisionMessage = response.decision;
                 vm.decisionMoti = response.motive;
                 vm.disablePre = false;
+                $rootScope.globalLimitData.decisionMessage = responseValue.decision;
+                $rootScope.globalLimitData.limDiferido = responseValue.deferred;
+                $rootScope.globalLimitData.limitRD = responseValue.dopLimit;
+                $rootScope.globalLimitData.limitUSD = responseValue.usdLimit;
+                $rootScope.globalLimitData.FICOmotive = responseValue.motive;
+                $rootScope.globalLimitData.FICOoffer = responseValue.showOffer;
+                $rootScope.globalLimitData.validationResultCustomerPreApproved = false;
 
                 if (response.decision === 'Rechazado') {
                     vm.clientCanContinue =  false;
@@ -905,7 +913,14 @@
                         localStorage.setItem('cierreForzosoIdCA', documentNumber);
                         $rootScope.globalUserJSon = response.data;
                         console.log($rootScope.globalUserJSon);
-                        $state.go('moldedFormalization');
+                        if (response.data.step == 1){
+                            $state.go('moldedFormalization');
+                        } else {
+                            if(response.data.step == 2){
+                                $state.go('formalizationResult');
+                            }
+                        }
+                        
                     } else {
 
 

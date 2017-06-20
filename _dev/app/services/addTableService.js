@@ -48,7 +48,7 @@
         /*UPDATE CIERRE FORZOSO*/
 
         function updatecierreForzosoTC(json){
-            $http.put(PREFIX_URL.SERVICES + URL.UPDATE_CIERRE_FORZOSO, json)
+          return  $http.put(PREFIX_URL.SERVICES + URL.UPDATE_CIERRE_FORZOSO, json)
               .then(
                   function (response){
                       return response.data;

@@ -364,7 +364,7 @@
                 <span class="input">
                      <input type="email" 
                         name="email" 
-                        ng-model="moldedFormalization.email" 
+                        ng-model="moldedFormalization.formMoldedFormalization.emailAdicional" 
                         ng-class="{ 'hasError': moldedFormalization.formMoldedFormalization.email.$touched
                         && moldedFormalization.formMoldedFormalization.email.$invalid }" 
                         ng-maxlength="50"/>
@@ -519,7 +519,7 @@
          <button  
             class="boton3 btnlager2 btnblue"
             ng-class="{'disabled' : !moldedFormalization.viewModelmoldedFormalization.namePlastic || !moldedFormalization.viewModelmoldedFormalization.typeProduct || 
-            !moldedFormalization.viewModelmoldedFormalization.aditional || !moldedFormalization.viewModelmoldedFormalization.palceSending || $ctrl.selectedDocumentType}"
+            !moldedFormalization.viewModelmoldedFormalization.aditional || !moldedFormalization.viewModelmoldedFormalization.palceSending || moldedFormalization.onbaseSuccess}"
             ng-click="moldedFormalization.validImpre()">
          Impresión Tarjetas
          </button>
@@ -574,13 +574,24 @@
          </div>
       </div>
 
-      <div id="myModalStatic" class="modal w3-animate-opacity">
+        <div id="myModalStatic" class="modal w3-animate-opacity">
          <!-- Modal content -->
          <span class="close w3-animate-opacity"></span>
          <div class="w3-modal-content w3-card-4">
                <div class="modalStatic">
                  <p>Se está procesando la impresión de la tarjeta. Por favor espera un momento.</p>
+               <div class="cs-loader">
+                <div class="cs-loader-inner">
+                  <label>	●</label>
+                  <label>	●</label>
+                  <label>	●</label>
+                  <label>	●</label>
+                  <label>	●</label>
+                  <label>	●</label>
+                </div>
+              </div>
                </div>
+
          </div>
       </div>
 

@@ -91,6 +91,8 @@
          *  Almacena las extensiones permitidas para la carga OnBase
          */
         vm.documentExtensions = messages.components.uploadOnBase.documentExtensions;
+        $rootScope.globalOnbase = false;
+        vm.onbasevariable = $rootScope.globalOnbase;
 
         /* Listado de metodos */
         vm.resetData = resetData;
@@ -314,6 +316,7 @@
                             if (loaded && !fail) {
                                 vm.disableCargaOnbase = true;
                                 modalFactory.success(messages.components.uploadOnBase.successUploadFile);
+                                $rootScope.globalOnbase = true;
                                 /*Llamamos  la función que agrega la extension .dat al indice */
                                 finalizeIndexFile(fileIndex);
                             } else {

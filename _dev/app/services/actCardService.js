@@ -37,7 +37,8 @@
          *	@return {Object} array que devuelve los objetos con sus filas afectadas.
          */
         function activateCredCard(json) {
-            $http.post(PREFIX_URL.SERVICES + URL.ACTIVATE_CARD, json)
+
+          return  $http.post(PREFIX_URL.SERVICES + URL.ACTIVATE_CARD, json)
                 .then(
                     function (response) {
                         return response.data;

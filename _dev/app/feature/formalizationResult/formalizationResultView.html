@@ -32,7 +32,7 @@
                     <p class="resumenTittle">Nombre Tarjeta Principal:</p>
                   </div>
                   <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt"><b ng-bind="{{formalizationResult.viewModelMantResult.namePrinc}}"></b></p>
+                    <p class="resumentxt mayusculas"><b ng-bind="formalizationResult.namePrinc"></b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -40,7 +40,7 @@
                     <p class="resumenTittle">Estatus de la Impresión:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt">Correctamente</p>
+                    <p class="resumentxt"><b>Exitosa</b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -48,7 +48,7 @@
                     <p class="resumenTittle">No. TC principal:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt" ng-bind="{{formalizationResult.viewModelMantResult.numberTarje}}"></p>
+                    <p class="resumentxt" ><b ng-bind="formalizationResult.numberTarje"></b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -56,7 +56,7 @@
                     <p class="resumenTittle">Tipo de TC:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt" ng-bind="{{formalizationResult.viewModelMantResult.typeTc}}"></p>
+                    <p class="resumentxt" ><b ng-bind="formalizationResult.typeTc"></b></p>
                   </div>
                 </div>
                  <div class="row">
@@ -64,7 +64,7 @@
                     <p class="resumenTittle">Nombre tarjeta adicional:</p>
                   </div>
                   <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt"><b ng-bind="{{formalizationResult.viewModelMantResult.nameAdicional}}"></b></p>
+                    <p class="resumentxt mayusculas"><b ng-bind="formalizationResult.nameAdicional"></b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -72,7 +72,7 @@
                     <p class="resumenTittle">No. TC adicional:</p>
                   </div>
                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                    <p class="resumentxt" ng-bind="{{formalizationResult.viewModelMantResult.noTCAdicional}}"></p>
+                    <p class="resumentxt" ><b ng-bind="formalizationResult.noTCAdicional"></b></p>
                   </div>
                 </div>
                 <div class="row">
@@ -80,23 +80,62 @@
                     <p class="resumenTittle">Estado de tarjeta de crédito:</p>
                   </div>
                   <div ng-show="formalizationResult.status === 'I'">
-                    <div class="txtBtnAct">
-                      <span>Inactiva</span>
+                    <div class="txtBtnAct positionBtnAct ">
+                      <span><b>Inactiva</b></span>
                     </div>
-                    <button class="btnredp"                            
-                            ng-click="formalizationResult.actCredCard(false)">
-                            Activar
-                    </button>
                   </div>
                   <div ng-show="formalizationResult.status === 'A'">
-                    <div class="txtBtnAct">
-                      <span>Activa</span>
+                    <div class="txtBtnAct positionBtnAct ">
+                      <span><b>Activa</b></span>
                     </div>
-                    <button class="botonlarge"                            
-                            ng-click="formalizationResult.actCredCard(true)">
-                            Desactivar
-                    </button>
                   </div> 
+                    <button class="btnredp" 
+                    ng-class="{'disabled' : formalizationResult.desBtn }"                           
+                            ng-click="formalizationResult.validCard()">
+                            Activar
+                    </button>
+                                      
+                </div>
+                <div id="myModal" class="modal w3-animate-opacity">
+                  <!-- Modal content -->
+                  <span class="close w3-animate-opacity"></span>
+                  <div class="w3-modal-content w3-card-4">
+                      <form name="formalizationResult.formResult" id="myForm" novalidate role="form">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 campomantenimiento">
+                          <div class="divheader2">
+                            <h2>Formalización</h2>
+                          </div> 
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                              <div class="tdc" class="input2">
+                                <p>Número Tarjeta de Claves Vigente</p>                          
+                                  <h5 class="numberCard"> {{formalizationResult.viewModelMantResult.keyCardNumber}}</h5>
+                              </div>
+                              <div class="tdc">
+                                  <img src="images/tdcImg.png" width="296" height="134" />
+                                  <p>Digite la clave solicitada de la tarjeta de claves</p>
+                              </div>
+                              <div class="inputTdcWrap">
+                                  <div class="keyWrap">
+                                    <p >{{formalizationResult.positionCard}}</p>
+                                  </div>
+                                  <div class="inputKeyWrap">
+                                    <input type="password" ng-model="formalizationResult.viewModelMantResult.positionValueInput" type="text" placeholder="XXXX" maxlength="4" required="">
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="botonareacenter">            
+                              <button  
+                                  class="boton3 btnblue"
+                                  ng-click="formalizationResult.validateKeyCard();">
+                              Enviar
+                              </button>
+                              <button id="formPrint" class="boton3 btnblue" >
+                                  <span class=" w3-animate-opacity">Cancelar</span>  
+                              </button>
+                            </div> 
+                        </div>
+                      </form>
+                  </div>
                 </div>
                    
                 <div class="clear20"></div>
@@ -109,7 +148,7 @@
 	                    <a
                          href="{{formalizationResult.urlAccountTariff}}"
                          ng-class="{'disabled' : !formalizationResult.tariffValid}" 
-                         class="boton "
+                         class="boton pdf2"
                          target="_blank">
                          Tarifario de Producto
                          
@@ -117,7 +156,7 @@
 
                       <a href="{{formalizationResult.urlAccountContrac}}"
                          ng-class="{'disabled' : !formalizationResult.validContra}" 
-                         class="boton "
+                         class="boton pdf"
                          target="_blank">
                          Contrato 
                        </a> 
@@ -125,14 +164,14 @@
 
 	                    <a href="{{formalizationResult.urlAccountAcuse}}" 
                          ng-class="{'disabled' : !formalizationResult.validacuse}" 
-                         class="boton "
+                         class="boton pdf"
                          target="_blank">
                          Acuse
                       </a>
 
 
 	                    <a href="http://serwebdev07.cfbhd.com:10039/BHDL_TDPD_Back_Credit_Card/rest/files/handBook?documentNumber=00100078344&customerNumber=2370625"
-                       class="boton "
+                       class="boton pdf2"
                        target="_blank">
                        Manual Operativo
                        </a>
@@ -143,9 +182,7 @@
               </div>
             </div>
 
-			<div class="botonareacenter">
-			<button  class="boton3 btnlager2 "
-			ng-click="formalizationResult.validImpre()">Volver a Inicio</button></div>
+
 
           </form>
           
@@ -154,4 +191,7 @@
           <!--Inicio Area footer-->
           <!--Fin Area mantenimientos--> 
         </div>
+      <div class="botonareacenter">
+			<button  class="boton3 btnlager2 "
+			ng-click="formalizationResult.validImpre()">Volver a Inicio</button></div>
       </div>
