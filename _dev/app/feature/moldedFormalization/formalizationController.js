@@ -125,11 +125,10 @@
         vm.positionCard = "";
         vm.fechaAdicional = "";
         $rootScope.globalUserJSon = [];
-        console.log('Variable global de onbase');
-        console.log($rootScope.globalOnbase);
-        vm.onbaseSuccess = $rootScope.globalOnbase;
         var JSONCF = [];
         var JSONINT = {};
+        vm.onbaseSuccess = false;
+        vm.modalCancelForm = modalCancelForm;
 
         var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
 
@@ -144,9 +143,9 @@
                 var month = JSONCF.birthDate.substr(3, 2);
                 var year = JSONCF.birthDate.substr(6, 4);
                 vm.fechaSiebel = year + '/' + month + '/' + day;
-                if(JSONCF.phone !== null){
+                if (JSONCF.phone !== null) {
                     JSONCF.phone = "";
-                    }
+                }
                 vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLasname;
                 // Servicio para numero tarjeta de credito
                 creditBureauService.getValidCientExisting(2, JSONCF.documentNumber, vm.username).then(
@@ -166,18 +165,44 @@
 
         vm.validateKeyCard = validateKeyCard;
         vm.validImpre = validImpre;
-        vm.printCard = vm.printCard;
+        vm.printCard = printCard;
 
+        /**
+         *  @ngdoc method
+         *  @name modalCancel
+         *  @methodOf App.controller:creationAccountController
+         *
+         *  @description
+         *  Función que abre el modal para cancelar la operación en proceso y te redirecciona al home
+         */
+        function modalCancelForm() {
+            modalFactory.cancel();
+        }
 
+        window.onclick = function (event) {
+            $timeout(function () {
+                vm.onbaseSuccess = $rootScope.globalOnbase;
+            }, 500)
+        }
 
 
         function validImpre() {
             resetData();
-            validationCardKeyServ.getPositionKeyCard(JSONCF.documentNumber).then(
+            addTableService.getConsultCard($rootScope.globalUserJSon.id).then(
                 function (response) {
-                    vm.positionCard = response.data.positionId;
+                    if (response.success) {
+                        validServiMega();
+                    } else {
+                        validationCardKeyServ.getPositionKeyCard(JSONCF.documentNumber).then(
+                            function (response) {
+                                vm.positionCard = response.data.positionId;
+                            }
+                        );
+                    }
                 }
             );
+
+
 
             //window.location.href = "#/result";
             var modal = document.getElementById('myModal');
@@ -262,6 +287,7 @@
             var contador = 0;
             var jsonPrint = {
                 "flowStepId": $rootScope.globalUserJSon.id,
+                //"printer": "4444", //$rootScope.globalUserJSonPrinter,
                 "printer":$rootScope.globalUserJSonPrinter,
                 "productCode": vm.viewModelmoldedFormalization.typeProduct,
                 "cardHolderName": vm.viewModelmoldedFormalization.namePlastic,
@@ -274,78 +300,93 @@
                 function (response) {
                     $timeout(function () {
                         if (response.success == true) {
+                            var increaseCounter;
                             var modalStatic = document.getElementById('myModalStatic');
                             modalStatic.style.display = "block";
                             var idPrint = response.data.id;
                             if (contador < 14) {
-                                if (!vm.printCardValid && vm.functionAditional) {
-                                    vm.peticion = function () {
-                                        printCardService.validPrintExit(idPrint).then(function (response) {
-                                            $timeout(function () {
-                                                var requestCode =  response.responseCode;
-                                                JSONCF.cardHolderName = response.cardHolderName;
-                                                JSONCF.creditCardNumber = response.creditCardNumber;
-                                                JSONCF.productCode = vm.typeDocumentSiebel;
-                                                contador++;
-                                                console.log('respuesta de la impre-------');
-                                                console.log(response);
-                                                if (requestCode !== "") {
-                                                    if (requestCode === "000") {
-                                                        vm.printCardValid = true;
-                                                        vm.functionAditional = false;
-                                                        modalStatic.style.display = "none";
-                                                        $interval.cancel(increaseCounter);
-                                                        if (vm.megaService) {
-                                                            if (vm.viewModelmoldedFormalization.aditional === "S") {
-                                                                sweet.show({
-                                                                    title: '',
-                                                                    text: "La tarjeta principal fue impresa correctamente. Ahora procederemos a imprimir la tarjeta adicional.",
-                                                                    confirmButtonColor: messages.modals.warning.modalColorButton,
-                                                                    confirmButtonText: "Ok",
-                                                                    closeOnConfirm: true
-                                                                }, function () {
-                                                                    $timeout(function () {
-                                                                        validAdi();
-                                                                    }, 0);
-                                                                });
+                                vm.peticion = function () {
+                                    printCardService.validPrintExit(idPrint).then(function (response) {
+                                        $timeout(function () {
+                                            //var requestCode = "000"; //response.responseCode;
+                                            var requestCode =  response.responseCode;
+                                            JSONCF.cardHolderName = response.cardHolderName;
+                                            JSONCF.creditCardNumber = response.creditCardNumber;
+                                            //JSONCF.creditCardNumber = "1232333322233"; //response.creditCardNumber;
+                                            JSONCF.productCode = vm.typeDocumentSiebel;
+                                            modalStatic.style.display = "block";
+                                            contador++;
+                                            console.log('respuesta de la impre-------');
+                                            console.log(response);
+                                            if (requestCode !== "") {
+                                                if (requestCode === "000") {
+                                                    vm.printCardValid = true;
+                                                    vm.functionAditional = false;
+                                                    modalStatic.style.display = "none";
+                                                    $interval.cancel(increaseCounter);
+                                                    if (vm.viewModelmoldedFormalization.aditional === "S") {
+                                                        sweet.show({
+                                                            title: '',
+                                                            text: "La tarjeta principal fue impresa correctamente. Ahora procederemos a imprimir la tarjeta adicional.",
+                                                            confirmButtonColor: messages.modals.warning.modalColorButton,
+                                                            confirmButtonText: "Ok",
+                                                            closeOnConfirm: true
+                                                        }, function () {
+                                                            $timeout(function () {
+                                                                validAdi();
+                                                            }, 0);
+                                                        });
 
-                                                            } else {
-                                                                sweet.show({
-                                                                    title: '',
-                                                                    text: "La tarjeta fue impresa correctamente. Ahora procederemos a validar los contratos.",
-                                                                    type: messages.modals.warning.modalTypeError,
-                                                                    confirmButtonColor: messages.modals.warning.modalColorButton,
-                                                                    confirmButtonText: "Ok",
-                                                                    closeOnConfirm: true
-                                                                }, function () {
-                                                                    $timeout(function () {
-                                                                        validServiMega();
-                                                                    }, 0);
-                                                                });
-                                                                vm.megaService = false;
+                                                    } else {
+                                                        sweet.show({
+                                                            title: '',
+                                                            text: "La tarjeta fue impresa correctamente. Ahora procederemos a validar los contratos.",
+                                                            type: messages.modals.warning.modalTypeError,
+                                                            confirmButtonColor: messages.modals.warning.modalColorButton,
+                                                            confirmButtonText: "Ok",
+                                                            closeOnConfirm: true
+                                                        }, function () {
+                                                            $timeout(function () {
                                                                 contador = 15;
-                                                            }
+                                                                validServiMega();
+                                                            }, 0);
+                                                        });
+                                                    }
+
+                                                } else {
+                                                    if (requestCode !== "000") {
+                                                        var JSonCierreForzoso = {
+                                                            "data": JSON.stringify(JSONCF),
+                                                            "documentNumber": JSONCF.documentNumber,
+                                                            "userName": $rootScope.dataUser.userName,
+                                                            "customerFlowType": "2",
+                                                            "id": $rootScope.globalUserJSon.id
                                                         }
 
-                                                    } else
-                                                    if (requestCode !== "000") {
+                                                        addTableService.updatecierreForzosoTC(JSonCierreForzoso).then(
+                                                            function (response) {
+                                                                if (response.success === true) {
+                                                                    $state.go('moldedFormalization');
+                                                                }
+
+                                                            }
+                                                        );
                                                         modalStatic.style.display = "none";
                                                         modalFactory.error(response.responseDescription);
-                                                        contador = 15;
-                                                        vm.megaService = false;
+                                                        $interval.cancel(increaseCounter);
                                                     }
                                                 }
-                                            }, 0);
+                                            }
+                                        }, 0);
 
-                                        }, modalError);
-                                    };
-                                }
+                                    }, modalError);
+                                };
                             } else {
                                 vm.printCardValid = true;
                                 $interval.cancel(increaseCounter);
                                 modalStatic.style.display = "none";
                             }
-                            var increaseCounter = $interval(function () {
+                            increaseCounter = $interval(function () {
                                 if (contador < 14) {
                                     vm.peticion();
                                 } else {
@@ -371,6 +412,7 @@
             var contador = 0;
             var jsonPrint = {
                 "flowStepId": $rootScope.globalUserJSon.id,
+                //"printer": "4444",//$rootScope.globalUserJSonPrinter,
                 "printer": $rootScope.globalUserJSonPrinter,
                 "productCode": vm.viewModelmoldedFormalization.typeProduct,
                 "cardHolderName": vm.viewModelmoldedFormalization.namePlastic2,
@@ -396,36 +438,62 @@
                                         vm.peticionAdicional = function () {
                                             printCardService.validPrintExit(idPrintAdi).then(function (response) {
                                                 $timeout(function () {
+                                                    //var requestCode = "000";//response.responseCode;
                                                     var requestCode = response.responseCode;
                                                     JSONCF.cardHolderNameAdi = response.cardHolderName;
                                                     JSONCF.creditCardNumberAditional = response.creditCardNumber;
+                                                    //JSONCF.creditCardNumberAditional = "12334455667";//response.creditCardNumber;
                                                     JSONCF.productCodeAdi = response.productCode;
                                                     contador++;
                                                     console.log('respuesta de la impre-------');
                                                     console.log(response);
                                                     if (requestCode !== "") {
-                                                        vm.printCardValid = true;
-                                                        loading.style.display = "none";
-                                                        loadingBody.style.display = "none";
-                                                        modalStatic.style.display = "none";
-                                                        $interval.cancel(increaseCounter);
-                                                        if (vm.megaService) {
-                                                            sweet.show({
-                                                                title: '',
-                                                                text: "La tarjeta adicional fue impresa correctamente. Ahora procederemos a validar los contratos.",
-                                                                type: 'success',
-                                                                confirmButtonColor: messages.modals.warning.modalColorButton,
-                                                                confirmButtonText: "Ok",
-                                                                closeOnConfirm: true
-                                                            }, function () {
-                                                                $timeout(function () {
-                                                                    validServiMega();
-                                                                }, 0);
-                                                            });
-                                                            contador = 15;
+                                                        if (requestCode === "000") {
+                                                            vm.printCardValid = true;
+                                                            loading.style.display = "none";
+                                                            loadingBody.style.display = "none";
+                                                            modalStatic.style.display = "none";
+                                                            $interval.cancel(increaseCounter);
+                                                            if (vm.megaService) {
+                                                                sweet.show({
+                                                                    title: '',
+                                                                    text: "La tarjeta adicional fue impresa correctamente. Ahora procederemos a validar los contratos.",
+                                                                    type: 'success',
+                                                                    confirmButtonColor: messages.modals.warning.modalColorButton,
+                                                                    confirmButtonText: "Ok",
+                                                                    closeOnConfirm: true
+                                                                }, function () {
+                                                                    $timeout(function () {
+                                                                        contador = 15;
+                                                                        validServiMega();
+                                                                    }, 0);
+                                                                });
+
+                                                            }
+                                                        } else {
+                                                            if (requestCode !== "000") {
+                                                                var JSonCierreForzoso = {
+                                                                    "data": JSON.stringify(JSONCF),
+                                                                    "documentNumber": JSONCF.documentNumber,
+                                                                    "userName": $rootScope.dataUser.userName,
+                                                                    "customerFlowType": "2",
+                                                                    "id": $rootScope.globalUserJSon.id
+                                                                }
+
+                                                                addTableService.updatecierreForzosoTC(JSonCierreForzoso).then(
+                                                                    function (response) {
+                                                                        if (response.success === true) {
+                                                                            $state.go('moldedFormalization');
+                                                                        }
+
+                                                                    }
+                                                                );
+                                                                modalStatic.style.display = "none";
+                                                                modalFactory.error(response.responseDescription);
+                                                                $interval.cancel(increaseCounter);
+                                                            }
                                                         }
 
-                                                    } else {
 
                                                     }
                                                 }, 0);
@@ -460,11 +528,11 @@
 
         function validServiMega() {
             var jsonMega = {};
-            if (vm.viewModelmoldedFormalization.emailAdicional === undefined){
+            if (vm.viewModelmoldedFormalization.emailAdicional === undefined) {
                 vm.viewModelmoldedFormalization.emailAdicional = "";
             }
             if (vm.viewModelmoldedFormalization.aditional === "N") {
-                 jsonMega = {
+                jsonMega = {
                     "idCustomerFlowStep": $rootScope.globalUserJSon.id,
                     "DAC": {
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id,
@@ -480,12 +548,12 @@
                         "agency": $rootScope.dataUser.sucursal, // sucursal user
                         "productName": vm.typeDocumentSiebel, // gn - gr
                         "deferred": JSONCF.deferred,
-                        "nationality": JSONCF.addressList[0].country.value,
+                        "nationality": JSONCF.nacionality,
                         "birthDate": vm.fechaSiebel,
                         "civilStatus": JSONCF.idCivilState,
                         "sex": JSONCF.sex,
-                        "profession": "EMPLEADO", //"EMPLEADO",
-                        "academicLevel": "UNIVERSITARIO", // Observar
+                        "profession": JSONCF.idProfession, //"EMPLEADO",
+                        "academicLevel": JSONCF.academicLevel, // Observar
                         "decisionCredit": JSONCF.decisionMessage, // decision pre
                         "isFico": false, // pasa por fico
                         "incomes": "", // reporte
@@ -498,7 +566,7 @@
                         "userName": vm.username,
                         "productType": "Tarjetas de Credito",
                         "phone": JSONCF.phone.toString(), // tel user
-                        "address": JSONCF.addressList[0].street, // dire
+                        "address": JSONCF.street, // dire
                         "principalCardNumber": JSONCF.creditCardNumber,
                         "additionalCardNumber": JSONCF.creditCardNumberAditional, // # campo adit
                         "office": $rootScope.dataUser.sucursal, //sucursalcode username
@@ -522,7 +590,7 @@
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "CONTRACT_TC": {
-                        "selectedProduct": "Tarjetas de Credito",
+                        "selectedProduct": "TARJETA CINCO",
                         "cityName": JSONCF.idBirthCity,
                         "creatorName": $rootScope.dataUser.userNameDescription,
                         "userName": vm.username,
@@ -531,11 +599,11 @@
                         "documentNumber": JSONCF.documentNumber,
                         "nationality": JSONCF.nacionality,
                         "civilStatus": JSONCF.civilState,
-                        "residenceAddress": JSONCF.addressList[0].street,
+                        "residenceAddress": JSONCF.street,
                         "email": JSONCF.email,
                         "phone": JSONCF.phone.toString(),
                         "authenticationCode": vm.positionCard,
-                        "keyCardNumber": vm.viewModelmoldedFormalization.keyCardNumber + "-" + vm.positionCard,
+                        "keyCardNumber": vm.viewModelmoldedFormalization.keyCardNumber,
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "VNCAS400": {
@@ -575,13 +643,13 @@
                             "creditLimitRD": JSONCF.dopLimit,
                             "creditLimitUSD": JSONCF.usdLimit,
                             "creditLimitDeferred": JSONCF.deferred,
-                            "workAddress": JSONCF.addressList[0].street,
+                            "workAddress": JSONCF.street,
                             "workPhone": JSONCF.companyPhone,
                             "workExtension": "",
-                            "homeAddress": JSONCF.addressList[0].street,
+                            "homeAddress": JSONCF.street,
                             "homePhone": JSONCF.phone.toString(),
                             "homeExtension": "",
-                            "cardNumber":JSONCF.creditCardNumber,
+                            "cardNumber": JSONCF.creditCardNumber,
                             "idCustomerFlowStep": $rootScope.globalUserJSon.id
                         }]
                     }
@@ -590,7 +658,7 @@
             }
 
             if (vm.viewModelmoldedFormalization.aditional === "S") {
-                  jsonMega = {
+                jsonMega = {
                     "idCustomerFlowStep": $rootScope.globalUserJSon.id,
                     "DAC": {
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id,
@@ -606,12 +674,12 @@
                         "agency": $rootScope.dataUser.sucursal, // sucursal user
                         "productName": vm.typeDocumentSiebel, // gn - gr
                         "deferred": JSONCF.deferred,
-                        "nationality": JSONCF.addressList[0].country.value,
+                        "nationality": JSONCF.nacionality,
                         "birthDate": vm.fechaSiebel,
                         "civilStatus": JSONCF.idCivilState,
                         "sex": JSONCF.sex,
-                        "profession": "EMPLEADO", //"EMPLEADO",
-                        "academicLevel": "UNIVERSITARIO", // Observar
+                        "profession": JSONCF.idProfession, //"EMPLEADO",
+                        "academicLevel": JSONCF.academicLevel, // Observar
                         "decisionCredit": JSONCF.decisionMessage, // decision pre
                         "isFico": false, // pasa por fico
                         "incomes": "", // reporte
@@ -624,7 +692,7 @@
                         "userName": vm.username,
                         "productType": "Tarjetas de Credito",
                         "phone": JSONCF.phone.toString(), // tel user
-                        "address": JSONCF.addressList[0].street, // dire
+                        "address": JSONCF.street, // dire
                         "principalCardNumber": JSONCF.creditCardNumber,
                         "additionalCardNumber": JSONCF.creditCardNumberAditional, // # campo adit
                         "office": $rootScope.dataUser.sucursal, //sucursalcode username
@@ -648,7 +716,7 @@
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "CONTRACT_TC": {
-                        "selectedProduct": "Tarjetas de Credito",
+                        "selectedProduct": "TARJETA CINCO",
                         "cityName": JSONCF.idBirthCity,
                         "creatorName": $rootScope.dataUser.userNameDescription,
                         "userName": vm.username,
@@ -657,11 +725,11 @@
                         "documentNumber": JSONCF.documentNumber,
                         "nationality": JSONCF.nacionality,
                         "civilStatus": JSONCF.civilState,
-                        "residenceAddress": JSONCF.addressList[0].street,
+                        "residenceAddress": JSONCF.street,
                         "email": JSONCF.email,
                         "phone": JSONCF.phone.toString(),
                         "authenticationCode": vm.positionCard,
-                        "keyCardNumber": vm.viewModelmoldedFormalization.keyCardNumber + "-" + vm.positionCard,
+                        "keyCardNumber": vm.viewModelmoldedFormalization.keyCardNumber,
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "VNCAS400": {
@@ -697,15 +765,15 @@
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "ADDITIONAL_CONTACT": {
-                        "primaryContactId":JSONCF.idClientSiebel,
-	                    "rowId":"",
+                        "primaryContactId": JSONCF.idClientSiebel,
+                        "rowId": "",
                         "IdType": "CEDULA NUEVA",
-                        "IdNumber":  vm.viewModelmoldedFormalization.identificationName,
+                        "IdNumber": vm.viewModelmoldedFormalization.identificationName,
                         "firstName": $rootScope.customerDataCredit.firtsName,
                         "lastName": $rootScope.customerDataCredit.surname,
                         "birthDate": vm.fechaAdicional,
                         "sex": $rootScope.customerDataCredit.sex,
-                        "emailAddress":vm.viewModelmoldedFormalization.emailAdicional,
+                        "emailAddress": vm.viewModelmoldedFormalization.emailAdicional,
                         "maritalStatus": $rootScope.customerDataCredit.civilStatus,
                         "cardNumber": JSONCF.creditCardNumberAditional,
                         "userName": vm.username,
@@ -739,10 +807,10 @@
                                 "creditLimitRD": JSONCF.dopLimit,
                                 "creditLimitUSD": JSONCF.usdLimit,
                                 "creditLimitDeferred": JSONCF.deferred,
-                                "workAddress": JSONCF.addressList[0].street,
+                                "workAddress": JSONCF.street,
                                 "workPhone": JSONCF.phone.toString(),
                                 "workExtension": "",
-                                "homeAddress": JSONCF.addressList[0].street,
+                                "homeAddress": JSONCF.street,
                                 "homePhone": JSONCF.phone.toString(),
                                 "homeExtension": "",
                                 "cardNumber": JSONCF.creditCardNumber,
@@ -754,11 +822,11 @@
                                 "documentType": "CEDULA NUEVA",
                                 "creditCardName": vm.viewModelmoldedFormalization.namePlastic2,
                                 "documentNumber": vm.viewModelmoldedFormalization.identificationName,
-                                "customerName": $rootScope.customerDataCredit.firtsName + " " +$rootScope.customerDataCredit.secondName,
+                                "customerName": $rootScope.customerDataCredit.firtsName + " " + $rootScope.customerDataCredit.secondName,
                                 "firstLatName": $rootScope.customerDataCredit.surname,
                                 "secondLastName": $rootScope.customerDataCredit.secondSurname,
                                 "brithDate": vm.fechaAdicional,
-                                "sex":$rootScope.customerDataCredit.sex,
+                                "sex": $rootScope.customerDataCredit.sex,
                                 "proffesion": "",
                                 "office": $rootScope.dataUser.sucursalId,
                                 "civilStatus": $rootScope.customerDataCredit.civilStatus,
@@ -766,7 +834,7 @@
                                 "monthlyIncome": $rootScope.customerDataCredit.ingreso,
                                 "salary": $rootScope.customerDataCredit.ingreso,
                                 "creditLimitRD": JSONCF.dopLimit,
-                                "creditLimitUSD":  JSONCF.usdLimit,
+                                "creditLimitUSD": JSONCF.usdLimit,
                                 "creditLimitDeferred": JSONCF.deferred,
                                 "workAddress": $rootScope.customerDataCredit.direccion,
                                 "workPhone": $rootScope.customerDataCredit.landLine.toString(),
@@ -791,8 +859,8 @@
                         var JSonCierreForzoso = {
                             "data": JSON.stringify(JSONCF),
                             "documentNumber": JSONCF.documentNumber,
-                            "userName": "AM029969",
-                            "customerFlowType": "2",
+                            "userName": $rootScope.dataUser.userName,
+                            "customerFlowType": "3",
                             "id": $rootScope.globalUserJSon.id
                         }
 
@@ -811,6 +879,7 @@
 
 
         }
+
 
 
         /**
@@ -960,6 +1029,7 @@
 
         }
 
+
         /**
          *  @ngdoc method
          *  @name getErrorDefault
@@ -1104,7 +1174,7 @@
                     $rootScope.customerDataCredit.residenceProvince = oJson.reportecu.reporte.datoslocalizacion.cod_provincia_nombre;
                     $rootScope.customerDataCredit.residenceMunicipality = oJson.reportecu.reporte.datoslocalizacion.ciudadresidencia;
                     $rootScope.customerDataCredit.ingreso = oJson.reportecu.reporte.datosgenerales.ingresomax;
-                    $rootScope.customerDataCredit.direccion =  oJson.reportecu.clienteunico.direcciones.dir[0];
+                    $rootScope.customerDataCredit.direccion = oJson.reportecu.clienteunico.direcciones.dir[0];
 
                     vm.bornDay = document.getElementById("fechaNacimiento");
                     vm.datePassport = $rootScope.customerDataCredit.birthDate;

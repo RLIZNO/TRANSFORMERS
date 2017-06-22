@@ -19,6 +19,7 @@
 		'actCardService',
 		'validationCardKeyServ',
 		'addTableService',
+		'sendEmaildService'
 	];
 
 	function formalizationResultController(
@@ -35,23 +36,21 @@
 		actCardService,
 		validationCardKeyServ,
 		addTableService,
+		sendEmaildService
 	){
 		var vm = this;	
 
 		vm.viewModelMantResult = {};
 		vm.validImpre = validImpre;
 		vm.actCredCard = actCredCard;
-		vm.validImpre = validImpre;
 		vm.validCard = validCard;
 		vm.validateKeyCard = validateKeyCard;
-		vm.updateJsonCF = updateJsonCF;
 		vm.status="I";
-		vm.userName = 'AM029969';
+		vm.userName = $rootScope.dataUser.userName;
 		vm.positionCard="";
 		vm.desBtn = false;
 		vm.noTCAdicional = "";
 		vm.dataResult = $rootScope.globalUserJSon;
-		console.log(vm.dataResult);
         $rootScope.globalUserJSon = [];
          var JSONCF = [];
          var JSONINT = {};
@@ -67,21 +66,8 @@
 						vm.typeTc = JSONCF.productCode;
 						vm.nameAdicional = JSONCF.cardHolderNameAdi;
 						vm.noTCAdicional = JSONCF.creditCardNumberAditional;
-						updateJsonCF();
                 }
         );
-
-		function updateJsonCF() {
-			var JSonCierreForzoso = {
-                            "data": JSON.stringify(JSONCF),
-                            "documentNumber": JSONCF.documentNumber,
-                            "userName": "AM029969",
-                            "customerFlowType": "3",
-                            "id": $rootScope.globalUserJSon.id
-        	}
-
-            addTableService.updatecierreForzosoTC(JSonCierreForzoso);
-		}
 
 		function validImpre() {
 			window.location.href = "/wps/portal/ptd/inicio";
@@ -158,7 +144,6 @@
             );
         }
 
-		console.log($rootScope.globalUserJSon);
 		function actCredCard() {
 				var jsonAct = {
 				"cardNumber":JSONCF.creditCardNumber,
@@ -196,7 +181,7 @@
 				
 				function showPage() {
 					
-					if (contador < 8) {
+					if (contador < 30) {
 							validationCardKeyServ.getCreditReques($rootScope.globalUserJSon.id).then(function(response) {
 								$timeout(function(){
 										if (response.success == true) {
@@ -255,11 +240,12 @@
 													});
 												}
 												if(vm.validacuse & vm.validContra & vm.tariffValid){
+													contador = 31;
 													sendEmaildService.sendDocsEmail(JSONCF.documentNumber,JSONCF.email,JSONCF.cardHolderName,JSONCF.productCode,JSONCF.dopLimit,JSONCF.usdLimit);
 												}											
 												contador ++;
 										} else {
-											contador = 9;
+											contador = 31;
 										}
 										
 								}, 0);
@@ -268,7 +254,7 @@
 						
 					}   else {
 						$interval.cancel(promise);
-						contador = 9;
+						contador = 31;
 						//modalFactory.success(messages.modals.error.printError);
 						loading.style.display = "none"; 
 						loadingBody.style.display = "none"; 

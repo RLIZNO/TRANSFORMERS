@@ -54,14 +54,15 @@
          *  @description
          *  Metodo para subir un archivo al servidor.
          */
-        function uploadFile(name, file, idFileTypeTotal, fileDetailsData, indexFile) {
+        function uploadFile(name, file, idFileTypeTotal, fileDetailsData, indexFile, typeExtension) {
             var formData = new FormData();
 
             formData.append("name", name);
 		    formData.append("file", file);
 		    formData.append("fileDetailsData", fileDetailsData);
             formData.append("idFileType", idFileTypeTotal);
-		    formData.append("indexFile", indexFile);	
+		    formData.append("indexFile", indexFile);
+            formData.append("extension", typeExtension);	
 
             return $http.post(PREFIX_URL.SERVICES + URL.UPLOAD_FILE, formData, {
                 headers : {

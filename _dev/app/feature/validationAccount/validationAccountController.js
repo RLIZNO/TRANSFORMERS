@@ -900,7 +900,7 @@
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
             var usernumber = vm.viewModelvalidationAccount.numberIdentification;
 
-            localStorage.setItem("usernumber", usernumber);
+            localStorage.setItem('cierreForzosoIdCA', documentNumber);
 
 
             /*var getJsonCierreForz = localStorage.getItem('JSON');
@@ -913,13 +913,13 @@
                         localStorage.setItem('cierreForzosoIdCA', documentNumber);
                         $rootScope.globalUserJSon = response.data;
                         console.log($rootScope.globalUserJSon);
-                        if (response.data.step == 1){
+                        if (response.data.step == 1 || response.data.step == 2){
                             $state.go('moldedFormalization');
-                        } else {
-                            if(response.data.step == 2){
-                                $state.go('formalizationResult');
-                            }
+                        } 
+                        if(response.data.step == 3){
+                            $state.go('formalizationResult');
                         }
+                        
                         
                     } else {
 
@@ -1471,7 +1471,16 @@
 
                 /*Llamos al servicio que guarda la identificación del cliente */
                 saveIdentificationService.postSaveIdentification(jsonIdentification);
+                $rootScope.globalUserJSon = $.extend(true, {},{
+                    json3 : "jsonClntCredCard",
+                    JSONcierreForzoso : $rootScope.globalValClntCredCard
+                },{
+                    json2 : "jsonClientSieble",
+                    JSONcierreForzoso :$rootScope.globalClientSIebel
+                }
+                );
 
+                localStorage.setItem('$rootScope.globalUserJSonValAco',JSON.stringify($rootScope.globalUserJSon.JSONcierreForzoso));
                 /*Redireccionamos a la siguiente pantalla */
                 sweet.show({
                 title: messages.modals.warning.modaltitleWarning,

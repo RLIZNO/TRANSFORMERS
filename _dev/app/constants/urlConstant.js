@@ -80,6 +80,8 @@
             ACTIVATE_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/activateCard/activate',
             GET_FILES_GR: '/BHDL_TDPD_SIREMAS/siremas/uploadedFiles/Get',
             CREDIT_CARD_REQUEST: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequestState/getCreditCardRequest',
-            PRODOCT_DOCUMENTS: '/BHDL_TDPD_Back_Credit_Card/rest/prodoctivityDocuments/getUrl'
+            PRODOCT_DOCUMENTS: '/BHDL_TDPD_Back_Credit_Card/rest/prodoctivityDocuments/getUrl',
+            CONSULT_NUMBERCARD: '/BHDL_TDPD_Back_Credit_Card/rest/credirCardRequestQuery/Get',
+            SEND_DOCS_EMAIL: '/BHDL_TDPD_Back_Utils/rest/email/sendEmailCreditCard'
         });
 })();

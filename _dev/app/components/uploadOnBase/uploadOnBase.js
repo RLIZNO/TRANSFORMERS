@@ -23,7 +23,8 @@
         'uploadFileService',
         '$rootScope',
         '$filter',
-        '$controller'
+        '$controller',
+        'addTableService'
     ];
 
     function UploadOnBaseController(
@@ -36,7 +37,8 @@
         uploadFileService,
         $rootScope,
         $filter,
-        $controller
+        $controller,
+        addTableService
     ) {
 
         var vm = this;
@@ -93,6 +95,7 @@
         vm.documentExtensions = messages.components.uploadOnBase.documentExtensions;
         $rootScope.globalOnbase = false;
         vm.onbasevariable = $rootScope.globalOnbase;
+        var typeExtension = '';
 
         /* Listado de metodos */
         vm.resetData = resetData;
@@ -103,14 +106,20 @@
         vm.createIndexFile = createIndexFile;
         vm.uploadFile = uploadFile;
         vm.finalizeIndexFile = finalizeIndexFile;
-        var jsonData = {};
+        var JSONCF = [];
+        var JSONINT = {};
 
-        var dataSiebel = localStorage.getItem("dataSiebel");
-            if(dataSiebel === "true"){
-                jsonData = JSON.parse(localStorage.getItem("jsonDataClient"));
-            }else {
-                jsonData = JSON.parse(localStorage.getItem("jsonData"));
+        var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
+
+        addTableService.getcierreForzosoTC(cierreForzosoIdCA).then(
+            function (response) {
+                $rootScope.globalUserJSon = response.data;
+                JSONCF = JSON.parse($rootScope.globalUserJSon.json);
+                JSONINT = $rootScope.globalUserJSon;
+                // Servicio para numero tarjeta de credito
             }
+        );
+
         /**
          *  @ngdoc method
          *  @name appendDocument
@@ -124,7 +133,7 @@
                 if (isValidExtension(fileValue.name)) {
                     vm.documents.push({
                         idFileType: vm.documentTypes[vm.selectedDocumentType].id,
-                        type: vm.documentTypes[vm.selectedDocumentType].value,
+                        type: vm.documentTypes[vm.selectedDocumentType].extrafield2,
                         name: fileValue.name,
                         file: fileValue
                     });
@@ -153,6 +162,7 @@
             vm.documentExtensions.forEach(function (extValue) {
                 if (extValue === ext) {
                     isValidExt = true;
+                    typeExtension = ext;
                 }
             });
 
@@ -255,7 +265,7 @@
          */
         function createIndexFile() {
             var json = {};
-                json.documentNumber = jsonData.numberDocument;
+                json.documentNumber = JSONCF.documentNumber;
 
             uploadFileService.createIndexFile(json)
                 .then(
@@ -288,10 +298,9 @@
             var fail = false;
             var contador = 0;
             var idFileTypeTotal = '';
-            var documentNumber = '';
-            var customerNumber = '';
-                documentNumber = jsonData.typeDocument;
-                customerNumber = jsonData.numberDocument;
+            var documentNumber = JSONCF.documentNumber;
+            var customerNumber = JSONCF.clientNumber;
+            var NumeroCuenta  = "";
 
             /*Recorremos todos los archivos preparados para subir a OnBase y enviamos uno por uno al servidor */
             angular.forEach(vm.documents, function (value, key) {
@@ -303,9 +312,9 @@
                 }
                 contador.toString();
                 idFileTypeTotal = idFileType+'.'+contador;
-                details = "*" + value.type + "*,*" + documentNumber + "*,*" + customerNumber + "*,**,*" + $filter('date')(today, 'MM/dd/yyyy' + "*");
+                details = "*" + value.type + "*,*" + JSONCF.documentNumber + "*,*" + customerNumber + "*,**,*" + $filter('date')(today, 'MM/dd/yyyy' + "*");
                 /*Consumimos el servicio que carga el archivo al servidor */
-                uploadFileService.uploadFile(name, file, idFileTypeTotal, details, index).then(
+                uploadFileService.uploadFile(name, file, idFileTypeTotal, details, index, typeExtension).then(
                     function (response) {
                         if (response.success) {
                             loaded = true;

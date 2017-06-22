@@ -26,11 +26,28 @@
             updateManteniment: updateManteniment,
             addcierreForzosoTC: addcierreForzosoTC,
             updatecierreForzosoTC: updatecierreForzosoTC,
-            getcierreForzosoTC: getcierreForzosoTC
+            getcierreForzosoTC: getcierreForzosoTC,
+            getConsultCard: getConsultCard
         };
 
         return service;
 
+
+        function getConsultCard(id){
+
+            var deferred = $q.defer(); 
+            
+            $http.get(PREFIX_URL.SERVICES + URL.CONSULT_NUMBERCARD + '?id=' + id )
+              .then(
+                  function (response){
+                      deferred.resolve(response.data);
+                  },
+                  function (errResponse){
+                      deferred.reject(errResponse);
+                  }
+              );
+            return deferred.promise;
+        }
         /*INSERT CIERRE FORZOSO*/
 
         function addcierreForzosoTC(json){

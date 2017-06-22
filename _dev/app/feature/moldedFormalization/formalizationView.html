@@ -508,20 +508,24 @@
           <span class="separador">
           <hr />
           </span>
-          <form name="moldedFormalization.formProductMantenimentNew" id="myForm" novalidate role="form">
+          <form name="moldedFormalization.formOnbase" novalidate role="form">
                 <upload-on-base 
                   table-orientation="'left'",
                   i18n="i18n">
                 </upload-on-base>   
             </form>
           </div>
-      <div class="botonareacenter">            
+      <div class="botonareacenter">   
+            <button ng-click="moldedFormalization.modalCancelForm()" 
+                  class="boton3 btnlager2 btnred" >
+                  Cancelar
+            </button>         
          <button  
             class="boton3 btnlager2 btnblue"
             ng-class="{'disabled' : !moldedFormalization.viewModelmoldedFormalization.namePlastic || !moldedFormalization.viewModelmoldedFormalization.typeProduct || 
-            !moldedFormalization.viewModelmoldedFormalization.aditional || !moldedFormalization.viewModelmoldedFormalization.palceSending || moldedFormalization.onbaseSuccess}"
+            !moldedFormalization.viewModelmoldedFormalization.aditional || !moldedFormalization.viewModelmoldedFormalization.palceSending || !moldedFormalization.onbaseSuccess}"
             ng-click="moldedFormalization.validImpre()">
-         Impresión Tarjetas
+            Impresión Tarjetas
          </button>
       </div>
       <div id="myModal" class="modal w3-animate-opacity">

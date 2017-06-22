@@ -104,9 +104,34 @@
                     localStorage.setItem("Proyecto", proyect);
                     
                     var validclientTc = 'validclientTclean';
-                        localStorage.setItem("validclientTc", validclientTc);
+                    localStorage.setItem("validclientTc", validclientTc);
                     window.location.href = "/wps/portal/ptd/inicio";
                     //window.location.href = "/#/";
+                }, 0);
+            });
+
+        }
+
+        /**
+         * Función global que abre el modal de cancelar el proceso
+         */
+        function cancel() {
+            sweet.show({
+                title: messages.modals.warning.modaltitleWarning,
+                text: messages.modals.warning.modalCancelprocess,
+                type: messages.modals.warning.modalTypeWarning,
+                showCancelButton: true,
+                cancelButtonText: messages.modals.warning.modalCancelButton,
+                confirmButtonColor: messages.modals.warning.modalColorButton,
+                confirmButtonText: messages.modals.warning.modalConfirText,
+                closeOnConfirm: true
+            }, function () {
+                $timeout(function () {
+                    var validclientTc = 'validclientTclean';
+                    localStorage.setItem("validclientTc", validclientTc);
+                    if (validclientTc === 'validclientTclean'){
+                        $state.go('validationAccount');
+                    }
                 }, 0);
             });
 

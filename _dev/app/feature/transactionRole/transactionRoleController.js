@@ -116,7 +116,7 @@ vm.modalCancel = modalCancel;
         catalogService.getCatalogURL(URL.CURRENCY_CODE).then(
             function(response){
                 vm.optCurrencyCode = response.data.data;
-                console.log(vm.optCurrencyCode);
+                //console.log(vm.optCurrencyCode);
         });
 
         catalogService.getCatalogURL(URL.PRODUCT_TYPE).then(
@@ -167,7 +167,7 @@ vm.modalCancel = modalCancel;
                     jsonUpdate.currencyCode = json.currencyCode2;
                     jsonUpdate.productType = json.productType2;
                     jsonUpdate.status = json.status2;
-                    jsonUpdate.userName = "AM029969";
+                    jsonUpdate.userName = $rootScope.dataUser.userName;
                     
                     addTableBinService.insertRole(jsonUpdate);
                     tablaBin()
@@ -289,7 +289,7 @@ vm.modalCancel = modalCancel;
                     jsonUpdate.currencyCode = json.currencyCode;
                     jsonUpdate.productType = json.productType;
                     jsonUpdate.status = json.status;
-                    jsonUpdate.userName = "AM029969";
+                    jsonUpdate.userName = $rootScope.dataUser.userName;
 
                     addCodeService.updateRole(jsonUpdate);
                     vm.viewModelTransitionRole = {};

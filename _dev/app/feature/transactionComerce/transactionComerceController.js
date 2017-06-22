@@ -119,7 +119,7 @@
                         var description = 'I';
                    }
 
-                    jsonUpdate.createdBy = 'AM029969';
+                    jsonUpdate.createdBy = $rootScope.dataUser.userName;
                     jsonUpdate.description = json.binNew;
                     jsonUpdate.status = description;
                     
@@ -178,7 +178,7 @@
                     validTransactionAffiliate.getvalidaTransitionAffiliate(vm.viewModelTransitionAffiliate.description).then(
                     function (response) {
                         if (response.success) {
-                            console.log(response);
+                            //console.log(response);
                             vm.tableSourceProdcut = response.data.binList;
                         } else {
                             modalFactory.error(response.error.message);
@@ -237,7 +237,7 @@
                 function (response) {
                     $timeout(function(){
                         vm.tableSourceProdcut = response.commerceEntity;
-                        console.log(vm.tableSourceProdcut); 
+                        //console.log(vm.tableSourceProdcut); 
                         }, 0);
                     }
 

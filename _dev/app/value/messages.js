@@ -26,7 +26,8 @@
 	    		uploadOnBase : {
 	    			buttonUploadOnBase : 'Cargar a OnBase',
 	    			documentExtensions : [
-	    				'tif'
+	    				'tif',
+						'jpg'
 	    			],
 	    			documenTypeDefault : '-1',
 	    			labelActions : 'Acciones',

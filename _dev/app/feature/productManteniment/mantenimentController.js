@@ -91,14 +91,14 @@ vm.modalCancel = modalCancel;
                 var dataJson = {};
                 dataJson = responseValue.productLimit;
                 $rootScope.globalLimitData = dataJson[0];
-                console.log($rootScope.globalLimitData);
+                //console.log($rootScope.globalLimitData);
             });
         }
         //cargarProducto();
 
         addTableService.allTable().then(
         function (response) {
-            console.log(response);
+            //console.log(response);
             vm.tableSourceProdcut = response.productLimit;
         });
 

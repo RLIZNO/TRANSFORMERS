@@ -48,7 +48,7 @@
                 function (response) {
                     $timeout(function(){
                         vm.tableSourceProdcut = response.commercesAffiliateReport;
-                        console.log(vm.tableSourceProdcut); 
+                        //console.log(vm.tableSourceProdcut); 
                         }, 0);
                     }
 

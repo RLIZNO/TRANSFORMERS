@@ -162,7 +162,7 @@
                     jsonUpdate.productType = json.productTypeNew;
                     jsonUpdate.status = "Activo";
                     jsonUpdate.id = 0;
-                    jsonUpdate.userName = 'AM029969';
+                    jsonUpdate.userName = $rootScope.dataUser.userName;
                     
                     addTableBinService.InsertBin(jsonUpdate);
                     tablaBin()
@@ -190,9 +190,9 @@
                     vm.tableSourceProdcut = '';
                     $timeout(function(){
                         if (response.success) {
-                            console.log(response);
+                            //console.log(response);
                             vm.tableSourceProdcut = response.data.binList;
-                            console.log(vm.tableSourceProdcut); 
+                            //console.log(vm.tableSourceProdcut); 
                         } else {
                             modalFactory.error(response.error.message);
                         }
@@ -229,7 +229,7 @@
                     validTransitionBinService.getvalidaTransition(vm.viewModelTransition.bin, vm.viewModelTransition.productCode, vm.viewModelTransition.productName).then(
                     function (response) {
                         if (response.success) {
-                            console.log(response);
+                            //console.log(response);
                             vm.tableSourceProdcut = response.data.binList;
                         } else {
                             modalFactory.error(response.error.message);
@@ -285,7 +285,7 @@
                     jsonUpdate.productType = json.productType;
                     jsonUpdate.status = json.status;
                     jsonUpdate.id = json.id;
-                    jsonUpdate.userName = 'AM029969';
+                    jsonUpdate.userName = $rootScope.dataUser.userName;
 
                     addTableBinService.updateMantenimentBin(jsonUpdate);
                     vm.viewModelTransition = {};
