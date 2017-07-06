@@ -78,10 +78,12 @@
             UPDATE_CIERRE_FORZOSO: '/BHDL_TDPD_Back_Credit_Card/rest/customerSteps/update',
             PRINT_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequest/add',
             ACTIVATE_CARD: '/BHDL_TDPD_Back_Credit_Card/rest/activateCard/activate',
+            DISABLED_CARD: '/BHDL_TDPD_Back_Utils/rest/disableCreditCard/Get',
             GET_FILES_GR: '/BHDL_TDPD_SIREMAS/siremas/uploadedFiles/Get',
             CREDIT_CARD_REQUEST: '/BHDL_TDPD_Back_Credit_Card/rest/creditCardRequestState/getCreditCardRequest',
             PRODOCT_DOCUMENTS: '/BHDL_TDPD_Back_Credit_Card/rest/prodoctivityDocuments/getUrl',
             CONSULT_NUMBERCARD: '/BHDL_TDPD_Back_Credit_Card/rest/credirCardRequestQuery/Get',
-            SEND_DOCS_EMAIL: '/BHDL_TDPD_Back_Utils/rest/email/sendEmailCreditCard'
+            SEND_DOCS_EMAIL: '/BHDL_TDPD_Back_Utils/rest/email/sendEmailCreditCard',
+            VALID_CLIENT_PORTAL: '/BHDL_TDPD_Back_Customers/rest/validationClient/validateClientPortal'
         });
 })();

@@ -213,6 +213,7 @@
         //$rootScope.dataUser.typeDocument = vm.viewModelvalidationAccount.typeIdentification;
         vm.espresion = false;
         vm.limitRDmayor = false;
+        vm.limitRDOne;
         /*Funciones*/
         vm.getTypeDocuments = getTypeDocuments;
         vm.getTaskYesNo = getTaskYesNo;
@@ -245,6 +246,32 @@
         $rootScope.globalSiebelCust      = {};
         $rootScope.globalValClntCredCard = {};
         $rootScope.globalClientSIebel = {}; // variable global que guardamos en el Json para el forzoso    
+
+        /****
+        CARGAR DATOS EN LA PANTALLA DE VALIDACION
+        ****/  
+        var statusFS = localStorage.getItem('stateFS');
+
+        if( statusFS == true ){
+            var stringifyJSONFS = localStorage.getItem('$rootScope.globalUserJSonValAco');
+            var JSONFS = JSON.parse(stringifyJSONFS);
+
+            addTableService.getcierreForzosoTC(JSONFS.documentNumber).then(
+                function (response) { 
+                    var JSONTC = JSON.parse(response.data.json);
+                    if(response.success == true ){
+                        vm.viewModelvalidationAccount.numberIdentification = JSONTC.documentNumber;
+                        vm.viewModelvalidationAccount.doubleNationality    = "No";
+                        vm.viewModelvalidationAccount.typeProduct          = JSONTC.description;
+                        vm.decisionMessage                                 = JSONTC.decisionMessage;
+                        vm.viewModelvalidationAccount.limitRD              = JSONTC.dopLimit;
+                        vm.viewModelvalidationAccount.limitDiferidoRD      = JSONTC.deferred;
+                        vm.viewModelvalidationAccount.limitUSD             = JSONTC.usdLimit;        
+                    }
+                }
+            );
+        }
+
 
         function loadCreditCardFirstData(){
            addTableService.allTable().then(function(responseValue) {
@@ -637,8 +664,14 @@
                     }else{
                         vm.maximumLimitRDtrue=false;
                     }
-                    vm.deferredCalc = vm.viewModelvalidationAccount.limitRD * 1.5;
-                    vm.viewModelvalidationAccount.limitDiferidoRD = vm.deferredCalc;
+                    if(vm.viewModelvalidationAccount.limitDiferidoRD != 1 && vm.limitRDOne == false){
+                       vm.limitRDOne = false;
+                       vm.deferredCalc = vm.viewModelvalidationAccount.limitRD * 1.5;
+                       vm.viewModelvalidationAccount.limitDiferidoRD = vm.deferredCalc;
+                   } else {
+                       vm.limitRDOne = true;
+                       vm.viewModelvalidationAccount.limitDiferidoRD = 1;
+                   }
                 }           
             }  else {
                 modalFactory.warning(messages.modals.warning.modalEmptyField);
@@ -815,14 +848,6 @@
                 vm.decisionMessage = response.decision;
                 vm.decisionMoti = response.motive;
                 vm.disablePre = false;
-                $rootScope.globalLimitData.decisionMessage = responseValue.decision;
-                $rootScope.globalLimitData.limDiferido = responseValue.deferred;
-                $rootScope.globalLimitData.limitRD = responseValue.dopLimit;
-                $rootScope.globalLimitData.limitUSD = responseValue.usdLimit;
-                $rootScope.globalLimitData.FICOmotive = responseValue.motive;
-                $rootScope.globalLimitData.FICOoffer = responseValue.showOffer;
-                $rootScope.globalLimitData.validationResultCustomerPreApproved = false;
-
                 if (response.decision === 'Rechazado') {
                     vm.clientCanContinue =  false;
                     modalFactory.error(response.motive);
@@ -831,6 +856,12 @@
                 if (response.decision === 'Aprobado') {
                     vm.clientCanContinue =  true;
                 }
+                $rootScope.globalLimitData.decisionMessage = response.decision;
+                $rootScope.globalLimitData.approvedDeferred = response.deferred;
+                $rootScope.globalLimitData.approvedDopLimit = response.dopLimit;
+                $rootScope.globalLimitData.approvedUsdLimit = response.usdLimit;
+                $rootScope.globalLimitData.FICOoffer = response.showOffer;
+                $rootScope.globalLimitData.validationResultCustomerPreApproved = false;
                 
             }, modalError);
         }else {
@@ -899,7 +930,7 @@
             
             var documentNumber = vm.viewModelvalidationAccount.numberIdentification;
             var usernumber = vm.viewModelvalidationAccount.numberIdentification;
-
+            vm.limitRDOne = false;
             localStorage.setItem('cierreForzosoIdCA', documentNumber);
 
 
@@ -916,7 +947,7 @@
                         if (response.data.step == 1 || response.data.step == 2){
                             $state.go('moldedFormalization');
                         } 
-                        if(response.data.step == 3){
+                        if(response.data.step == 4){
                             $state.go('formalizationResult');
                         }
                         
@@ -1401,9 +1432,13 @@
                             }
                     }
 
-                    vm.viewModelvalidationAccount.limitDiferidoRD = responseValue.deferred;
-                    vm.viewModelvalidationAccount.limitDiferidoRD = $filter('number')(responseValue.deferred,0);
-                    limitDiferidoRD(vm.viewModelvalidationAccount.limitDiferidoRD , ".", "," );
+                    if (responseValue.validationResultActiveDeferred == true ) {
+                        vm.viewModelvalidationAccount.limitDiferidoRD = 1;
+                    } else {
+                        vm.viewModelvalidationAccount.limitDiferidoRD = responseValue.deferred;
+                        vm.viewModelvalidationAccount.limitDiferidoRD = $filter('number')(responseValue.deferred,0);
+                        limitDiferidoRD(vm.viewModelvalidationAccount.limitDiferidoRD , ".", "," );
+                    }
 
                     vm.viewModelvalidationAccount.limitRD = responseValue.dopLimit;
                     vm.viewModelvalidationAccount.limitRD = $filter('number')(responseValue.dopLimit,0);
@@ -1425,9 +1460,9 @@
                     vm.clientCanContinue = true;
                     vm.clientAprobado = true;
                     $rootScope.globalLimitData.decisionMessage = responseValue.decisionMessage;
-                    $rootScope.globalLimitData.limDiferido = responseValue.deferred;
-                    $rootScope.globalLimitData.limitRD = responseValue.dopLimit;
-                    $rootScope.globalLimitData.limitUSD = responseValue.usdLimit;
+                  $rootScope.globalLimitData.approvedDeferred = responseValue.deferred;
+                  $rootScope.globalLimitData.approvedDopLimit = responseValue.dopLimit;
+                  $rootScope.globalLimitData.approvedUsdLimit = responseValue.usdLimit;
                     //vm.preaprobado=true;
                     vm.limitRD=responseValue.dopLimit;   
                     vm.limitUSD=responseValue.usdLimit;
@@ -1532,18 +1567,22 @@
                     creditBureauService.getValidCientExisting(vm.viewModelvalidationAccount.typeIdentification ,documentNumber, $rootScope.dataUser.userName).
                         then(function   
                             (response) {
-                                
                             //$rootScope.globalValClntExist = response;
                             //localStorage.setItem("globalValClntExist", $rootScope.globalValClntExist);
-
+                            $rootScope.globalValClntCredCard.dopLimit = parseInt((vm.viewModelvalidationAccount.limitRD).replace(/,/g,""));
+                            $rootScope.globalValClntCredCard.usdLimit = parseInt((vm.viewModelvalidationAccount.limitUSD).replace(/,/g,""));
+                            $rootScope.globalValClntCredCard.deferred = parseInt((vm.viewModelvalidationAccount.limitDiferidoRD).replace(/,/g,""));
                             
                             $rootScope.globalUserJSon = $.extend(true, {},{
-                                json3 : "jsonClntCredCard",
-                                JSONcierreForzoso : $rootScope.globalValClntCredCard
-                            },{
-                                json2 : "jsonClientSieble",
-                                JSONcierreForzoso :$rootScope.globalClientSIebel
-                            }
+                                    json3 : "jsonClntCredCard",
+                                    JSONcierreForzoso : $rootScope.globalValClntCredCard
+                                },{
+                                    json2 : "jsonClientSieble",
+                                    JSONcierreForzoso :$rootScope.globalClientSIebel
+                                },{
+                                    json2 : "jsonLimites",
+                                    JSONcierreForzoso :$rootScope.globalLimitData
+                                }  
                             );
 
                             localStorage.setItem('$rootScope.globalUserJSonValAco',JSON.stringify($rootScope.globalUserJSon.JSONcierreForzoso));
@@ -1551,7 +1590,6 @@
                             console.log(response);
                             var proyect = 'CreditCard';
                             localStorage.setItem("Proyecto", proyect);
-                            //window.location.href = "/wps/portal/ptd/inicio";
                             var dataSiebel = true;
                             localStorage.setItem("dataSiebel", dataSiebel);
                             var validclientTc = 'validclientTc';
@@ -1707,6 +1745,10 @@
                 if(error.message === "La consulta no devolvio ningun registro"){
                     vm.clientCanContinue =  false;
                 }
+
+                if (error.message === "Ocurrio un Error BRK2033: El servicio no ha respondido en el tiempo especificado."){
+                    vm.clientCanContinue =  false;
+                }
                 modalFactory.error(errortc);
             } 
 
@@ -1722,7 +1764,7 @@
          *  Función que abre el modal para cancelar la operación en proceso y te redirecciona al home
          */
         function modalCancel() {
-           modalFactory.cancel();
+           modalFactory.cancelform();
         }
 
         /*Funcion para abrir el modal de campos obligatorios*/

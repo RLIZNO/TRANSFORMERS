@@ -23,6 +23,7 @@
         var factory = {
             error : error,
             cancel : cancel,
+            cancelform: cancelform,
             warning : warning,
             success : success
         };
@@ -85,7 +86,7 @@
         /**
          * Función global que abre el modal de cancelar el proceso
          */
-        function cancel() {
+        function cancelform() {
             sweet.show({
                 title: messages.modals.warning.modaltitleWarning,
                 text: messages.modals.warning.modalCancelprocess,

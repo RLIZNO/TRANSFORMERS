@@ -73,6 +73,7 @@ body, html {
 	overflow: visible;
 	position: relative;
 	width: 100%;
+	background: #404952;
 }
 #bodyright {
 	background-color: #EEEFF2;
@@ -1936,6 +1937,17 @@ position: relative;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px; 
+}
+
+@media only screen and (max-width: 1200px) {
+.columna2_1, .columna2_2 {
+                width:100%
+}
+.columna3_1, .columna3_2, .columna3_3 {
+width: 50%;
+                height: 60px;
+                float: left;
+}
 }
 
  

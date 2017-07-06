@@ -36,9 +36,10 @@
                      moldedFormalization.espresion}"
                      ng-model="moldedFormalization.viewModelmoldedFormalization.namePlastic"
                      ng-maxlength="18"
-                     ng-change= "moldedFormalization.validAditional();"
+                     ng-change= "moldedFormalization.validAcen();"
                      ng-pattern="/^[a-zA-Z\s]*$/"
-                     ng-required="true" />
+                     ng-required="true" 
+                     ng-disabled="true" />
                   <span
                     class="alerttext"
                     ng-if="moldedFormalization.formMoldedFormalization.namePlastic.$error.pattern" 
@@ -188,7 +189,8 @@
                      ng-maxlength="50"
                      ng-change= "moldedFormalization.validAcen2();"
                      ng-pattern="/^[a-zA-Z\s]*$/"
-                     ng-required="true" />
+                     ng-required="true"
+                     ng-disabled="true" />
                   <span 
                      class="alerttext" 
                      ng-if="(validationAccount.submitted || moldedFormalization.formMoldedFormalization.namePlastic2.$touched) &&  
