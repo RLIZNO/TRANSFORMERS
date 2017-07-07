@@ -495,8 +495,7 @@
                         return text;
                     
                 }
-
-               if (parseInt(maxLimit) > parseInt(vm.limiteMaximoUs)){
+                if (parseInt(maxLimit) > parseInt(vm.limiteMaximoUs.replace(/,/g,""))){
                    vm.valueLimitUs = true;
                }else {
                    vm.valueLimitUs = false;
@@ -1471,9 +1470,9 @@
                     vm.clientCanContinue = true;
                     vm.clientAprobado = true;
                     $rootScope.globalLimitData.decisionMessage = responseValue.decisionMessage;
-                  $rootScope.globalLimitData.approvedDeferred = responseValue.deferred;
-                  $rootScope.globalLimitData.approvedDopLimit = responseValue.dopLimit;
-                  $rootScope.globalLimitData.approvedUsdLimit = responseValue.usdLimit;
+                      $rootScope.globalLimitData.approvedDeferred = responseValue.deferred;
+                      $rootScope.globalLimitData.approvedDopLimit = responseValue.dopLimit;
+                      $rootScope.globalLimitData.approvedUsdLimit = responseValue.usdLimit;
                     //vm.preaprobado=true;
                     vm.limitRD=responseValue.dopLimit;   
                     vm.limitUSD=responseValue.usdLimit;

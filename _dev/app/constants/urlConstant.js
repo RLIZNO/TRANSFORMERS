@@ -17,7 +17,7 @@
             CATALOGS : '/BHDL_TDPD_Back_Utils/rest/catalogs/retrieveCatalogs',
             CATALOGS_COMPLEX : '/BHDL_TDPD_Back_Utils/rest/catalogs/retrieveComplexCatalogs',
             XML_BUREAU : '/BHDL_TDPD_Back_Customers/rest/validationCreditBureau/retrieveXMLCreditBureau',
-            EXISTING_CLIENT : '/BHDL_TDPD_Back_Customers/rest/siebelClient/getSiebelClient',
+            EXISTING_CLIENT : '/BHDL_TDPD_Back_Credit_Card/rest/siebelInformation/customer',
             DELETE_XML_BUREAU : '/BHDL_TDPD_Back_Customers/rest/validationCreditBureau/deleteXMLCreditBureau',
             RETRIEVE_CIIU_LEVELS : '/BHDL_TDPD_Back_Utils/rest/catalogs/retrieveCiiuLevelsByOccupation',
             SAVE_IDENTIFICATION_DATA : '/BHDL_TDPD_Back_Customers/rest/clientPerson/identificationData',

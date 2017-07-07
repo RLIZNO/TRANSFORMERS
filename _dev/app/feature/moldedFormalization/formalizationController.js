@@ -147,7 +147,7 @@
                 if (JSONCF.phone !== null) {
                     JSONCF.phone = "";
                 }
-                vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLasname;
+                vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLastname;
                 // Servicio para numero tarjeta de credito
                 creditBureauService.getValidCientExisting(2, JSONCF.documentNumber, vm.username).then(
                     function (response) {
@@ -210,11 +210,9 @@
         function modalCancelForm() {
             modalFactory.cancel();
         }
-
-        window.onclick = function (event) {
-            $timeout(function () {
-                vm.onbaseSuccess = $rootScope.globalOnbase;
-            }, 500)
+        document.onclick = myFunction;
+        function myFunction() {
+           vm.onbaseSuccess = $rootScope.globalOnbase;
         }
 
 
@@ -620,7 +618,7 @@
                         "userName": vm.username,
                         "contactId": JSONCF.idClientSiebel, // consulta de siebel
                         "creditCardNumber": JSONCF.creditCardNumber, // tarjeta de creditovalidServiMega
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "productType": "Tarjetas de Credito",
                         "limitRD": JSONCF.dopLimit,
@@ -651,11 +649,11 @@
                         "additionalCardNumber": JSONCF.creditCardNumberAditional, // # campo adit
                         "office": $rootScope.dataUser.sucursal, //sucursalcode username
                         "billingCycle": "MENSUAL",
-                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "customerCode": JSONCF.clientNumber,
                         "bankAssesor": $rootScope.dataUser.userNameDescription, // userName
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "customerBeneficiary": "", // nombre adit,
                         "receptorFirm": vm.viewModelmoldedFormalization.keyCardNumber + "-" + vm.positionCard /// numero tarjeta de clave - cordenada
                     },
@@ -666,7 +664,7 @@
                         "documentNumber": JSONCF.documentNumber, // dato de siebel
                         "userCreatorName": $rootScope.dataUser.userNameDescription,
                         "agreement": "OK",
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "userName": vm.username,
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
@@ -677,7 +675,7 @@
                         "customerCode": JSONCF.clientNumber,
                         "creatorName": $rootScope.dataUser.userNameDescription,
                         "userName": vm.username,
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentType": "CEDULA NUEVA", //JSONCF.documentType, // agregar al json
                         "documentNumber": JSONCF.documentNumber,
                         "nationality": JSONCF.nacionality,
@@ -749,7 +747,7 @@
                         "userName": vm.username,
                         "contactId": JSONCF.idClientSiebel, // consulta de siebel
                         "creditCardNumber": JSONCF.creditCardNumber, // tarjeta de creditovalidServiMega
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "productType": "Tarjetas de Credito",
                         "limitRD": JSONCF.dopLimit,
@@ -781,10 +779,10 @@
                         "office": $rootScope.dataUser.sucursal, //sucursalcode username
                         "billingCycle": "MENSUAL",
                         "customerCode": JSONCF.clientNumber,
-                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "bankAssesor": $rootScope.dataUser.userNameDescription, // userName
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "customerBeneficiary": vm.viewModelmoldedFormalization.namePlastic2, // nombre adit,
                         "receptorFirm": vm.viewModelmoldedFormalization.keyCardNumber + "-" + vm.positionCard /// numero tarjeta de clave - cordenada
                     },
@@ -795,7 +793,7 @@
                         "documentNumber": JSONCF.documentNumber, // dato de siebel
                         "userCreatorName": $rootScope.dataUser.userNameDescription,
                         "agreement": "OK",
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "userName": vm.username,
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
@@ -806,7 +804,7 @@
                         "customerCode": JSONCF.clientNumber,
                         "creatorName": $rootScope.dataUser.userNameDescription,
                         "userName": vm.username,
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentType": "CEDULA NUEVA", //JSONCF.documentType, // agregar al json
                         "documentNumber": JSONCF.documentNumber,
                         "nationality": JSONCF.nacionality,
