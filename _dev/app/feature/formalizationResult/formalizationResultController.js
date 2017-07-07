@@ -145,6 +145,10 @@
         }
 
 		function actCredCard() {
+
+			if(vm.noTCAdicional === undefined){
+				vm.noTCAdicional = "";
+			}
 				var jsonAct = {
 				"cardNumber":JSONCF.creditCardNumber,
 				"additionalCardNumber": vm.noTCAdicional,

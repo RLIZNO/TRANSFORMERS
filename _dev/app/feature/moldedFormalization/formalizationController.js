@@ -128,6 +128,7 @@
         var JSONCF = [];
         var JSONINT = {};
         vm.onbaseSuccess = false;
+        vm.additionalCard = false;
         vm.modalCancelForm = modalCancelForm;
 
         var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
@@ -146,12 +147,43 @@
                 if (JSONCF.phone !== null) {
                     JSONCF.phone = "";
                 }
-                vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLasname;
+                vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLastname;
                 // Servicio para numero tarjeta de credito
                 creditBureauService.getValidCientExisting(2, JSONCF.documentNumber, vm.username).then(
                     function (response) {
                         JSONCF.keyCardNumber = response.keyCardNumber;
                         vm.viewModelmoldedFormalization.keyCardNumber = response.keyCardNumber;
+                        addTableService.getConsultCard($rootScope.globalUserJSon.id).then(
+                            function (response) {
+                                if (response.success) {
+                                    if (JSONCF.additional === "N"){
+                                        JSONCF.creditCardNumber = response.data.List[0].cardNumber;
+                                        JSONCF.cardHolderName = vm.viewModelmoldedFormalization.namePlastic;
+                                        vm.viewModelmoldedFormalization.aditional = response.data.List[0].additional;
+                                        validServiMega();
+                                    }else {
+                                         JSONCF.creditCardNumber = response.data.List[0].cardNumber;
+                                        JSONCF.cardHolderName = vm.viewModelmoldedFormalization.namePlastic;
+                                        vm.viewModelmoldedFormalization.aditional = response.data.List[0].additional;
+                                        validServiMega();                                       
+                                    }
+                                    if(JSONCF.additional === "S"){
+                                        sweet.show({
+                                            title: '',
+                                            text: "La tarjeta principal ya impresa correctamente. Ahora procederemos a imprimir la tarjeta adicional.",
+                                            confirmButtonColor: messages.modals.warning.modalColorButton,
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: true
+                                        }, function () {
+                                            $timeout(function () {
+                                                validAdi();
+                                            }, 0);
+                                        });
+                                    }
+                                    
+                                }
+                            }
+                        );
                     }
                 );
             }
@@ -178,11 +210,9 @@
         function modalCancelForm() {
             modalFactory.cancel();
         }
-
-        window.onclick = function (event) {
-            $timeout(function () {
-                vm.onbaseSuccess = $rootScope.globalOnbase;
-            }, 500)
+        document.onclick = myFunction;
+        function myFunction() {
+           vm.onbaseSuccess = $rootScope.globalOnbase;
         }
 
 
@@ -191,7 +221,30 @@
             addTableService.getConsultCard($rootScope.globalUserJSon.id).then(
                 function (response) {
                     if (response.success) {
-                        validServiMega();
+                        if (JSONCF.additional === "N"){
+                            JSONCF.creditCardNumber = response.data.List[0].cardNumber;
+                            JSONCF.cardHolderName = vm.viewModelmoldedFormalization.namePlastic;
+                            vm.viewModelmoldedFormalization.aditional = response.data.List[0].additional;
+                            validServiMega();
+                        }else {
+                            JSONCF.creditCardNumber = response.data.List[0].cardNumber;
+                            JSONCF.cardHolderName = vm.viewModelmoldedFormalization.namePlastic;
+                            vm.viewModelmoldedFormalization.aditional = response.data.List[0].additional;         
+                        }
+                        if(JSONCF.additional === "S"){
+                            sweet.show({
+                                title: '',
+                                text: "La tarjeta principal ya fue impresa correctamente. Ahora procederemos a imprimir la tarjeta adicional.",
+                                confirmButtonColor: messages.modals.warning.modalColorButton,
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: true
+                            }, function () {
+                                $timeout(function () {
+                                    validAdi();
+                                }, 0);
+                            });
+                        }
+                        
                     } else {
                         validationCardKeyServ.getPositionKeyCard(JSONCF.documentNumber).then(
                             function (response) {
@@ -268,7 +321,12 @@
                             $timeout(function () {
                                 var modal = document.getElementById('myModal');
                                 modal.style.display = "none";
-                                printCard();
+                                if (vm.additionalCard == true ) {
+                                    vm.aggAditional = true;
+                                    vm.bornDay = document.getElementById("fechaNacimiento");
+                                } else {
+                                   printCard(); 
+                                }
                             }, 0);
                         });
                     } else {
@@ -333,6 +391,23 @@
                                                             closeOnConfirm: true
                                                         }, function () {
                                                             $timeout(function () {
+                                                                JSONCF.additional = "S";
+                                                                var JSonCierreForzoso = {
+                                                                    "data": JSON.stringify(JSONCF),
+                                                                    "documentNumber": JSONCF.documentNumber,
+                                                                    "userName": $rootScope.dataUser.userName,
+                                                                    "customerFlowType": "2",
+                                                                    "id": $rootScope.globalUserJSon.id
+                                                                }
+
+                                                                addTableService.updatecierreForzosoTC(JSonCierreForzoso).then(
+                                                                    function (response) {
+                                                                        if (response.success === true) {
+                                                                            $state.go('moldedFormalization');
+                                                                        }
+
+                                                                    }
+                                                                );
                                                                 validAdi();
                                                             }, 0);
                                                         });
@@ -355,6 +430,7 @@
 
                                                 } else {
                                                     if (requestCode !== "000") {
+                                                        JSONCF.additional = "N";
                                                         var JSonCierreForzoso = {
                                                             "data": JSON.stringify(JSONCF),
                                                             "documentNumber": JSONCF.documentNumber,
@@ -385,6 +461,7 @@
                                 vm.printCardValid = true;
                                 $interval.cancel(increaseCounter);
                                 modalStatic.style.display = "none";
+                                modalFactory.error("CardWizard no Responde. Por favor intentar mas tarde.");
                             }
                             increaseCounter = $interval(function () {
                                 if (contador < 14) {
@@ -472,6 +549,7 @@
                                                             }
                                                         } else {
                                                             if (requestCode !== "000") {
+                                                                JSONCF.additional = "S";
                                                                 var JSonCierreForzoso = {
                                                                     "data": JSON.stringify(JSONCF),
                                                                     "documentNumber": JSONCF.documentNumber,
@@ -540,7 +618,7 @@
                         "userName": vm.username,
                         "contactId": JSONCF.idClientSiebel, // consulta de siebel
                         "creditCardNumber": JSONCF.creditCardNumber, // tarjeta de creditovalidServiMega
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "productType": "Tarjetas de Credito",
                         "limitRD": JSONCF.dopLimit,
@@ -571,10 +649,11 @@
                         "additionalCardNumber": JSONCF.creditCardNumberAditional, // # campo adit
                         "office": $rootScope.dataUser.sucursal, //sucursalcode username
                         "billingCycle": "MENSUAL",
-                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
+                        "customerCode": JSONCF.clientNumber,
                         "bankAssesor": $rootScope.dataUser.userNameDescription, // userName
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "customerBeneficiary": "", // nombre adit,
                         "receptorFirm": vm.viewModelmoldedFormalization.keyCardNumber + "-" + vm.positionCard /// numero tarjeta de clave - cordenada
                     },
@@ -585,16 +664,18 @@
                         "documentNumber": JSONCF.documentNumber, // dato de siebel
                         "userCreatorName": $rootScope.dataUser.userNameDescription,
                         "agreement": "OK",
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "userName": vm.username,
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "CONTRACT_TC": {
                         "selectedProduct": "TARJETA CINCO",
                         "cityName": JSONCF.idBirthCity,
+                        "creditCardNumber": JSONCF.creditCardNumber,
+                        "customerCode": JSONCF.clientNumber,
                         "creatorName": $rootScope.dataUser.userNameDescription,
                         "userName": vm.username,
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentType": "CEDULA NUEVA", //JSONCF.documentType, // agregar al json
                         "documentNumber": JSONCF.documentNumber,
                         "nationality": JSONCF.nacionality,
@@ -611,7 +692,7 @@
                         "CodigoPersonaAdicional": "",
                         "TipoDocumento": "003",
                         "NumeroDocumento": JSONCF.documentNumber,
-                        "NumeroTarjeta": JSONCF.keyCardNumber,
+                        "NumeroTarjeta": JSONCF.creditCardNumber,
                         "Sucursal": $rootScope.dataUser.sucursalId,
                         "TipoTarjeta": "P", //gn - gr
                         "MarcaTarjeta": "", //
@@ -666,7 +747,7 @@
                         "userName": vm.username,
                         "contactId": JSONCF.idClientSiebel, // consulta de siebel
                         "creditCardNumber": JSONCF.creditCardNumber, // tarjeta de creditovalidServiMega
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "productType": "Tarjetas de Credito",
                         "limitRD": JSONCF.dopLimit,
@@ -697,10 +778,11 @@
                         "additionalCardNumber": JSONCF.creditCardNumberAditional, // # campo adit
                         "office": $rootScope.dataUser.sucursal, //sucursalcode username
                         "billingCycle": "MENSUAL",
-                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerCode": JSONCF.clientNumber,
+                        "receptorName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentNumber": JSONCF.documentNumber,
                         "bankAssesor": $rootScope.dataUser.userNameDescription, // userName
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "customerBeneficiary": vm.viewModelmoldedFormalization.namePlastic2, // nombre adit,
                         "receptorFirm": vm.viewModelmoldedFormalization.keyCardNumber + "-" + vm.positionCard /// numero tarjeta de clave - cordenada
                     },
@@ -711,16 +793,18 @@
                         "documentNumber": JSONCF.documentNumber, // dato de siebel
                         "userCreatorName": $rootScope.dataUser.userNameDescription,
                         "agreement": "OK",
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "userName": vm.username,
                         "idCustomerFlowStep": $rootScope.globalUserJSon.id
                     },
                     "CONTRACT_TC": {
                         "selectedProduct": "TARJETA CINCO",
                         "cityName": JSONCF.idBirthCity,
+                        "creditCardNumber": JSONCF.creditCardNumber,
+                        "customerCode": JSONCF.clientNumber,
                         "creatorName": $rootScope.dataUser.userNameDescription,
                         "userName": vm.username,
-                        "customerName": JSONCF.firstName + " " + JSONCF.firstLasname,
+                        "customerName": JSONCF.firstName + " " + JSONCF.firstLastname,
                         "documentType": "CEDULA NUEVA", //JSONCF.documentType, // agregar al json
                         "documentNumber": JSONCF.documentNumber,
                         "nationality": JSONCF.nacionality,
@@ -860,7 +944,7 @@
                             "data": JSON.stringify(JSONCF),
                             "documentNumber": JSONCF.documentNumber,
                             "userName": $rootScope.dataUser.userName,
-                            "customerFlowType": "3",
+                            "customerFlowType": "4",
                             "id": $rootScope.globalUserJSon.id
                         }
 
@@ -893,9 +977,10 @@
         function validAditional() {
             vm.aggAditional = false;
             if (vm.viewModelmoldedFormalization.aditional == "S") {
-                vm.aggAditional = true;
-                vm.bornDay = document.getElementById("fechaNacimiento");
+                vm.additionalCard = true;
+                vm.validImpre();
             } else {
+                vm.additionalCard = false;
                 vm.aggAditional = false;
             }
 
@@ -1373,13 +1458,13 @@
 
             if (vm.viewModelmoldedFormalization.namePlastic) {
                 var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ñ', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'á', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'é', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'í', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ó', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ú', "");
-
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ñ', "n");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'á', "a");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'é', "e");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'í', "i");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ó', "o");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ú', "u");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, '\'', " ");
                 function replaceAll(text, busca, reemplaza) {
                     while (text.toString().indexOf(busca) != -1)
                         text = text.toString().replace(busca, reemplaza);
@@ -1402,12 +1487,13 @@
 
             if (vm.viewModelmoldedFormalization.namePlastic2) {
                 var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ñ', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'á', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'é', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'í', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ó', "");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ú', "");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ñ', "n");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'á', "a");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'é', "e");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'í', "i");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ó', "o");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ú', "u");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, '\'', " ");
 
                 function replaceAll(text, busca, reemplaza) {
                     while (text.toString().indexOf(busca) != -1)
