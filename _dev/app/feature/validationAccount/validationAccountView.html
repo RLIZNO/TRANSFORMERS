@@ -324,7 +324,6 @@
                         type="text"
                         ng-class="{ 'hasError': (validationAccount.formValidationAccountnumber3.limitUSD.$touched)
                                 && validationAccount.formValidationAccountnumber3.limitUSD.$invalid 
-                                || validationAccount.valueLimitUs 
                                 || validationAccount.espresion3
                                 || validationAccount.maximumLimitUStrue
                                 || validationAccount.minimumLimitUStrue}"
@@ -334,6 +333,9 @@
                         ng-maxlength="20"
                         ng-required="true"/>
 
+                        <span class="alerttext" 
+                        ng-if="validationAccount.valueLimitUs">
+                        No debes sobrepasar el limite {{validationAccount.limiteMaximoUs}}</span>
                         <span class="alerttext" 
                         ng-if="validationAccount.maximumLimitUStrue">
                         No debes sobrepasar el limite del producto: {{validationAccount.maximumLimitUS | currency:'':0}}</span>

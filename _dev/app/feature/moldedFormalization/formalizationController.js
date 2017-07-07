@@ -148,6 +148,7 @@
                     JSONCF.phone = "";
                 }
                 vm.viewModelmoldedFormalization.namePlastic = JSONCF.firstName + " " + JSONCF.firstLastname;
+                validAcen();
                 // Servicio para numero tarjeta de credito
                 creditBureauService.getValidCientExisting(2, JSONCF.documentNumber, vm.username).then(
                     function (response) {
@@ -1271,6 +1272,7 @@
                     var convertDate = new Date(vm.datePassport); //aaaa/mm/dd
                     //var a  = $filter('date')(Date.parse(vm.dataClientExit.birthDate),'yyyy-MM-dd');
                     vm.viewModelmoldedFormalization.namePlastic2 = $rootScope.customerDataCredit.firtsName + ' ' + $rootScope.customerDataCredit.surname;
+                    validAcen2();
                     vm.nameUser = $rootScope.customerDataCredit.firtsName + ' ' + $rootScope.customerDataCredit.secondName + ' ' + oJson.reportecu.clienteunico.primerapellido + ' ' + oJson.reportecu.clienteunico.segundoapellido;
                     vm.cellphoneNumb = parseInt($rootScope.customerDataCredit.mobilePhone);
                     vm.datePassport = convertDate;
@@ -1458,12 +1460,12 @@
 
             if (vm.viewModelmoldedFormalization.namePlastic) {
                 var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ñ', "n");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'á', "a");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'é', "e");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'í', "i");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ó', "o");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'ú', "u");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'Ñ', "N");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'Á', "A");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'É', "E");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'Í', "I");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'Ó', "O");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic, 'Ú', "U");
                 replaceAll(vm.viewModelmoldedFormalization.namePlastic, '\'', " ");
                 function replaceAll(text, busca, reemplaza) {
                     while (text.toString().indexOf(busca) != -1)
@@ -1487,12 +1489,12 @@
 
             if (vm.viewModelmoldedFormalization.namePlastic2) {
                 var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ñ', "n");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'á', "a");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'é', "e");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'í', "i");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ó', "o");
-                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'ú', "u");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Ñ', "N");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Á', "A");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'É', "E");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Í', "I");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Ó', "O");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Ú', "U");
                 replaceAll(vm.viewModelmoldedFormalization.namePlastic2, '\'', " ");
 
                 function replaceAll(text, busca, reemplaza) {

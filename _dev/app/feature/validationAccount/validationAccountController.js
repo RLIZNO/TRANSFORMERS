@@ -215,6 +215,7 @@
         vm.espresion = false;
         vm.limitRDmayor = false;
         vm.limitRDOne;
+        vm.flagOne = false;
         /*Funciones*/
         vm.getTypeDocuments = getTypeDocuments;
         vm.getTaskYesNo = getTaskYesNo;
@@ -667,10 +668,20 @@
                     }else{
                         vm.maximumLimitRDtrue=false;
                     }
-                    if(vm.viewModelvalidationAccount.limitDiferidoRD != 1 && vm.limitRDOne == false){
+                    if( ( vm.viewModelvalidationAccount.limitDiferidoRD != 1 && vm.limitRDOne == false ) || vm.flagOne == true ){
                        vm.limitRDOne = false;
-                       vm.deferredCalc = vm.viewModelvalidationAccount.limitRD * 1.5;
-                       vm.viewModelvalidationAccount.limitDiferidoRD = vm.deferredCalc;
+                       var deferredCalcInt = parseInt((vm.viewModelvalidationAccount.limitRD).replace(/,/g,""));
+                       vm.deferredCalc = deferredCalcInt * 1.5;
+                       if( deferredCalcInt < 12000){
+                            vm.viewModelvalidationAccount.limitDiferidoRD = 1;
+                            vm.flagOne = true;
+                       } 
+                        if( deferredCalcInt > 500000){
+                            vm.viewModelvalidationAccount.limitDiferidoRD = 500000;
+                        }
+                        if( 12000 < deferredCalcInt && deferredCalcInt < 500000){
+                            vm.viewModelvalidationAccount.limitDiferidoRD = vm.deferredCalc;
+                        }
                    } else {
                        vm.limitRDOne = true;
                        vm.viewModelvalidationAccount.limitDiferidoRD = 1;
@@ -747,14 +758,15 @@
 
             var limite = parseInt(LimitCam);
             function replaceAll( text, busca, reemplaza ){
-            while (text.toString().indexOf(busca) != -1) {
-                    text = text.toString().replace(busca,reemplaza);
-                    vm.viewModelvalidationAccount.limitUSD = text;
-                    return text; 
+                while (text.toString().indexOf(busca) != -1) {
+                        text = text.toString().replace(busca,reemplaza);
+                        vm.viewModelvalidationAccount.limitUSD = text;
+                        return text; 
+                }  
             }
-           
-                 }
-             function multiple(valor, multiple)
+
+             var i = multiplo10(limite);
+             /*function multiple(valor, multiple)
                 {
                     var resto = valor % multiple;
                     if(resto==0)
@@ -778,8 +790,17 @@
             }
             }else {
                 x = limite;
+            }*/
+
+            function multiplo10 (value) {
+                if(value % 10 < 5 ) {
+                    return value - (value % 10); // redondea hacia abajo 
+                } else {
+                    return (value - (value % 10)) + 10; // redondea hacia arriba
+                }
             }
-            vm.viewModelvalidationAccount.limitUSD = $filter('number')(x,0 );
+
+            vm.viewModelvalidationAccount.limitUSD = $filter('number')(i,0 );
             replaceAll(vm.viewModelvalidationAccount.limitUSD , ".", "," );
         }   
         
