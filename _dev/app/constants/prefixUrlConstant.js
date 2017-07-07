@@ -8,7 +8,7 @@
     angular
         .module('app')
         .constant('PREFIX_URL', {
-            SERVICES: ''
-            //SERVICES : '/wps/services/'
+            //SERVICES: ''
+            SERVICES : '/wps/services/'
         });
 })();

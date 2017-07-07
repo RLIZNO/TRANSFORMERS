@@ -21,7 +21,8 @@
     ) {
 
         var service = {
-            activateCredCard: activateCredCard
+            activateCredCard: activateCredCard,
+            getDisableCreditCard: getDisableCreditCard
         };
 
         return service;
@@ -47,6 +48,22 @@
                         return $q.reject(errResponse);
                     }
                 );
+        }
+
+        function getDisableCreditCard(id,user){
+
+            var deferred = $q.defer(); 
+            
+            $http.get(PREFIX_URL.SERVICES + URL.DISABLED_CARD + '?documentNumber=' + id + '&user=' + user )
+              .then(
+                  function (response){
+                      deferred.resolve(response.data);
+                  },
+                  function (errResponse){
+                      deferred.reject(errResponse);
+                  }
+              );
+            return deferred.promise;
         }
     }
 

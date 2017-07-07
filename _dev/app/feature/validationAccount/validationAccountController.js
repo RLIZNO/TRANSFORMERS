@@ -1600,7 +1600,6 @@
                             console.log(response);
                             var proyect = 'CreditCard';
                             localStorage.setItem("Proyecto", proyect);
-                            //window.location.href = "/wps/portal/ptd/inicio";
                             var dataSiebel = true;
                             localStorage.setItem("dataSiebel", dataSiebel);
                             var validclientTc = 'validclientTc';

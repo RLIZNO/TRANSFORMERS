@@ -66,8 +66,18 @@
 						vm.typeTc = JSONCF.productCode;
 						vm.nameAdicional = JSONCF.cardHolderNameAdi;
 						vm.noTCAdicional = JSONCF.creditCardNumberAditional;
+						verifyActCard();
                 }
         );
+
+        function verifyActCard() {
+        	actCardService.getDisableCreditCard(JSONCF.documentNumber,vm.userName).then(
+        		function(response){
+        			if(response.success == true ){
+        				vm.desBtn = true;
+        			}
+        		});
+        }
 
 		function validImpre() {
 			window.location.href = "/wps/portal/ptd/inicio";
