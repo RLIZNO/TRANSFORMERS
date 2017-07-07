@@ -179,6 +179,7 @@
         vm.dataClientExit = [];
         vm.keyCardNumber = false;
         vm.validpreAprobado = false;
+        vm.validFicoVar =  false;
         vm.deferred = '';
         vm.dopLimit = '';
         vm.usdLimit = '';
@@ -646,6 +647,9 @@
                     if ( vm.validpreAprobado == false ) {
                         var scopeMaxLimitRD = vm.limiteMaximoRd;
                         var copyRootMaxLimitRD = vm.limiteMaximoRd;
+                    } if (vm.validFicoVar == true ) {
+                        var scopeMaxLimitRD = parseInt((vm.limiteMaximoRd).replace(/,/g,"")); 
+                        var copyRootMaxLimitRD = scopeMaxLimitRD;
                     } else {
                         var scopeMaxLimitRD = parseInt(($rootScope.globalLimitData.maximumLimitRD).replace(/,/g,""));
                         var copyRootMaxLimitRD = $rootScope.globalLimitData.maximumLimitRD;
@@ -698,7 +702,10 @@
                     if ( vm.validpreAprobado == false ) {
                         var scopeMaxLimitUSD = vm.limiteMaximoUs;
                         var copyRootMaxLimitUSD = vm.limiteMaximoUs;
-                    }else {
+                    } if (vm.validFicoVar == true ) {
+                        var scopeMaxLimitUSD = parseInt((vm.limiteMaximoUs.toString()).replace(/,/g,"")); 
+                        var copyRootMaxLimitUSD = scopeMaxLimitUSD;
+                    } else {
                         var scopeMaxLimitUSD = parseInt(($rootScope.globalLimitData.maximumLimitUS).replace(/,/g,""));
                         var copyRootMaxLimitUSD = $rootScope.globalLimitData.maximumLimitUS;
                     }
@@ -709,7 +716,7 @@
                         modalFactory.warning(messages.modals.error.maxLimitUSD + replaceCopyRootMaxLimitUSD ); 
                         vm.viewModelvalidationAccount.limitUSD = ""; 
                         vm.maximumLimitUStrue=true;
-                        vm.maximumLimitUS=scopeMaxLimitRD;
+                        vm.maximumLimitUS=scopeMaxLimitUSD;
                     } else {
                         vm.maximumLimitUStrue=false;
                     }
@@ -806,7 +813,11 @@
                  }
 
             validationClientService.getValidaFico(date, ducumenNumber, typeDocumentValue, typeHousing, housingTime, $rootScope.dataUser.userName, income, typeProducto).then(function (response) {
-                        
+                if (response.decision == "Aprobado") {
+                    vm.validFicoVar =  true;
+                    vm.limiteMaximoRd = parseInt((response.dopLimit).replace(/,/g,""));   
+                    vm.limiteMaximoUs = parseInt((response.usdLimit).replace(/,/g,"")); 
+                }       
                 console.log(response);
                 function limitUSD( text, busca, reemplaza ){
                             while (text.toString().indexOf(busca) != -1) {
