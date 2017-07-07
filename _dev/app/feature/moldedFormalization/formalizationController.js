@@ -210,7 +210,7 @@
         function modalCancelForm() {
             modalFactory.cancel();
         }
-        document.onclick = myFunction;
+        document.onclick = myFunction; 
         function myFunction() {
            vm.onbaseSuccess = $rootScope.globalOnbase;
         }
