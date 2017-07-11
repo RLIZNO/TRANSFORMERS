@@ -102,7 +102,8 @@
         vm.loadSelect = loadSelect;
         //vm.getvalidateClientCreditCard = getvalidateClientCreditCard;
         vm.validAdi = validAdi;
-
+        vm.validateKeyCard2 = validateKeyCard2;
+        vm.validImpre2 = validImpre2;
         vm.nameUser = "";
         vm.namePlastic2 = "";
         vm.landLine = "";
@@ -131,6 +132,13 @@
         vm.additionalCard = false;
         vm.modalCancelForm = modalCancelForm;
 
+        window.onclick = myFunction; 
+        function myFunction() {
+            $timeout(function () {
+                 vm.onbaseSuccess = $rootScope.globalOnbase;
+            }, 0);
+           
+        }
         var cierreForzosoIdCA = localStorage.getItem('cierreForzosoIdCA');
 
         addTableService.getcierreForzosoTC(cierreForzosoIdCA).then(
@@ -211,11 +219,6 @@
         function modalCancelForm() {
             modalFactory.cancel();
         }
-        document.onclick = myFunction; 
-        function myFunction() {
-           vm.onbaseSuccess = $rootScope.globalOnbase;
-        }
-
 
         function validImpre() {
             resetData();
@@ -289,6 +292,46 @@
             }
         }
 
+        function validImpre2() {
+            resetData();
+                validationCardKeyServ.getPositionKeyCard(JSONCF.documentNumber).then(
+                    function (response) {
+                        vm.positionCard = response.data.positionId;
+                    }
+                );
+            
+
+            //window.location.href = "#/result";
+            var modal = document.getElementById('myModal2');
+            var btnClose = document.getElementById('formPrint2');
+            var loading = document.getElementById("loader");
+
+            var span = document.getElementsByClassName("close")[0];
+
+            modal.style.display = "block";
+
+            span.onclick = function () {
+                modal.style.display = "none";
+                vm.submitted = false;
+                vm.formNewInvalid = false;
+            }
+
+            btnClose.onclick = function () {
+                resetData();
+                modal.style.display = "none";
+                vm.submitted = false;
+                vm.formNewInvalid = false;
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    vm.submitted = false;
+                    vm.formNewInvalid = false;
+                }
+            }
+        }
+
         function typeProducCinco() {
             /*Recoremos todos las profesiones para capturar el id de la profesion seleccionada */
             angular.forEach(vm.productTyoe, function (value, key) {
@@ -297,7 +340,41 @@
                 }
             });
         }
+        function validateKeyCard2() {
 
+            var jsonValKeyCard = {
+                "documentNumber": JSONCF.documentNumber,
+                "positionId": vm.positionCard,
+                "positionValue": vm.viewModelmoldedFormalization.positionValueInput
+            };
+
+
+            validationCardKeyServ.validationCardKey(jsonValKeyCard).then(
+                function (response) {
+                    var count = 0;
+                    if (response.success == true && count < 3) {
+                        sweet.show({
+                            title: '',
+                            text: messages.modals.success.codeCorrect,
+                            type: messages.modals.warning.modalTypeError,
+                            confirmButtonColor: messages.modals.warning.modalColorButton,
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                        }, function () {
+                            $timeout(function () {
+                                var modal = document.getElementById('myModal2');
+                                modal.style.display = "none";
+                                    vm.aggAditional = true;
+                                    vm.bornDay = document.getElementById("fechaNacimiento");
+                            }, 0);
+                        });
+                    } else {
+                        modalFactory.error(messages.modals.error.codeIncorrect);
+                        count++;
+                    }
+                }
+            );
+        }
         function validateKeyCard() {
 
             var jsonValKeyCard = {
@@ -322,12 +399,8 @@
                             $timeout(function () {
                                 var modal = document.getElementById('myModal');
                                 modal.style.display = "none";
-                                if (vm.additionalCard == true ) {
-                                    vm.aggAditional = true;
-                                    vm.bornDay = document.getElementById("fechaNacimiento");
-                                } else {
                                    printCard(); 
-                                }
+                                
                             }, 0);
                         });
                     } else {
@@ -979,7 +1052,7 @@
             vm.aggAditional = false;
             if (vm.viewModelmoldedFormalization.aditional == "S") {
                 vm.additionalCard = true;
-                vm.validImpre();
+                vm.validImpre2();
             } else {
                 vm.additionalCard = false;
                 vm.aggAditional = false;
@@ -1496,6 +1569,9 @@
                 replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Ó', "O");
                 replaceAll(vm.viewModelmoldedFormalization.namePlastic2, 'Ú', "U");
                 replaceAll(vm.viewModelmoldedFormalization.namePlastic2, '\'', " ");
+                replaceAll(vm.viewModelmoldedFormalization.namePlastic2, '-', " ");
+                
+                
 
                 function replaceAll(text, busca, reemplaza) {
                     while (text.toString().indexOf(busca) != -1)

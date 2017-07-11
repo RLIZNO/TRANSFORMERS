@@ -50,6 +50,7 @@
 		vm.positionCard="";
 		vm.desBtn = false;
 		vm.noTCAdicional = "";
+		vm.manualOperativo = "";
 		vm.dataResult = $rootScope.globalUserJSon;
         $rootScope.globalUserJSon = [];
          var JSONCF = [];
@@ -73,7 +74,7 @@
         function verifyActCard() {
         	actCardService.getDisableCreditCard(JSONCF.documentNumber,vm.userName).then(
         		function(response){
-        			if(response.success == true ){
+					if(response.success == true & JSONCF.decisionMessage != "PRE-APROBADO" ){
         				vm.desBtn = true;
         			}
         		});
@@ -190,6 +191,9 @@
 				loadingBody.style.display = "block"; 
 				var promise; 
 				var myVar;
+				var customerNumber = JSONCF.clientNumber;
+				vm.manualOperativo = "http://172.17.106.227:10039/BHDL_TDPD_Back_Credit_Card/rest/files/handBook?documentNumber="+parseInt(JSONCF.documentNumber)+"&customerNumber="+parseInt(customerNumber);
+				//vm.manualOperativo = "http://serwebdev07.cfbhd.com:10039/BHDL_TDPD_Back_Credit_Card/rest/files/handBook?documentNumber="+parseInt(JSONCF.documentNumber)+"&customerNumber="+parseInt(customerNumber);
 				var increaseCounter = function () {
 				myVar = setTimeout(showPage, 10000);
 				
@@ -203,7 +207,8 @@
 											vm.acuse = "ACKNOWLEDGEMENT_RECEIPT";
 											vm.contrato = "CONTRACT_TC";
 											vm.dac = "DAC – TC";
-												var request = response.data;
+											
+											var request = response.data;
 												if (request.tariffDocumentState === 'Y' ){
 													validationCardKeyServ.gettariff(vm.tariff, JSONCF.documentNumber).then(function(response) {
 														$timeout(function(){
@@ -253,11 +258,32 @@
 													}, 0);
 													});
 												}
-												if(vm.validacuse & vm.validContra & vm.tariffValid){
-													contador = 31;
-													sendEmaildService.sendDocsEmail(JSONCF.documentNumber,JSONCF.email,JSONCF.cardHolderName,JSONCF.productCode,JSONCF.dopLimit,JSONCF.usdLimit);
-												}											
-												contador ++;
+												if (JSONCF.correoOk){
+												}else {
+													if(vm.validacuse & vm.validContra & vm.tariffValid){
+														contador = 31;
+														JSONCF.correoOk = true;
+															var JSonCierreForzoso = {
+																"data": JSON.stringify(JSONCF),
+																"documentNumber": JSONCF.documentNumber,
+																"userName": $rootScope.dataUser.userName,
+																"customerFlowType": "4",
+																"id": $rootScope.globalUserJSon.id
+															}
+
+															addTableService.updatecierreForzosoTC(JSonCierreForzoso).then(
+																function (response) {
+																	if (response.success === true) {
+																		$state.go('formalizationResult');
+																	}
+
+																}
+															);
+														sendEmaildService.sendDocsEmail(JSONCF.documentNumber,JSONCF.email,JSONCF.cardHolderName,JSONCF.productCode,JSONCF.dopLimit,JSONCF.usdLimit);
+													}											
+													contador ++;
+												}
+
 										} else {
 											contador = 31;
 										}

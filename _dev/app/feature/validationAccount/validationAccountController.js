@@ -248,7 +248,7 @@
         $rootScope.globalSiebelCust      = {};
         $rootScope.globalValClntCredCard = {};
         $rootScope.globalClientSIebel = {}; // variable global que guardamos en el Json para el forzoso    
-
+                            
         /****
         CARGAR DATOS EN LA PANTALLA DE VALIDACION
         ****/  
@@ -1600,9 +1600,37 @@
                             (response) {
                             //$rootScope.globalValClntExist = response;
                             //localStorage.setItem("globalValClntExist", $rootScope.globalValClntExist);
-                            $rootScope.globalValClntCredCard.dopLimit = parseInt((vm.viewModelvalidationAccount.limitRD).replace(/,/g,""));
-                            $rootScope.globalValClntCredCard.usdLimit = parseInt((vm.viewModelvalidationAccount.limitUSD).replace(/,/g,""));
-                            $rootScope.globalValClntCredCard.deferred = parseInt((vm.viewModelvalidationAccount.limitDiferidoRD).replace(/,/g,""));
+                            replaceAll1(vm.viewModelvalidationAccount.limitRD , ",", "" );
+                            function replaceAll1( text, busca, reemplaza ){
+                            while (text.toString().indexOf(busca) != -1) 
+                                    text = text.toString().replace(busca,reemplaza);
+                                    $rootScope.globalValClntCredCard.dopLimit = parseInt(text);
+                                    console.log($rootScope.globalValClntCredCard.dopLimit);
+                                    return text;
+                            
+                            }
+                            replaceAll2(vm.viewModelvalidationAccount.limitUSD , ",", "" );
+                            function replaceAll2( text, busca, reemplaza ){
+                            while (text.toString().indexOf(busca) != -1) 
+                                    text = text.toString().replace(busca,reemplaza);
+                                    $rootScope.globalValClntCredCard.usdLimit = parseInt(text);
+                                    console.log($rootScope.globalValClntCredCard.usdLimit);
+                                    return text;
+                            
+                            }
+
+                            replaceAll3(vm.viewModelvalidationAccount.limitDiferidoRD , ",", "" );
+                            function replaceAll3( text, busca, reemplaza ){
+                            while (text.toString().indexOf(busca) != -1) 
+                                    text = text.toString().replace(busca,reemplaza);
+                                    $rootScope.globalValClntCredCard.deferred = parseInt(text);
+                                    console.log($rootScope.globalValClntCredCard.deferred);
+                                    return text;
+                            
+                            }
+                           // $rootScope.globalValClntCredCard.dopLimit = parseInt((vm.viewModelvalidationAccount.limitRD).replace(/,/g,""));
+                            //$rootScope.globalValClntCredCard.usdLimit = parseInt((vm.viewModelvalidationAccount.limitUSD).replace(/,/g,""));
+                            //$rootScope.globalValClntCredCard.deferred = parseInt((vm.viewModelvalidationAccount.limitDiferidoRD).replace(/,/g,""));
                             
                             $rootScope.globalUserJSon = $.extend(true, {},{
                                     json3 : "jsonClntCredCard",
@@ -1778,6 +1806,9 @@
                 }
 
                 if (error.message === "Ocurrio un Error BRK2033: El servicio no ha respondido en el tiempo especificado."){
+                    vm.clientCanContinue =  false;
+                }
+                if (error.message === "Este cliente posee ficha judicial, debe realizar solicitud de investigación a Cumplimiento FO"){
                     vm.clientCanContinue =  false;
                 }
                 modalFactory.error(errortc);
